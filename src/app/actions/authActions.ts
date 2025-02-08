@@ -1,16 +1,15 @@
 "use server";
 
 import { signIn, signOut } from "@/auth";
-// import { prisma } from "@/lib/prisma";
 import { LoginSchema } from "@/lib/schemas/loginSchema";
 import { RegisterSchema, registerSchema } from "@/lib/schemas/registerSchema";
 import { ActionResult } from "@/types";
-// import { User } from "@prisma/client";
 import bcrypt from "bcryptjs";
 import { AuthError } from "next-auth";
-import { PrismaClient } from "@prisma/client";
+// import { PrismaClient } from "@prisma/client";
+// const prisma = new PrismaClient();
+import { prisma } from "@/lib/prisma";
 
-const prisma = new PrismaClient();
 type PrismaUser = Awaited<ReturnType<typeof prisma.user.create>>; // User-Typ ableiten
 
 export async function signInUser(data: LoginSchema): Promise<ActionResult<string>> {

@@ -1,0 +1,84 @@
+datasource db {
+    provider = "mysql"
+    url      = env("DATABASE_URL")
+  }
+   
+  generator client {
+    provider = "prisma-client-js"
+  }
+  
+  model Account {
+    id                String  @id @default(cuid())
+    userId            String
+    type              String
+    provider          String
+    providerAccountId String
+    refresh_token     String? @db.Text
+    access_token      String? @db.Text
+    expires_at        Int?
+    token_type        String?
+    scope             String?
+    id_token          String? @db.Text
+    session_state     String?
+  
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+    @@unique([provider, providerAccountId])
+  }
+  
+  enum UserRole {
+    ADMIN
+    USER
+    NEWBIE
+  }
+  
+  
+  model User {
+    id            String    @id @default(cuid())
+    name          String?
+    email         String?   @unique
+    emailVerified DateTime?
+    passwordHash  String
+    image         String?
+    accounts      Account[]
+    member        Member?
+    role          UserRole @default(NEWBIE)
+  }
+  
+  model Member {
+    id          String   @id @default(cuid())
+    userId      String   @unique
+    name        String
+    gender      String
+    dateOfBirth DateTime
+    created     DateTime @default(now())
+    updated     DateTime @default(now())
+    description String
+    city        String
+    country     String
+    image       String?
+    user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    photos      Photo[]
+    sourceLikes Like[]   @relation("source")
+    targetLikes Like[]   @relation("target")
+  }
+  
+  model Photo {
+    id       String  @id @default(cuid())
+    url      String
+    publicId String?
+  
+    memberId String
+    member   Member @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  }
+  
+  model Like {
+    sourceUserId String
+    sourceMember Member @relation("source", fields: [sourceUserId], references: [userId], onDelete: Cascade)
+  
+    targetUserId String
+    targetMember Member @relation("target", fields: [targetUserId], references: [userId], onDelete: Cascade)
+  
+    @@id([sourceUserId, targetUserId])
+  }
+  

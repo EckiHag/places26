@@ -2,9 +2,9 @@
 // import { prisma } from "@/lib/prisma";
 import { SubjectSchema, subjectSchema } from "@/lib/schemas/subjectSchema";
 import { z } from "zod";
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+// import { PrismaClient } from "@prisma/client";
+// const prisma = new PrismaClient();
+import { prisma } from "@/lib/prisma";
 type Subjects = Awaited<ReturnType<typeof prisma.subjects.create>>; // User-Typ ableiten
 
 export const getSubjectsAll = async () => {

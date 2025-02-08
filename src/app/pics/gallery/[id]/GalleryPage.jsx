@@ -45,9 +45,15 @@ export default function GalleryPage({ slides }) {
         onClick={(data) => {
           console.log("onClick data:", data);
           if (data.photo) {
-            openLightbox(data.photo); // Übergabe des angeklickten Fotos
+            openLightbox(data.photo);
           } else {
             console.warn("Photo is undefined in onClick");
+          }
+        }}
+        onTouchEnd={(data) => {
+          console.log("onTouchEnd data:", data);
+          if (data.photo) {
+            openLightbox(data.photo);
           }
         }}
       />

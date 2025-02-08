@@ -9,7 +9,7 @@ const PicsList = async () => {
   console.log("Pics: ", pics);
   return (
     <div>
-      <h2 className="text-3xl">PicsList: PicsList wird eigentlich nicht gebraucht, weil die Pics ja immer nur in Abhängigkeit von der Places-Id gelistet werden.</h2>
+      <h2 className="text-3xl">PicsList: PicsList wird eigentlich nicht gebraucht, weil die Pics ja immer nur in Abhängigkeit von der Places-Id gelistet werden. Hola</h2>
 
       <div className="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
         {sortedPics.map((pic) => (

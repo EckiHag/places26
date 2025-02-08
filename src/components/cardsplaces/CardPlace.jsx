@@ -4,7 +4,7 @@ import { ScrollShadow, Card, CardHeader, CardBody, CardFooter, Divider, Link, Im
 export default function CardPlace({ id, image, title, description }) {
   return (
     <div className="flex gap-5 flex-wrap">
-      <Card isHoverable isPressable className="w-[500px] h-[700px] flex flex-col items-center bg-blue-700 hover:!bg-blue-600">
+      <Card className="w-[500px] h-[700px] flex flex-col items-center bg-blue-700 hover:!bg-blue-600">
         <CardHeader className="flex justify-between items-center bg-blue-400">
           <span className="text-2lg leading-relaxed text-center mt-4">{title}</span>
         </CardHeader>
@@ -31,6 +31,9 @@ export default function CardPlace({ id, image, title, description }) {
               Works
             </Button>
           </Link>
+          <Button showAnchorIcon as={Link} color="primary" href={`/pics/work/${id}`} variant="solid">
+            Button Link
+          </Button>
         </CardFooter>
       </Card>
     </div>

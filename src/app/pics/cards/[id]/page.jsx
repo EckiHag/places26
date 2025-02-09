@@ -14,12 +14,12 @@ const PicsCardWithPlaceId = async ({ params }) => {
           Back to Places
         </Link>
       </div>
-      <div className="mt-2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-        {sortedPics.map((pic) => (
-          <div key={pic.id}>
-            <CardPic pic={pic} />
-          </div>
-        ))}
+      <div className="flex justify-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 max-w-6xl mx-auto justify-items-center">
+          {sortedPics.map((pic) => (
+            <CardPic key={pic.id} pic={pic} />
+          ))}
+        </div>
       </div>
     </>
   );

@@ -36,7 +36,7 @@ export default function UserMenu({ userInfo }: Props) {
             <br></br>({userInfo?.role})
           </DropdownItem>
         </DropdownSection>
-        <DropdownItem key="username2" color="success" as={Link} href="/members/edit">
+        <DropdownItem key="username2" color="success" as={Link} href="/settings">
           Edit profile
         </DropdownItem>
         <DropdownItem key="username3" color="danger" onPress={async () => signOutUser()}>

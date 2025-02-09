@@ -1,68 +1,104 @@
-import { Button, Navbar, NavbarBrand, NavbarContent } from "@heroui/react";
+"use client";
+
+import { useState, useEffect } from "react";
+import { Button, Navbar, NavbarBrand } from "@heroui/react";
 import Link from "next/link";
-import React from "react";
 import { GiJourney } from "react-icons/gi";
+import { FiMenu, FiX } from "react-icons/fi";
 import NavLink from "./NavLink";
-import { auth } from "@/auth";
 import UserMenu from "./UserMenu";
-// import UserMenu from './UserMenu'
+import { getSession } from "@/lib/util/getSession";
+import type { Session } from "next-auth"; // Importiere den Session-Typ
 
-export default async function TopNav() {
-  const session = await auth();
-  // const role = session?.user.role;
-  // const name = session?.user.name;
+export default function TopNav() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [session, setSession] = useState<Session | null>(null); // Typ-Definition hier!
 
+  useEffect(() => {
+    getSession().then(setSession);
+  }, []);
+
+  const toggleMenu = () => setIsOpen((prev) => !prev);
+  const closeMenu = () => setIsOpen(false);
   const userInfo = session?.user;
-  console.log("userInfo in TopNav:", userInfo);
 
-  // const userInfo = session?.user && (await getUserInfoForNav())
   return (
-    <Navbar
-      maxWidth="xl"
-      className="bg-gradient-to-r from-blue-400 to-blue-700"
-      classNames={{ item: ["text-xl", "text-white", "uppercase", "data-[active=true]:text-yellow-200"] }}
-    >
-      <NavbarBrand as={Link} href="/">
-        <GiJourney size={40} className="text-gray-200 mr-2" />
-        <div className="font-bold text-3xl flex">
-          <span className="text-gray-900">Places</span>
-          <span className="text-gray-200">26</span>
+    <Navbar className="bg-gradient-to-r from-blue-400 to-blue-700 px-4 py-2">
+      <div className="flex justify-between items-center w-full">
+        {/* Logo */}
+        <NavbarBrand as={Link} href="/" className="flex items-center">
+          <GiJourney size={40} className="text-gray-200 mr-2" />
+          <div className="font-bold text-3xl flex">
+            <span className="text-gray-900">Places</span>
+            <span className="text-gray-200">26</span>
+          </div>
+        </NavbarBrand>
+
+        {/* Desktop-Navigation */}
+        <div className="hidden md:flex gap-4">
+          <NavLink href="/subjects" label="Subjects" />
+          <NavLink href="/places" label="Places" />
+          <NavLink href="/pics" label="Pics" />
+          {session?.user?.role === "ADMIN" && <NavLink href="/quiz" label="Quiz" />}
+          <NavLink href="/lb" label="LB" />
+          <NavLink href="/conv" label="conv" />
+          <NavLink href="/settings" label="set" />
+          <NavLink href="/quadrate" label="qua" />
+          <NavLink href="/tabs" label="tabs" />
+          <NavLink href="/cardtesting" label="card" />
         </div>
-      </NavbarBrand>
-      <NavbarContent justify="center">
-        <NavLink href="/subjects" label="Subjects" />
-        <NavLink href="/places" label="Places" />
-        <NavLink href="/pics" label="Pics" />
-        {session?.user.role === "ADMIN" && <NavLink href="/quiz" label="Quiz" />}
-        <NavLink href="/lb" label="LB" />
-        <NavLink href="/conv" label="conv" />
-        <NavLink href="/settings" label="set" />
-        <NavLink href="/quadrate" label="qua" />
-        <NavLink href="/tabs" label="tabs" />
-        <NavLink href="/cardtesting" label="card" />
-      </NavbarContent>
-      <NavbarContent justify="end">
-        {userInfo ? (
-          <UserMenu userInfo={userInfo} />
-        ) : (
-          <>
-            <Button as={Link} href="/login" variant="bordered" className="text-white">
-              Login
-            </Button>
-            <Button as={Link} href="/register" variant="bordered" className="text-white">
-              Register
-            </Button>
-          </>
-        )}
-        {/* <span>{role}</span>
-        <span>{name}</span>
-        <Button as={Link} href="/login" variant="bordered" className="text-white">
-          Login
-        </Button>
-        <Button as={Link} href="/register" variant="bordered" className="text-white">
-          Register
-        </Button> */}
-      </NavbarContent>
+
+        {/* Benutzerbereich */}
+        <div className="hidden md:flex gap-2 ml-4">
+          {userInfo ? (
+            <UserMenu userInfo={userInfo} />
+          ) : (
+            <>
+              <Button as={Link} href="/login" variant="bordered" className="text-white">
+                Login
+              </Button>
+              <Button as={Link} href="/register" variant="bordered" className="text-white">
+                Register
+              </Button>
+            </>
+          )}
+        </div>
+
+        {/* Hamburger-Menü für Mobile */}
+        <button className="md:hidden text-white text-2xl focus:outline-none" onClick={toggleMenu}>
+          {isOpen ? <FiX /> : <FiMenu />}
+        </button>
+      </div>
+
+      {/* Mobile Navigation */}
+      {isOpen && (
+        <div className="absolute right-0 top-full w-32 bg-blue-800 p-4 flex flex-col items-center space-y-2 shadow-lg">
+          <NavLink href="/subjects" label="Subjects" isMobile onClick={closeMenu} />
+          <NavLink href="/places" label="Places" isMobile onClick={closeMenu} />
+          <NavLink href="/pics" label="Pics" isMobile onClick={closeMenu} />
+          {session?.user?.role === "ADMIN" && <NavLink href="/quiz" label="Quiz" isMobile onClick={closeMenu} />}
+          <NavLink href="/lb" label="LB" isMobile onClick={closeMenu} />
+          <NavLink href="/conv" label="conv" isMobile onClick={closeMenu} />
+          <NavLink href="/settings" label="set" isMobile onClick={closeMenu} />
+          <NavLink href="/quadrate" label="qua" isMobile onClick={closeMenu} />
+          <NavLink href="/tabs" label="tabs" isMobile onClick={closeMenu} />
+          <NavLink href="/cardtesting" label="card" isMobile onClick={closeMenu} />
+
+          {/* Mobile Benutzerbereich */}
+          {userInfo ? (
+            <UserMenu userInfo={userInfo} />
+          ) : (
+            <>
+              <Button as={Link} href="/login" variant="bordered" className="text-white w-full">
+                Login
+              </Button>
+              <Button as={Link} href="/register" variant="bordered" className="text-white w-full">
+                Register
+              </Button>
+            </>
+          )}
+        </div>
+      )}
     </Navbar>
   );
 }

@@ -1,23 +1,36 @@
 "use server";
-// import { prisma } from "@/lib/prisma";
+
 import { SubjectSchema, subjectSchema } from "@/lib/schemas/subjectSchema";
 import { z } from "zod";
-// import { PrismaClient } from "@prisma/client";
-// const prisma = new PrismaClient();
 import { prisma } from "@/lib/prisma";
 type Subjects = Awaited<ReturnType<typeof prisma.subjects.create>>; // User-Typ ableiten
+
+// export const getSubjectsAll = async () => {
+//   try {
+//     console.log("Fetching subjects from database..."); // Debug-Log
+
+//     const data = await prisma.subjects.findMany({
+//       orderBy: { created: "desc" },
+//     });
+
+//     console.log("Subjects fetched:", data); // Prüfen, ob Daten ankommen
+//     return data;
+//   } catch (error) {
+//     console.error("Error fetching subjects:", error);
+//     return null;
+//   }
+// };
 
 export const getSubjectsAll = async () => {
   try {
     const data = await prisma.subjects.findMany({
-      orderBy: {
-        created: "desc", // Sortiere nach dem Erstellungsdatum abwärts
-      },
+      orderBy: { created: "desc" },
     });
-    // console.log("getSubjectsAll")
-    return data;
+
+    // ✅ Prisma-Daten in ein reines JSON-Objekt umwandeln
+    return JSON.parse(JSON.stringify(data));
   } catch (error) {
-    console.error("Error fetching places:", error);
+    console.error("Error fetching subjects:", error);
     return null;
   }
 };

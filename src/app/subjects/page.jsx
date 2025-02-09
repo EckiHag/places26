@@ -1,10 +1,15 @@
 import CardSubject from "@/components/cardsplaces/CardSubject";
+// import { NextResponse } from "next/server";
 import { getSubjectsAll } from "@/app/actions/subjectActions";
 import Link from "next/link";
+export const dynamic = "force-dynamic"; // 🚀 Verhindert das Next.js-Caching!
 
 const SubjectsList = async () => {
+  // ✅ Prisma-Daten holen (jetzt reines JSON!)
   const subjects = await getSubjectsAll();
-  const sortedSubjects = subjects.sort((a, b) => new Date(b.created.$date) - new Date(a.created.$date));
+
+  // ✅ Sortierung korrigiert (kein Prisma-Fehler mehr)
+  const sortedSubjects = subjects.sort((a, b) => new Date(b.created) - new Date(a.created));
 
   return (
     <div className="mx-auto flex justify-center flex-col mt-3">

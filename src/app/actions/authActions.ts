@@ -6,8 +6,6 @@ import { RegisterSchema, registerSchema } from "@/lib/schemas/registerSchema";
 import { ActionResult } from "@/types";
 import bcrypt from "bcryptjs";
 import { AuthError } from "next-auth";
-// import { PrismaClient } from "@prisma/client";
-// const prisma = new PrismaClient();
 import { prisma } from "@/lib/prisma";
 
 type PrismaUser = Awaited<ReturnType<typeof prisma.user.create>>; // User-Typ ableiten

@@ -29,7 +29,7 @@ export default function SubjectForm() {
   const USERS_PATH = "api/places26/user";
   const FETCH_URL = `${SERVER_URL}/${USERS_PATH}`;
   const [imageFile, setImageFile] = useState<File | null>(null);
-
+  const [existingImage, setExistingImage] = useState<string | null>(null);
   const router = useRouter();
   const { id } = useParams();
   const subjectId = Array.isArray(id) ? id[0] : id ?? "";
@@ -49,11 +49,8 @@ export default function SubjectForm() {
     defaultValues: { title: "", description: "", group: "", creator: "EckiHag" }, // Kein image bei default
   });
 
-  const [existingImage, setExistingImage] = useState<string | null>(null);
-
   useEffect(() => {
-    if (!subjectId) return;
-
+    if (!subjectId) return; // wenn kein update, braucht es kein fetch
     const fetchSubject = async () => {
       try {
         const subjectData = await getSubjectById(subjectId);
@@ -109,25 +106,34 @@ export default function SubjectForm() {
   const onSubmit = async (data: SubjectSchema) => {
     console.log("onSubmit"); // ✅ Debug-Log
     try {
-      let imageUrl = existingImage;
+      // let imageUrl = existingImage ?? undefined;
+      let imageUrl = undefined;
       let imgwidth = 0;
       let imgheight = 0;
 
-      if (imageFile) {
-        // Bild komprimieren
-        const compressedFile = await imageCompression(imageFile, { maxSizeMB: 1, maxWidthOrHeight: 1400, useWebWorker: true });
-        const uploadResult = await uploadImage(compressedFile);
-        if (!uploadResult) throw new Error("Image upload failed.");
-        imageUrl = uploadResult.imageUrl;
-        imgwidth = uploadResult.width;
-        imgheight = uploadResult.height;
+      if (!isUpdateMode || imageFile) {
+        if (imageFile) {
+          // Bild komprimieren
+          const compressedFile = await imageCompression(imageFile, { maxSizeMB: 1, maxWidthOrHeight: 1400, useWebWorker: true });
+          const uploadResult = await uploadImage(compressedFile);
+          if (!uploadResult) throw new Error("Image upload failed.");
+          imageUrl = uploadResult.imageUrl;
+          imgwidth = uploadResult.width;
+          imgheight = uploadResult.height;
+        }
       }
+
+      // const subjectData = {
+      //   ...data,
+      //   image: imageUrl ?? undefined, // ✅ Falls `imageUrl` null ist, wird es `undefined`
+      //   imgwidth: imgwidth,
+      //   imgheight: imgheight,
+      //   creator: userId, // 👈 Benutzer-ID wird hinzugefügt
+      // };
 
       const subjectData = {
         ...data,
-        image: imageUrl ?? undefined, // ✅ Falls `imageUrl` null ist, wird es `undefined`
-        imgwidth: imgwidth,
-        imgheight: imgheight,
+        ...(imageUrl ? { image: imageUrl, imgwidth: imgwidth, imgheight: imgheight } : {}), // ✅ image wird nur gesetzt, wenn es definiert ist
         creator: userId, // 👈 Benutzer-ID wird hinzugefügt
       };
 

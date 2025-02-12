@@ -3,14 +3,14 @@ import { ScrollShadow, Card, CardHeader, CardBody, CardFooter, Divider, Link, Im
 
 export default function CardPlace({ id, image, title, description }) {
   return (
-    <Card className="max-w-[400px] min-h-[200px]">
+    <Card className="max-w-[150px] lg:max-w-[400px] min-h-[200px] mx-4">
       <CardHeader className="flex justify-between items-center bg-blue-400">
         <span className="text-2lg leading-relaxed text-center mt-4">{title}</span>
       </CardHeader>
       <Divider />
       <ScrollShadow hideScrollBar orientation="horizontal">
         <CardBody className="flex flex-col items-center gap-4 flex-1">
-          <Image alt="NextUI place Image" src={`https://beihaggis.de/${image?.replace(/^.\//, "")}`} width={350} className="object-contain" />
+          <Image isZoomed alt="NextUI place Image" src={`https://beihaggis.de/${image?.replace(/^.\//, "")}`} width={350} className="object-contain" />
           <span className="text-lg leading-relaxed text-center mt-4">{description}</span>
         </CardBody>
       </ScrollShadow>

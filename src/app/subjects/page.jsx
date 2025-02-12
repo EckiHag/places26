@@ -23,7 +23,7 @@ const SubjectsList = async () => {
         New Subject
       </Link>
       <div className="flex justify-center">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {sortedSubjects.map((subject) => (
             <CardSubject key={subject.id} id={subject.id} image={subject.image} title={subject.title} description={subject.description} />
           ))}

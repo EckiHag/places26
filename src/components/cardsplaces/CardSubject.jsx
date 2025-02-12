@@ -20,7 +20,7 @@ export default function CardSubject({ id, image, title, description }) {
   // eof ------------ read-more-button
 
   return (
-    <Card className="max-w-[400px] min-h-[200px]">
+    <Card className="max-w-[300px] lg:max-w-[400px] min-h-[200px] mx-4">
       <CardHeader className="flex gap-3  bg-blue-400">
         <Link href={`/subjects/editsubject/${id}`}>up</Link>
         <Link href={`/places/${id}`} className="block">

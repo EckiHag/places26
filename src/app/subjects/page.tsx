@@ -1,3 +1,5 @@
+// subjects/page.tsx
+
 import CardSubject from "@/components/cardsplaces/CardSubject";
 // import { NextResponse } from "next/server";
 import { getSubjectsAll } from "@/app/actions/subjectActions";
@@ -9,7 +11,7 @@ const SubjectsList = async () => {
   const subjects = await getSubjectsAll();
 
   // ✅ Sortierung korrigiert (kein Prisma-Fehler mehr)
-  const sortedSubjects = subjects.sort((a, b) => new Date(b.created) - new Date(a.created));
+  const sortedSubjects = subjects && subjects.sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime());
 
   return (
     <div className="mx-auto flex justify-center flex-col mt-3">
@@ -24,9 +26,8 @@ const SubjectsList = async () => {
       </Link>
       <div className="flex justify-center">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {sortedSubjects.map((subject) => (
-            <CardSubject key={subject.id} id={subject.id} image={subject.image} title={subject.title} description={subject.description} />
-          ))}
+          {sortedSubjects &&
+            sortedSubjects.map((subject) => <CardSubject key={subject.id} id={subject.id} image={subject.image} title={subject.title} description={subject.description} />)}
         </div>
       </div>
     </div>

@@ -3,7 +3,8 @@
 import { SubjectSchema, subjectSchema } from "@/lib/schemas/subjectSchema";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
-type Subjects = Awaited<ReturnType<typeof prisma.subjects.create>>; // User-Typ ableiten
+// type Subjects = Awaited<ReturnType<typeof prisma.subjects.create>>; // User-Typ ableiten
+import { Subjects } from "@prisma/client";
 
 // export const getSubjectsAll = async () => {
 //   try {
@@ -21,7 +22,7 @@ type Subjects = Awaited<ReturnType<typeof prisma.subjects.create>>; // User-Typ 
 //   }
 // };
 
-export const getSubjectsAll = async () => {
+export const getSubjectsAll = async (): Promise<Subjects[] | null> => {
   try {
     const data = await prisma.subjects.findMany({
       orderBy: { created: "desc" },
@@ -36,6 +37,7 @@ export const getSubjectsAll = async () => {
 };
 
 export type ActionResult<T> = { status: "success"; data: T } | { status: "error"; error: string | z.ZodIssue[] };
+
 export async function addSubject(data: SubjectSchema): Promise<ActionResult<Subjects>> {
   try {
     // Validierung der Daten
@@ -45,7 +47,7 @@ export async function addSubject(data: SubjectSchema): Promise<ActionResult<Subj
       return { status: "error", error: validated.error.errors };
     }
 
-    const { title, description, image, creator, group } = validated.data;
+    const { title, description, image, creator, group, imgwidth, imgheight } = validated.data;
 
     // Benutzer erstellen und die Bildinformationen speichern
     const subject = await prisma.subjects.create({
@@ -53,6 +55,8 @@ export async function addSubject(data: SubjectSchema): Promise<ActionResult<Subj
         title,
         description,
         image,
+        imgwidth,
+        imgheight,
         creator,
         group,
       },

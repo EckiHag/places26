@@ -5,7 +5,7 @@ import CardPlace from "@/components/cardsplaces/CardPlace";
 
 const PlacesList = async () => {
   const places = await getPlacesAll();
-  const sortedPlaces = places.sort((a, b) => new Date(b.created.$date) - new Date(a.created.$date));
+  const sortedPlaces = places && places.sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime());
   // console.log("places: ", places)
 
   return (
@@ -15,11 +15,12 @@ const PlacesList = async () => {
 
       <div className="flex justify-center">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 max-w-6xl mx-auto justify-items-center">
-          {sortedPlaces.map((place) => (
-            <div key={place.id}>
-              <CardPlace id={place.id} image={place.image} title={place.title} description={place.description} />
-            </div>
-          ))}
+          {sortedPlaces &&
+            sortedPlaces.map((place) => (
+              <div key={place.id}>
+                <CardPlace id={place.id} image={place.image} title={place.title} description={place.description} />
+              </div>
+            ))}
         </div>
       </div>
     </div>

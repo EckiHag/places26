@@ -12,6 +12,10 @@ import { SubjectUpdateSchema, subjectUpdateSchema } from "@/lib/schemas/subjectS
 import { zodResolver } from "@hookform/resolvers/zod";
 import imageCompression from "browser-image-compression";
 import { useSession } from "next-auth/react";
+// import { uploadImage } from "@/lib/util/uploadImage";
+const SERVER_URL = "https://beihaggis.de";
+const USERS_PATH = "api/places26/user";
+const FETCH_URL = `${SERVER_URL}/${USERS_PATH}`;
 
 // Der Bildupload geschieht über die Datei places26userroutes.js in _places, das mit REACT programmiert wurde
 // in app.js muss dort auch noch die route gelinkt werden: app.use("/api/places26/user", places26userroutes);
@@ -24,10 +28,7 @@ export default function SubjectForm() {
   const { data: session } = useSession();
   const userId = session?.user?.id;
   // console.log("Current User ID:", userId);
-  const SERVER_URL = "https://beihaggis.de";
-  // const SERVER_URL = "http://localhost:5001";
-  const USERS_PATH = "api/places26/user";
-  const FETCH_URL = `${SERVER_URL}/${USERS_PATH}`;
+
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [existingImage, setExistingImage] = useState<string | null>(null);
   const router = useRouter();

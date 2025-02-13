@@ -1,12 +1,16 @@
-import { getPlacesAll, getPlacesByCreatorsubject } from "@/app/actions/placeActions";
+import { getPlacesByCreatorsubject } from "@/app/actions/placeActions";
 
 import CardPlace from "@/components/cardsplaces/CardPlace";
 
-const PlacesWithCreatorsubject = async ({ params }) => {
+interface ParamsType {
+  id: string; // Adjust based on your actual parameter structure
+}
+
+const PlacesWithCreatorsubject = async ({ params }: { params: ParamsType }) => {
   const { id } = params; // Extrahiere id aus params
   const places = await getPlacesByCreatorsubject(id);
 
-  const sortedPlaces = places.sort((a, b) => new Date(b.created.$date) - new Date(a.created.$date));
+  const sortedPlaces = places?.sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime());
 
   return (
     <div>
@@ -14,11 +18,12 @@ const PlacesWithCreatorsubject = async ({ params }) => {
 
       <div className="flex justify-center">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 max-w-6xl mx-auto justify-items-center">
-          {sortedPlaces.map((place) => (
-            <div key={place.id}>
-              <CardPlace id={place.id} image={place.image} title={place.title} description={place.description} />
-            </div>
-          ))}
+          {sortedPlaces &&
+            sortedPlaces.map((place) => (
+              <div key={place.id}>
+                <CardPlace id={place.id} image={place.image} title={place.title} description={place.description} />
+              </div>
+            ))}
         </div>
       </div>
     </div>

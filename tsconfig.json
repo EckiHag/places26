@@ -27,7 +27,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/app/places/page.jsx",
+    "src/app/places/page.tsx",
     "src/app/lb/page.jsx",
     "src/app/actions/writehw.ts",
     "src/app/lb/Lightbox.jsx"

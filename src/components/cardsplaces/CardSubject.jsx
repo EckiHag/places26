@@ -25,8 +25,7 @@ export default function CardSubject({ id, image, title, description }) {
         <Link href={`/subjects/editsubject/${id}`}>up</Link>
         <Link href={`/places/${id}`} className="block">
           <Avatar
-            className="w-20 h-20 transition-transform rounded-full"
-            color="success"
+            className="w-20 h-20 transition-transform rounded-full  bg-blue-400"
             style={{
               borderColor: "#FFFFFF",
               borderWidth: "2px",

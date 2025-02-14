@@ -1,9 +1,8 @@
-// import { places } from "@/jsonschemas/mern.places"
 import { getPlacesAll } from "@/app/actions/placeActions";
 
 import CardPlace from "@/components/cardsplaces/CardPlace";
 
-const PlacesList = async () => {
+export default async function PlacesList() {
   const places = await getPlacesAll();
   const sortedPlaces = places && places.sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime());
   // console.log("places: ", places)
@@ -25,6 +24,4 @@ const PlacesList = async () => {
       </div>
     </div>
   );
-};
-
-export default PlacesList;
+}

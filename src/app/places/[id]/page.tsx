@@ -1,18 +1,21 @@
-export const runtime = "nodejs"; // 🛠 WICHTIG: Nutze Node.js statt Edge
+"use server";
 
 import { getPlacesByCreatorsubject } from "@/app/actions/placeActions";
 import CardPlace from "@/components/cardsplaces/CardPlace";
 
-interface PageProps {
-  params: { id: string };
+interface Params {
+  params: {
+    id: string;
+  };
 }
 
-const PlacesWithCreatorsubject = async ({ params }: PageProps) => {
-  console.log("Params received:", params); // DEBUG: Was gibt Vercel aus?
-
+export default async function PlacesWithCreatorsubject({ params }: Params) {
   const { id } = params;
-  const places = await getPlacesByCreatorsubject(id);
+  if (!id) {
+    throw new Error("Die ID in den Params fehlt.");
+  }
 
+  const places = await getPlacesByCreatorsubject(id);
   const sortedPlaces = places?.sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime());
 
   return (
@@ -31,6 +34,4 @@ const PlacesWithCreatorsubject = async ({ params }: PageProps) => {
       </div>
     </div>
   );
-};
-
-export default PlacesWithCreatorsubject;
+}

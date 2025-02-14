@@ -6,7 +6,7 @@ import GalleryPage from "./GalleryPage";
 
 export default async function Gallery({ params }) {
   // Warte darauf, dass `params` korrekt bereitgestellt wird
-  const { id } = await params;
+  const { id } = params;
 
   if (!id) {
     throw new Error("Die ID in den Params fehlt.");

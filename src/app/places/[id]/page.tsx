@@ -1,5 +1,6 @@
-import { getPlacesByCreatorsubject } from "@/app/actions/placeActions";
+export const runtime = "nodejs"; // 🛠 WICHTIG: Nutze Node.js statt Edge
 
+import { getPlacesByCreatorsubject } from "@/app/actions/placeActions";
 import CardPlace from "@/components/cardsplaces/CardPlace";
 
 interface PageProps {
@@ -7,6 +8,8 @@ interface PageProps {
 }
 
 const PlacesWithCreatorsubject = async ({ params }: PageProps) => {
+  console.log("Params received:", params); // DEBUG: Was gibt Vercel aus?
+
   const { id } = params;
   const places = await getPlacesByCreatorsubject(id);
 

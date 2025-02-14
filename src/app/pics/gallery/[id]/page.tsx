@@ -4,7 +4,13 @@ import { getPicsByBelongstoid } from "@/app/actions/picActions";
 // import { getPicsTwenty } from "@/app/actions/picActions";
 import GalleryPage from "./GalleryPage";
 
-export default async function Gallery({ params }) {
+interface Params {
+  params: {
+    id: string;
+  };
+}
+
+export default async function PlacesWithCreatorsubject({ params }: Params) {
   // Warte darauf, dass `params` korrekt bereitgestellt wird
   const { id } = params;
 
@@ -12,7 +18,7 @@ export default async function Gallery({ params }) {
     throw new Error("Die ID in den Params fehlt.");
   }
   const pics = await getPicsByBelongstoid(id);
-  const sortedPics = pics.sort((a, b) => new Date(b.created.$date) - new Date(a.created.$date));
+  const sortedPics = pics && pics.sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime());
 
   // const sls = await getPicsTwenty();
   // console.log("sls: ", sls);

@@ -4,14 +4,18 @@ import { getPicsByBelongstoid } from "@/app/actions/picActions";
 // import { getPicsTwenty } from "@/app/actions/picActions";
 import GalleryPage from "./GalleryPage";
 
-interface Params {
-  params: {
-    id: string;
-  };
-}
+// interface Params {
+//   params: {
+//     id: string;
+//   };
+// }
 
-export default async function PlacesWithCreatorsubject({ params }: Params) {
-  const { id } = params as { id: string }; // Explizit als { id: string } typisieren
+// export default async function PlacesWithCreatorsubject({ params }: { params: { id: string } }) {
+//   const { id } = params;
+
+export default async function PlacesWithCreatorsubject({ params }: { params: { id: string } }) {
+  const { id } = params;
+
   if (!id) {
     throw new Error("Die ID in den Params fehlt.");
   }

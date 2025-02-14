@@ -2,11 +2,11 @@ import { getPlacesByCreatorsubject } from "@/app/actions/placeActions";
 
 import CardPlace from "@/components/cardsplaces/CardPlace";
 
-interface ParamsType {
-  id: string; // Adjust based on your actual parameter structure
+interface PageProps {
+  params: { id: string };
 }
 
-const PlacesWithCreatorsubject = async ({ params }: { params: ParamsType }) => {
+const PlacesWithCreatorsubject = async ({ params }: PageProps) => {
   const { id } = params; // Extrahiere id aus params
   const places = await getPlacesByCreatorsubject(id);
 

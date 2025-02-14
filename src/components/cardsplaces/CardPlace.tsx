@@ -1,7 +1,14 @@
 "use client";
 import { ScrollShadow, Card, CardHeader, CardBody, CardFooter, Divider, Link, Image, Button } from "@heroui/react";
 
-export default function CardPlace({ id, image, title, description }) {
+interface CardPlaceProps {
+  id: string;
+  image: string;
+  title: string;
+  description: string;
+}
+
+export default function CardPlace({ id, image, title, description }: CardPlaceProps) {
   return (
     <Card className="max-w-[150px] lg:max-w-[400px] min-h-[200px] mx-4">
       <CardHeader className="flex justify-between items-center bg-blue-400">
@@ -15,11 +22,6 @@ export default function CardPlace({ id, image, title, description }) {
         </CardBody>
       </ScrollShadow>
       <CardFooter className="flex flex-row gap-2 items-center justify-start mt-auto">
-        {/* <Link href={`/pics/cards/${id}`}>
-            <Button as="div" size="sm" className="bg-blue-400">
-              PicCards
-            </Button>
-          </Link> */}
         <Button showAnchorIcon as={Link} color="primary" href={`/pics/cards/${id}`} variant="solid">
           PicCards
         </Button>

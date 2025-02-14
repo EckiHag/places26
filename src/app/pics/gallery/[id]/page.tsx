@@ -11,13 +11,12 @@ interface Params {
 }
 
 export default async function PlacesWithCreatorsubject({ params }: Params) {
-  // Warte darauf, dass `params` korrekt bereitgestellt wird
   const { id } = params;
-
   if (!id) {
     throw new Error("Die ID in den Params fehlt.");
   }
-  const pics = await getPicsByBelongstoid(id);
+
+  const pics = (await getPicsByBelongstoid(id)) ?? [];
   const sortedPics = pics && pics.sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime());
 
   // const sls = await getPicsTwenty();
@@ -27,10 +26,15 @@ export default async function PlacesWithCreatorsubject({ params }: Params) {
     ...slide, // Behalte alle ursprünglichen Eigenschaften
     src: `https://beihaggis.de/${slide.image?.replace(/^.\//, "")}`, // Transformiere `image` zu `src`
     image: undefined, // Entferne die ursprüngliche `image`-Eigenschaft
+    imgwidth: slide.imgwidth ?? undefined, // `null` in `undefined` umwandeln
+    imgheight: slide.imgheight ?? undefined, // `null` in `undefined` umwandeln
+    title: slide.title ?? undefined, // `null` in `undefined` umwandeln
+    description: slide.description ?? undefined, // `null` in `undefined` umwandeln
+    copyright: slide.copyright ?? undefined, // `null` in `undefined` umwandeln
   }));
 
   console.log("Gallery pics (slides): ", slides);
   console.log("Gallery pics (slides): Ende");
 
-  return <GalleryPage slides={slides} />;
+  return <GalleryPage slides={slides ?? []} />;
 }

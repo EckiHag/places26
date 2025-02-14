@@ -1,8 +1,14 @@
 import React, { useEffect } from "react";
 
-const Lightbox = ({ isOpen, onClose, imageSrc }) => {
+interface LightboxProps {
+  isOpen: boolean;
+  onClose: () => void;
+  imageSrc?: string;
+}
+
+const Lightbox: React.FC<LightboxProps> = ({ isOpen, onClose, imageSrc }) => {
   useEffect(() => {
-    const handleKeyDown = (event) => {
+    const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         onClose();
       }

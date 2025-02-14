@@ -7,7 +7,7 @@ interface PageProps {
 }
 
 const PlacesWithCreatorsubject = async ({ params }: PageProps) => {
-  const { id } = params; // Extrahiere id aus params
+  const { id } = params;
   const places = await getPlacesByCreatorsubject(id);
 
   const sortedPlaces = places?.sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime());

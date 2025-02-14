@@ -11,7 +11,7 @@ interface Params {
 }
 
 export default async function PlacesWithCreatorsubject({ params }: Params) {
-  const { id } = params;
+  const { id } = params as { id: string }; // Explizit als { id: string } typisieren
   if (!id) {
     throw new Error("Die ID in den Params fehlt.");
   }

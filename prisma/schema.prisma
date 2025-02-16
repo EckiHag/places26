@@ -58,7 +58,7 @@ model Account {
 
 // Subject model
 model Subjects {
-  id              String         @id @default(cuid())
+  id              String      @id @default(cuid())
   title           String
   image           String?
   description     String      @db.Text
@@ -77,10 +77,10 @@ model Places {
   id              String       @id @default(cuid())
   title           String
   description     String       @db.Text
-  image           String
-  address         String
-  location_lat    Float
-  location_lng    Float
+  image           String?
+  address         String?
+  location_lat    Float?
+  location_lng    Float?
   creator         String      // Assuming creator is the ID of the User
   creatorsubject  String      // Assuming creatorsubject is the ID of the Subject
   created         DateTime    @default(now())

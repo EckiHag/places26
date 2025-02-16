@@ -22,7 +22,7 @@ export default function ClientNav({ session }: ClientNavProps) {
   const userInfo = session?.user;
 
   return (
-    <Navbar className="bg-gradient-to-r from-blue-400 to-blue-700 px-4 py-2">
+    <Navbar className="bg-gradient-to-r from-pprimary-400 to-pprimary-700 px-4 py-2">
       <div className="flex justify-between items-center w-full">
         {/* Logo */}
         <NavbarBrand as={Link} href="/" className="flex items-center">
@@ -40,6 +40,7 @@ export default function ClientNav({ session }: ClientNavProps) {
           {session?.user?.role === "ADMIN" && <NavLink href="/pics" label="Pics" />}
           {session?.user?.role === "ADMIN" && <NavLink href="/quiz" label="Quiz" />}
           <NavLink href="/lb" label="LB" />
+          <NavLink href="/farben" label="Farben" />
           <NavLink href="/conv" label="conv" />
           <NavLink href="/settings" label="set" />
           <NavLink href="/quadrate" label="qua" />
@@ -77,6 +78,7 @@ export default function ClientNav({ session }: ClientNavProps) {
           {session?.user?.role === "ADMIN" && <NavLink href="/pics" label="Pics" isMobile onClick={closeMenu} />}
           {session?.user?.role === "ADMIN" && <NavLink href="/quiz" label="Quiz" isMobile onClick={closeMenu} />}
           <NavLink href="/lb" label="LB" isMobile onClick={closeMenu} />
+          <NavLink href="/farben" label="Farben" />
           <NavLink href="/conv" label="conv" isMobile onClick={closeMenu} />
           <NavLink href="/settings" label="set" isMobile onClick={closeMenu} />
           <NavLink href="/quadrate" label="qua" isMobile onClick={closeMenu} />

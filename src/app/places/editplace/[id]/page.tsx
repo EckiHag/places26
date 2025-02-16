@@ -12,6 +12,8 @@ import { PlaceUpdateSchema, placeUpdateSchema } from "@/lib/schemas/placeSchema"
 import { zodResolver } from "@hookform/resolvers/zod";
 import imageCompression from "browser-image-compression";
 import { useSession } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
+
 // import { uploadImage } from "@/lib/util/uploadImage";
 const SERVER_URL = "https://beihaggis.de";
 const USERS_PATH = "api/places26/user";
@@ -24,21 +26,21 @@ const FETCH_URL = `${SERVER_URL}/${USERS_PATH}`;
 // Am besten mit fileZilla
 // Danach muss die App bei netcup neu gestartet werden und hier der USERS_PATH geändert werden
 
-export default function SubjectForm() {
+export default function PlaceForm() {
+  const router = useRouter();
   const { data: session } = useSession();
   const userId = session?.user?.id;
-  // console.log("Current User ID:", userId);
+  const searchParams = useSearchParams();
+  const subjectId = searchParams.get("subjectId");
+  const { id } = useParams();
+  const placeId = Array.isArray(id) ? id[0] : id ?? "";
 
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [existingImage, setExistingImage] = useState<string | null>(null);
-  const router = useRouter();
-  const { id } = useParams();
-  const subjectId = Array.isArray(id) ? id[0] : id ?? "";
-  // Überprüfen, ob subjectId vorhanden ist oder "new" entspricht
-  const isUpdateMode = Boolean(subjectId && subjectId !== "new");
-
-  console.log("subjectId: ", subjectId);
-  console.log("isUpdateMode: ", isUpdateMode);
+  // Überprüfen, ob placeIdId vorhanden ist oder "new" entspricht
+  const isUpdateMode = Boolean(placeId && placeId !== "new");
+  // console.log("subjectId: ", placeId);
+  // console.log("isUpdateMode: ", isUpdateMode);
   const {
     handleSubmit,
     setValue,
@@ -47,20 +49,20 @@ export default function SubjectForm() {
   } = useForm<PlaceSchema | PlaceUpdateSchema>({
     resolver: zodResolver(isUpdateMode ? placeUpdateSchema : placeSchema),
     mode: "onTouched",
-    defaultValues: { title: "", description: "", creator: "EckiHag", creatorsubject: "EckiHag" }, // Kein image bei default
+    defaultValues: { title: "", description: "", creator: "", creatorsubject: "" }, // Kein image bei default
   });
 
   useEffect(() => {
-    if (!subjectId) return; // wenn kein update, braucht es kein fetch
-    const fetchSubject = async () => {
+    if (!placeId) return; // wenn kein update, braucht es kein fetch
+    const fetchPlace = async () => {
       try {
-        const subjectData = await getPlaceById(subjectId);
-        if (subjectData) {
-          setValue("title", subjectData.title || "");
-          setValue("description", subjectData.description || "");
+        const placeData = await getPlaceById(placeId);
+        if (placeData) {
+          setValue("title", placeData.title || "");
+          setValue("description", placeData.description || "");
           // `https://beihaggis.de/${image.replace(/^.\//, "")}`
           // setExistingImage(subjectData.image ?? null);
-          setExistingImage(`https://beihaggis.de/${subjectData.image}`);
+          setExistingImage(`https://beihaggis.de/${placeData.image}`);
         }
       } catch (error) {
         console.error("Error fetching place:", error);
@@ -68,8 +70,8 @@ export default function SubjectForm() {
       }
     };
 
-    fetchSubject();
-  }, [subjectId, setValue]);
+    fetchPlace();
+  }, [placeId, setValue]);
 
   // Handler für Dateiauswahl
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -104,7 +106,7 @@ export default function SubjectForm() {
   };
 
   const onSubmit = async (data: PlaceSchema) => {
-    console.log("onSubmit"); // ✅ Debug-Log
+    // console.log("onSubmit");
     try {
       // let imageUrl = existingImage ?? undefined;
       let imageUrl = undefined;
@@ -123,31 +125,27 @@ export default function SubjectForm() {
         }
       }
 
-      // const subjectData = {
-      //   ...data,
-      //   image: imageUrl ?? undefined, // ✅ Falls `imageUrl` null ist, wird es `undefined`
-      //   imgwidth: imgwidth,
-      //   imgheight: imgheight,
-      //   creator: userId, // 👈 Benutzer-ID wird hinzugefügt
-      // };
-
-      const subjectData = {
+      const placeData = {
         ...data,
         ...(imageUrl ? { image: imageUrl, imgwidth: imgwidth, imgheight: imgheight } : {}), // ✅ image wird nur gesetzt, wenn es definiert ist
-        creator: userId, // 👈 Benutzer-ID wird hinzugefügt
+        creator: userId,
+        creatorsubject: subjectId ?? "",
+        address: "Minden, Grevestr 28",
+        location_lat: 52.313255221401974,
+        location_lng: 8.913907226818019,
       };
 
-      console.log("Sending data to server:", subjectData); // ✅ Debug-Log
+      console.log("Sending data to server:", placeData);
 
       let result;
       if (isUpdateMode) {
-        result = await updatePlace(subjectId, subjectData);
+        result = await updatePlace(placeId, placeData);
       } else {
-        result = await addPlace(subjectData);
+        result = await addPlace(placeData);
       }
 
       if (result?.status === "success") {
-        toast.success(isUpdateMode ? "Subject updated successfully." : "Subject added successfully.");
+        toast.success(isUpdateMode ? "Place updated successfully." : "Place added successfully.");
         router.push("/subjects");
       } else {
         if (Array.isArray(result?.error)) {
@@ -167,11 +165,12 @@ export default function SubjectForm() {
   return (
     <Card className="max-w-full sm:max-w-3xl md:max-w-2xl lg:max-w-xl xl:max-w-2xl mx-auto">
       <CardHeader className="flex flex-col items-center justify-center">
-        <div className="flex flex-col gap-2 items-center text-blue-600">
+        <div className="flex flex-col gap-2 items-center text-yellow-400">
           <div className="flex flex-row items-center gap-3">
-            <h1 className="text-3xl font-semibold">{isUpdateMode ? "Update Subject" : "Add Subject"}</h1>
+            <div>Bearbeite Place für das Subject Nr:: {subjectId}</div>
+            <h1 className="text-3xl font-semibold">{isUpdateMode ? "Update Place" : "Add Place"}</h1>
           </div>
-          <p className="text-blue-600">Manage your subjects</p>
+          <p className="text-yellow-400">Manage your places</p>
         </div>
       </CardHeader>
       <CardBody>
@@ -209,7 +208,7 @@ export default function SubjectForm() {
           {errors.root?.serverError && <p className="text-danger text-sm">{errors.root.serverError.message}</p>}
 
           {/* Submit Button */}
-          <Button isLoading={isSubmitting} isDisabled={!isValid} fullWidth className="bg-blue-600" type="submit">
+          <Button isLoading={isSubmitting} isDisabled={!isValid} fullWidth className="bg-yellow-400" type="submit">
             {isUpdateMode ? "Update Subject" : "Add Subject"}
           </Button>
 

@@ -1,18 +1,26 @@
 "use client";
-import { ScrollShadow, Card, CardHeader, CardBody, CardFooter, Divider, Link, Image, Button } from "@heroui/react";
+import { ScrollShadow, Card, CardHeader, CardBody, CardFooter, Divider, Link, Image, Button, Tooltip } from "@heroui/react";
+import { FiEdit } from "react-icons/fi";
 
 interface CardPlaceProps {
   id: string;
-  image: string;
+  image: string | null;
   title: string;
   description: string;
 }
 
 export default function CardPlace({ id, image, title, description }: CardPlaceProps) {
   return (
-    <Card className="max-w-[150px] lg:max-w-[400px] min-h-[200px] mx-4">
-      <CardHeader className="flex justify-between items-center bg-blue-400">
+    <Card className="max-w-[150px] lg:max-w-[400px] min-h-[200px] mx-4  bg-pplaces-100">
+      <CardHeader className="flex justify-between items-center gap-3 bg-pplaces-400 p-4">
         <span className="text-2lg leading-relaxed text-center mt-4">{title}</span>
+        <div className="flex flex-col items-end space-y-2">
+          <Tooltip content="Edit ✏️">
+            <Link href={`/places/editplace/${id}`}>
+              <FiEdit size={25} className="text-pplaces-900" />
+            </Link>
+          </Tooltip>
+        </div>
       </CardHeader>
       <Divider />
       <ScrollShadow hideScrollBar orientation="horizontal">
@@ -22,13 +30,13 @@ export default function CardPlace({ id, image, title, description }: CardPlacePr
         </CardBody>
       </ScrollShadow>
       <CardFooter className="flex flex-row gap-2 items-center justify-start mt-auto">
-        <Button showAnchorIcon as={Link} color="primary" href={`/pics/cards/${id}`} variant="solid">
+        <Button as={Link} href={`/pics/cards/${id}`} variant="solid" className="bg-pplaces-400">
           PicCards
         </Button>
-        <Button showAnchorIcon as={Link} color="primary" href={`/pics/gallery/${id}`} variant="solid">
+        <Button as={Link} href={`/pics/gallery/${id}`} variant="solid" className="bg-pplaces-400">
           PicGallery
         </Button>
-        <Button showAnchorIcon as={Link} color="primary" href={`/pics/work/${id}`} variant="solid">
+        <Button as={Link} href={`/pics/work/${id}`} variant="solid" className="bg-pplaces-400">
           Works
         </Button>
       </CardFooter>

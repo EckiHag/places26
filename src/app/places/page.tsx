@@ -9,9 +9,8 @@ export default async function PlacesList() {
 
   return (
     <div>
-      <h2 className="text-3xl">PlacesList: PlacesList wird eigentlich nicht gebraucht, weil die PlacesList ja immer nur in Abhängigkeit von der Places-Id gelistet werden.</h2>
+      <h2 className="text-3xl">PlacesList: Alles Places werden gelistet.</h2>
       <br></br>
-
       <div className="flex justify-center">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 max-w-6xl mx-auto justify-items-center">
           {sortedPlaces &&

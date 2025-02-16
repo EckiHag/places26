@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
-import { Avatar, Card, CardHeader, CardBody, Divider, Link } from "@heroui/react";
+import { Avatar, Card, CardHeader, CardBody, Divider, Link, Tooltip } from "@heroui/react";
+import { FiEdit } from "react-icons/fi";
 
 interface CardSubjectProps {
   id: string;
@@ -17,26 +18,33 @@ export default function CardSubject({ id, image, title, description }: CardSubje
 
   return (
     <Card className="max-w-[300px] lg:max-w-[400px] min-h-[200px] mx-4">
-      <CardHeader className="flex gap-3 bg-blue-400">
-        <Link href={`/subjects/editsubject/${id}`}>up</Link>
-        <Link href={`/places/${id}`} className="block">
+      <CardHeader className="flex justify-between items-center gap-3 bg-pprimary-400 p-4">
+        <Link href={`/places/${id}`} className="flex items-center gap-3 ml-3">
           <Avatar
-            className="w-20 h-20 transition-transform rounded-full bg-blue-400"
+            className="w-20 h-20 transition-transform rounded-full bg-pprimary-400"
             style={{ borderColor: "#FFFFFF", borderWidth: "2px" }}
             name="subject avatar"
             size="md"
             src={`https://beihaggis.de/${image}`}
           />
         </Link>
-        <div className="flex flex-col">
-          <p className="text-2xl">{title}</p>
+        <div>
+          <p className="text-2xl text-pprimary-900">{title}</p>
+        </div>
+        <div className="flex flex-col items-end space-y-2">
+          <Tooltip content="Edit ✏️">
+            <Link href={`/subjects/editsubject/${id}`}>
+              <FiEdit size={25} className="text-primary-900" />
+            </Link>
+          </Tooltip>
         </div>
       </CardHeader>
+
       <Divider />
-      <CardBody className="bg-amber-700">
+      <CardBody className="bg-pprimary-200">
         <span>{truncatedDescription}</span>
         {description.length > maxNumberOfChars && (
-          <button className="text-xs text-blue-300 ml-2" onClick={() => setShowFullDescription(!showFullDescription)}>
+          <button className="text-xs text-black ml-2" onClick={() => setShowFullDescription(!showFullDescription)}>
             {showFullDescription ? " ... weniger" : " ... mehr"}
           </button>
         )}

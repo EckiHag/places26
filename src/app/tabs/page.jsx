@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Tabs, Tab, Card, CardBody, Switch } from "@heroui/react";
+import { Tabs, Tab, Card, CardBody, Switch, Divider } from "@heroui/react";
 
 export default function App() {
   const [isVertical, setIsVertical] = React.useState(true);
@@ -12,11 +12,20 @@ export default function App() {
       </Switch>
       <div className="flex w-full flex-col">
         <Tabs aria-label="Options" isVertical={isVertical}>
-          <Tab key="photos" title="Photos">
+          <Tab key="weisheiten" title="Weisheiten">
             <Card>
               <CardBody>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                "Die beste Zeit, einen Baum zu pflanzen, war vor 20 Jahren. Die zweitbeste ist jetzt."
+                <Divider></Divider>
+                "Ein Tropfen Liebe ist mehr als ein Ozean Verstand."
+                <Divider></Divider>
+                "In der Ruhe liegt die Kraft."
+                <Divider></Divider>
+                "Ein fröhliches Herz macht das Leben heiter, aber ein betrübter Geist vertrocknet die Knochen." (Sprüche 11,25)
+                <Divider></Divider>
+                "Wer reichlich sät, wird reichlich ernten."(Sprüche 17,22)
+                <Divider></Divider>
+                "Eisen schärft Eisen, und ein Mensch schärft den anderen." (Sprüche 27,17)
               </CardBody>
             </Card>
           </Tab>

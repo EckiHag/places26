@@ -10,9 +10,9 @@ export default async function SubjectsList() {
 
   return (
     <div className="mx-auto flex justify-center flex-col mt-3">
-      <Link href={`/subjects/editsubject/new`} className="mb-6 text-center">
-        New Subject
-      </Link>
+      <div className="mb-6 text-center">
+        <Link href={`/subjects/editsubject/new`}>New Subject</Link>
+      </div>
       <div className="flex justify-center">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {sortedSubjects &&

@@ -40,7 +40,7 @@ export default function SettingsClient({ session }: SettingsClientProps) {
             {session ? (
               <div>
                 <pre>{JSON.stringify(session, null, 2)}</pre>
-                <Button color="primary" variant="bordered" startContent={<FaRegSmile size={20} />} onPress={handleSignOut}>
+                <Button color="secondary" variant="bordered" startContent={<FaRegSmile size={20} />} onPress={handleSignOut}>
                   Sign out
                 </Button>
               </div>

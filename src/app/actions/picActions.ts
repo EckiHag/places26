@@ -10,8 +10,8 @@ export type Slide = {
   imgwidth?: number | null;
   imgheight?: number | null;
   copyright?: string | null;
-  title?: string | null; // `null` erlauben
-  description?: string | null;
+  title: string | null; // `null` erlauben
+  description: string | null;
   belongstoid: string;
   ord: number;
   video: boolean;

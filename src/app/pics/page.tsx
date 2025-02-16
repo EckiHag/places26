@@ -3,18 +3,20 @@
 import { getPicsTwenty } from "@/app/actions/picActions";
 import CardPic from "@/components/cardsplaces/CardPic";
 
-// export default function CardPic({ pic }: PicProps) {
-
 export default async function PicsList() {
   const pics = await getPicsTwenty();
+
   const sortedPics = pics
     .map((pic) => ({
       ...pic,
-      title: pic.title ?? "", // Falls title null ist, wird es durch "" ersetzt
-      description: pic.description ?? "", // Falls description null ist, wird es durch "" ersetzt
+      title: pic.title ?? "",
+      description: pic.description ?? "",
+      created: new Date(pic.created), // explizit casten
     }))
-    .sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime());
-  console.log("Pics: ", pics);
+    .sort((a, b) => b.created.getTime() - a.created.getTime());
+
+  console.log("Fetched Pics:", JSON.stringify(pics, null, 2));
+
   return (
     <div>
       <h2 className="text-2xl">PicsList: 7 Pics zum Testen. Hola</h2>

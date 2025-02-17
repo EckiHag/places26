@@ -24,7 +24,7 @@ export const writehw = async () => {
 
     const updates = await Promise.all(
       pics.map(async (pic) => {
-        const imageUrl = `https://beihaggis.de/${pic.image.replace(/^.\//, "")}`;
+        const imageUrl = `https://beihaggis.de/${pic.image?.replace(/^.\//, "") || "default.jpg"}`;
 
         try {
           // Bild herunterladen

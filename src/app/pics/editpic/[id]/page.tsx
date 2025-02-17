@@ -1,17 +1,17 @@
 "use client";
 
-import { Card, CardHeader, CardBody, Button, Input } from "@heroui/react";
+import { Card, CardHeader, CardBody, Button, Input, Switch } from "@heroui/react";
 import { Controller, useForm } from "react-hook-form";
 import Image from "next/image";
 import { ToastContainer, toast } from "react-toastify";
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { getPlaceById, addPlace, updatePlace } from "@/app/actions/placeActions";
-import { PlaceSchema, placeSchema } from "@/lib/schemas/placeSchema";
-import { PlaceUpdateSchema, placeUpdateSchema } from "@/lib/schemas/placeSchema";
+import { getPicById, addPic, updatePic } from "@/app/actions/picActions";
+import { PicSchema, picSchema } from "@/lib/schemas/picSchema";
+import { PicUpdateSchema, picUpdateSchema } from "@/lib/schemas/picSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import imageCompression from "browser-image-compression";
-import { useSession } from "next-auth/react";
+// import { useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 
 // import { uploadImage } from "@/lib/util/uploadImage";
@@ -26,52 +26,55 @@ const FETCH_URL = `${SERVER_URL}/${USERS_PATH}`;
 // Am besten mit fileZilla
 // Danach muss die App bei netcup neu gestartet werden und hier der USERS_PATH geändert werden
 
-export default function PlaceForm() {
+export default function PicForm() {
   const router = useRouter();
-  const { data: session } = useSession();
-  const userId = session?.user?.id;
+  // const { data: session } = useSession();
+  // const userId = session?.user?.id;
   const searchParams = useSearchParams();
-  const subjectId = searchParams.get("subjectId");
+  const placeId = searchParams.get("placeId");
   const { id } = useParams();
-  const placeId = Array.isArray(id) ? id[0] : id ?? "";
+  const picId = Array.isArray(id) ? id[0] : id ?? "";
 
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [existingImage, setExistingImage] = useState<string | null>(null);
-  // Überprüfen, ob placeIdId vorhanden ist oder "new" entspricht
-  const isUpdateMode = Boolean(placeId && placeId !== "new");
-  // console.log("subjectId: ", placeId);
+  // Überprüfen, ob picIdId vorhanden ist oder "new" entspricht
+  const isUpdateMode = Boolean(picId && picId !== "new");
+  // console.log("subjectId: ", picId);
   // console.log("isUpdateMode: ", isUpdateMode);
   const {
     handleSubmit,
     setValue,
     control,
     formState: { errors, isValid, isSubmitting },
-  } = useForm<PlaceSchema | PlaceUpdateSchema>({
-    resolver: zodResolver(isUpdateMode ? placeUpdateSchema : placeSchema),
+  } = useForm<PicSchema | PicUpdateSchema>({
+    resolver: zodResolver(isUpdateMode ? picUpdateSchema : picSchema),
     mode: "onTouched",
-    defaultValues: { title: "", description: "", creator: "", creatorsubject: "" }, // Kein image bei default
+    defaultValues: { title: "pic", description: "nothing to say", copyright: "EckiHag", ord: 0, video: false, belongstoid: placeId ?? "" }, // Kein image bei default
   });
 
   useEffect(() => {
-    if (!placeId) return; // wenn kein update, braucht es kein fetch
-    const fetchPlace = async () => {
+    if (!picId) return; // wenn kein update, braucht es kein fetch
+    const fetchPic = async () => {
       try {
-        const placeData = await getPlaceById(placeId);
-        if (placeData) {
-          setValue("title", placeData.title || "");
-          setValue("description", placeData.description || "");
+        const picData = await getPicById(picId);
+        if (picData) {
+          setValue("title", picData.title || "");
+          setValue("description", picData.description || "");
+          setValue("copyright", picData.copyright || "EckiHag");
+          setValue("ord", picData.ord || 0);
+          setValue("video", picData.video || false);
           // `https://beihaggis.de/${image.replace(/^.\//, "")}`
           // setExistingImage(subjectData.image ?? null);
-          setExistingImage(`https://beihaggis.de/${placeData.image}`);
+          setExistingImage(`https://beihaggis.de/${picData.image}`);
         }
       } catch (error) {
-        console.error("Error fetching place:", error);
-        toast.error("Error loading place data.");
+        console.error("Error fetching pic:", error);
+        toast.error("Error loading pic data.");
       }
     };
 
-    fetchPlace();
-  }, [placeId, setValue]);
+    fetchPic();
+  }, [picId, setValue]);
 
   // Handler für Dateiauswahl
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -105,7 +108,7 @@ export default function PlaceForm() {
     }
   };
 
-  const onSubmit = async (data: PlaceSchema) => {
+  const onSubmit = async (data: PicSchema) => {
     // console.log("onSubmit");
     try {
       // let imageUrl = existingImage ?? undefined;
@@ -125,27 +128,23 @@ export default function PlaceForm() {
         }
       }
 
-      const placeData = {
+      const picData = {
         ...data,
         ...(imageUrl ? { image: imageUrl, imgwidth: imgwidth, imgheight: imgheight } : {}), // ✅ image wird nur gesetzt, wenn es definiert ist
-        creator: userId,
-        creatorsubject: subjectId ?? "",
-        address: "Minden, Grevestr 28",
-        location_lat: 52.313255221401974,
-        location_lng: 8.913907226818019,
+        belongstoid: placeId ?? "",
       };
 
-      console.log("Sending data to server:", placeData);
+      console.log("Sending data to server:", picData);
 
       let result;
       if (isUpdateMode) {
-        result = await updatePlace(placeId, placeData);
+        result = await updatePic(picId, picData);
       } else {
-        result = await addPlace(placeData);
+        result = await addPic(picData);
       }
 
       if (result?.status === "success") {
-        toast.success(isUpdateMode ? "Place updated successfully." : "Place added successfully.");
+        toast.success(isUpdateMode ? "Pic updated successfully." : "Pic added successfully.");
         router.push("/subjects");
       } else {
         if (Array.isArray(result?.error)) {
@@ -165,12 +164,12 @@ export default function PlaceForm() {
   return (
     <Card className="max-w-full sm:max-w-3xl md:max-w-2xl lg:max-w-xl xl:max-w-2xl mx-auto">
       <CardHeader className="flex flex-col items-center justify-center">
-        <div className="flex flex-col gap-2 items-center text-yellow-400">
+        <div className="flex flex-col gap-2 items-center text-ppics-400">
           <div className="flex flex-row items-center gap-3">
-            <div>Bearbeite Place für das Subject Nr:: {subjectId}</div>
-            <h1 className="text-3xl font-semibold">{isUpdateMode ? "Update Place" : "Add Place"}</h1>
+            <div>Bearbeite Pic für Place Nr:: {placeId}</div>
+            <h1 className="text-3xl font-semibold">{isUpdateMode ? "Update Pic" : "Add Pic"}</h1>
           </div>
-          <p className="text-yellow-400">Manage your places</p>
+          <p className="text-ppics-400">Manage your pics</p>
         </div>
       </CardHeader>
       <CardBody>
@@ -193,8 +192,50 @@ export default function PlaceForm() {
               control={control}
               render={({ field }) => <Input {...field} placeholder="Enter description" isInvalid={!!errors.description} errorMessage={errors.description?.message} />}
             />
-          </div>
 
+            {/* Copyright */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Copyright</label>
+              <Controller
+                name="copyright"
+                control={control}
+                render={({ field }) => <Input {...field} placeholder="Enter copyright" isInvalid={!!errors.copyright} errorMessage={errors.copyright?.message} />}
+              />
+            </div>
+
+            {/* Ord */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Ord</label>
+              <Controller
+                name="ord"
+                control={control}
+                rules={{ required: "Ord is required" }} // Falls erforderlich
+                render={({ field }) => (
+                  <Input
+                    {...field}
+                    type="number"
+                    placeholder="Enter ord"
+                    isInvalid={!!errors.ord}
+                    errorMessage={errors.ord?.message}
+                    value={field.value?.toString() || ""} // Zahl als String umwandeln
+                    onChange={(e) => field.onChange(e.target.value ? Number(e.target.value) : "")} // Wert als Number speichern
+                  />
+                )}
+              />
+            </div>
+
+            {/* Video */}
+            <Controller
+              name="video"
+              control={control}
+              defaultValue={false} // Sicherstellen, dass es einen Startwert gibt
+              render={({ field: { value, onChange } }) => (
+                <Switch isSelected={value ?? false} onValueChange={(val) => onChange(val)}>
+                  Video aktivieren
+                </Switch>
+              )}
+            />
+          </div>
           {/* Existing Image */}
           {existingImage ? <Image src={existingImage} width={128} height={128} alt="Existing Image" className="rounded-md" /> : <p>No Image Available</p>}
 
@@ -208,8 +249,8 @@ export default function PlaceForm() {
           {errors.root?.serverError && <p className="text-danger text-sm">{errors.root.serverError.message}</p>}
 
           {/* Submit Button */}
-          <Button isLoading={isSubmitting} isDisabled={!isValid} fullWidth className="bg-yellow-400" type="submit">
-            {isUpdateMode ? "Update Place" : "Add Place"}
+          <Button isLoading={isSubmitting} isDisabled={!isValid} fullWidth className="bg-ppics-400" type="submit">
+            {isUpdateMode ? "Update Pic" : "Add Pic"}
           </Button>
 
           <ToastContainer />

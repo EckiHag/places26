@@ -8,7 +8,9 @@ const PicsCardWithPlaceId = async ({ params }) => {
   console.log("pics: ", pics);
   return (
     <>
-      <h2 className="text-3xl">PicsListWithBelongstoid: Hier steht die CardEditPlace als Titel für die Pics, wo der Place editiert und Pics hinzugefügt werden können.</h2>
+      <div className="mb-6 text-center">
+        <Link href={`/pics/editpic/new?placeId=${params.id}`}>New Pic</Link>
+      </div>
       <div className="mt-16 mb-8">
         <Link href="/places" className="btn btn-accent">
           Back to Places

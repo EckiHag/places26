@@ -93,7 +93,7 @@ model Pics {
   copyright       String?
   title           String?
   description     String?     @db.Text
-  image           String
+  image           String?
   belongstoid     String         // Assuming belongstoid is the ID of the Place
   created         DateTime    @default(now())
   ord             Int         @default(0)

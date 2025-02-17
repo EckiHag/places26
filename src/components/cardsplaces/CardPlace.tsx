@@ -37,9 +37,6 @@ export default function CardPlace({ id, image, title, description }: CardPlacePr
         <Button as={Link} href={`/pics/gallery/${id}`} variant="solid" className="bg-pplaces-400">
           PicGallery
         </Button>
-        <Button as={Link} href={`/pics/work/${id}`} variant="solid" className="bg-pplaces-400">
-          Works
-        </Button>
       </CardFooter>
     </Card>
   );

@@ -2,9 +2,16 @@ import { getPlacesByCreatorsubject } from "@/app/actions/placeActions";
 import CardPlace from "@/components/cardsplaces/CardPlace";
 import Link from "next/link";
 
-export type paramsType = { id: string };
+// export type paramsType = { id: string };
 
-export default async function PlacesList({ params }: { params: { id: string } }) {
+// export default async function PlacesList({ params }: { params: { id: string } }) {
+//   const { id } = params;
+
+interface PageProps {
+  params: { id: string };
+}
+
+export default async function PlacesList({ params }: PageProps) {
   const { id } = params;
 
   const places = await getPlacesByCreatorsubject(id);

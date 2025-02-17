@@ -12,6 +12,7 @@ export default async function PicsList() {
       title: pic.title ?? "",
       description: pic.description ?? "",
       created: new Date(pic.created), // explizit casten
+      image: pic.image ?? undefined,
     }))
     .sort((a, b) => b.created.getTime() - a.created.getTime());
 

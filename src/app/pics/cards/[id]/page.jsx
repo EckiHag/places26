@@ -4,6 +4,7 @@ import CardPic from "@/components/cardsplaces/CardPic";
 
 const PicsCardWithPlaceId = async ({ params }) => {
   const pics = await getPicsByBelongstoid(params.id);
+
   const sortedPics = pics.sort((a, b) => new Date(b.created.$date) - new Date(a.created.$date));
   console.log("pics: ", pics);
   return (

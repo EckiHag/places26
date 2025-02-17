@@ -5,6 +5,11 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --switch-bg-default: #d1d5db; /* Gray-400 */
+  --switch-bg-active: #84a98c; /* Blue-500 */
+}
+.custom-switch[data-selected="true"] .heroui-switch-track {
+  background-color: green !important;
 }
 
 @media (prefers-color-scheme: dark) {

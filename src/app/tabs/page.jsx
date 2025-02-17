@@ -7,7 +7,15 @@ export default function App() {
 
   return (
     <div className="flex flex-col px-4">
-      <Switch className="mb-4" isSelected={isVertical} onValueChange={setIsVertical}>
+      <Switch
+        color="primary"
+        classNames={{
+          base: "m-4", // Abstand
+          thumb: "bg-ppics-500", // Farbe des "Knopfes"
+        }}
+        isSelected={isVertical}
+        onValueChange={setIsVertical}
+      >
         Vertical
       </Switch>
       <div className="flex w-full flex-col">

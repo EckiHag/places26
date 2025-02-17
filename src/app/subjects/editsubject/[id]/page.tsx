@@ -6,12 +6,13 @@ import Image from "next/image";
 import { ToastContainer, toast } from "react-toastify";
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { getPlaceById, addPlace, updatePlace } from "@/app/actions/placeActions";
-import { PlaceSchema, placeSchema } from "@/lib/schemas/placeSchema";
-import { PlaceUpdateSchema, placeUpdateSchema } from "@/lib/schemas/placeSchema";
+import { getSubjectById, addSubject, updateSubject } from "@/app/actions/subjectActions";
+import { SubjectSchema, subjectSchema } from "@/lib/schemas/subjectSchema";
+import { SubjectUpdateSchema, subjectUpdateSchema } from "@/lib/schemas/subjectSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import imageCompression from "browser-image-compression";
 import { useSession } from "next-auth/react";
+
 // import { uploadImage } from "@/lib/util/uploadImage";
 const SERVER_URL = "https://beihaggis.de";
 const USERS_PATH = "api/places26/user";
@@ -28,7 +29,6 @@ export default function SubjectForm() {
   const { data: session } = useSession();
   const userId = session?.user?.id;
   // console.log("Current User ID:", userId);
-
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [existingImage, setExistingImage] = useState<string | null>(null);
   const router = useRouter();
@@ -44,27 +44,28 @@ export default function SubjectForm() {
     setValue,
     control,
     formState: { errors, isValid, isSubmitting },
-  } = useForm<PlaceSchema | PlaceUpdateSchema>({
-    resolver: zodResolver(isUpdateMode ? placeUpdateSchema : placeSchema),
+  } = useForm<SubjectSchema | SubjectUpdateSchema>({
+    resolver: zodResolver(isUpdateMode ? subjectUpdateSchema : subjectSchema),
     mode: "onTouched",
-    defaultValues: { title: "", description: "", creator: "EckiHag", creatorsubject: "EckiHag" }, // Kein image bei default
+    defaultValues: { title: "", description: "", creator: "", group: "" }, // Kein image bei default
   });
 
   useEffect(() => {
     if (!subjectId) return; // wenn kein update, braucht es kein fetch
     const fetchSubject = async () => {
       try {
-        const subjectData = await getPlaceById(subjectId);
+        const subjectData = await getSubjectById(subjectId);
         if (subjectData) {
           setValue("title", subjectData.title || "");
           setValue("description", subjectData.description || "");
+          setValue("group", subjectData.group || "");
           // `https://beihaggis.de/${image.replace(/^.\//, "")}`
           // setExistingImage(subjectData.image ?? null);
           setExistingImage(`https://beihaggis.de/${subjectData.image}`);
         }
       } catch (error) {
-        console.error("Error fetching place:", error);
-        toast.error("Error loading place data.");
+        console.error("Error fetching subject:", error);
+        toast.error("Error loading subject data.");
       }
     };
 
@@ -103,7 +104,7 @@ export default function SubjectForm() {
     }
   };
 
-  const onSubmit = async (data: PlaceSchema) => {
+  const onSubmit = async (data: SubjectSchema) => {
     console.log("onSubmit"); // ✅ Debug-Log
     try {
       // let imageUrl = existingImage ?? undefined;
@@ -134,16 +135,16 @@ export default function SubjectForm() {
       const subjectData = {
         ...data,
         ...(imageUrl ? { image: imageUrl, imgwidth: imgwidth, imgheight: imgheight } : {}), // ✅ image wird nur gesetzt, wenn es definiert ist
-        creator: userId, // 👈 Benutzer-ID wird hinzugefügt
+        creator: userId,
       };
 
-      console.log("Sending data to server:", subjectData); // ✅ Debug-Log
+      console.log("Sending data to server:", subjectData);
 
       let result;
       if (isUpdateMode) {
-        result = await updatePlace(subjectId, subjectData);
+        result = await updateSubject(subjectId, subjectData);
       } else {
-        result = await addPlace(subjectData);
+        result = await addSubject(subjectData);
       }
 
       if (result?.status === "success") {
@@ -167,7 +168,7 @@ export default function SubjectForm() {
   return (
     <Card className="max-w-full sm:max-w-3xl md:max-w-2xl lg:max-w-xl xl:max-w-2xl mx-auto">
       <CardHeader className="flex flex-col items-center justify-center">
-        <div className="flex flex-col gap-2 items-center text-blue-600">
+        <div className="flex flex-col gap-2 items-center text-psubjects-600">
           <div className="flex flex-row items-center gap-3">
             <h1 className="text-3xl font-semibold">{isUpdateMode ? "Update Subject" : "Add Subject"}</h1>
           </div>
@@ -195,6 +196,15 @@ export default function SubjectForm() {
               render={({ field }) => <Input {...field} placeholder="Enter description" isInvalid={!!errors.description} errorMessage={errors.description?.message} />}
             />
           </div>
+          {/* Group */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Group</label>
+            <Controller
+              name="group"
+              control={control}
+              render={({ field }) => <Input {...field} placeholder="Enter group" isInvalid={!!errors.description} errorMessage={errors.description?.message} />}
+            />
+          </div>
 
           {/* Existing Image */}
           {existingImage ? <Image src={existingImage} width={128} height={128} alt="Existing Image" className="rounded-md" /> : <p>No Image Available</p>}
@@ -209,7 +219,7 @@ export default function SubjectForm() {
           {errors.root?.serverError && <p className="text-danger text-sm">{errors.root.serverError.message}</p>}
 
           {/* Submit Button */}
-          <Button isLoading={isSubmitting} isDisabled={!isValid} fullWidth className="bg-blue-600" type="submit">
+          <Button isLoading={isSubmitting} isDisabled={!isValid} fullWidth className="bg-psubjects-600" type="submit">
             {isUpdateMode ? "Update Subject" : "Add Subject"}
           </Button>
 

@@ -4,8 +4,8 @@ import Link from "next/link";
 
 export type paramsType = { id: string };
 
-export default async function PlacesList(props: { params: paramsType }) {
-  const { id } = props.params;
+export default async function PlacesList({ params }: { params: { id: string } }) {
+  const { id } = params;
 
   const places = await getPlacesByCreatorsubject(id);
   const sortedPlaces = places && places.sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime());

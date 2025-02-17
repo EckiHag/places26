@@ -87,7 +87,7 @@ export async function addPic(data: PicSchema): Promise<ActionResult<Pics>> {
       data: {
         title,
         description,
-        belongstoid,
+        belongstoid: belongstoid || "", // Speichert `null`, falls `undefined`
         image,
         imgwidth,
         imgheight,

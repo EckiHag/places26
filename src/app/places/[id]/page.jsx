@@ -2,9 +2,10 @@ import { getPlacesByCreatorsubject } from "@/app/actions/placeActions";
 import CardPlace from "@/components/cardsplaces/CardPlace";
 import Link from "next/link";
 
-export type ParamsType = { id: string };
+// export type ParamsType = { id: string };
 
-export default async function PlacesList({ params }: { params: Awaited<ParamsType> }) {
+// export default async function PlacesList({ params }: { params: Awaited<ParamsType> }) {
+export default async function PlacesList(params) {
   const resolvedParams = await params;
   const { id } = resolvedParams;
 

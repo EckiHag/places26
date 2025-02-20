@@ -18,7 +18,7 @@ export default async function PicsList() {
           {sortedPics &&
             sortedPics.map((pic) => (
               <div key={pic.id}>
-                <CardPic image={pic.image} title={pic.title} description={pic.description} />
+                <CardPic pic={pic} />
               </div>
             ))}
         </div>

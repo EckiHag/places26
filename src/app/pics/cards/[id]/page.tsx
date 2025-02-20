@@ -28,7 +28,7 @@ export default async function PicsCardWithPlaceId({ params }: Props) {
           {sortedPics &&
             sortedPics.map((pic) => (
               <div key={pic.id}>
-                <CardPic id={pic.id} image={pic.image} title={pic.title} description={pic.description} />
+                <CardPic pic={pic} />
               </div>
             ))}
         </div>

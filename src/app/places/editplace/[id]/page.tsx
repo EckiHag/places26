@@ -16,7 +16,7 @@ import { useSearchParams } from "next/navigation";
 
 // import { uploadImage } from "@/lib/util/uploadImage";
 const SERVER_URL = "https://beihaggis.de";
-const USERS_PATH = "api/places26/user";
+const USERS_PATH = "api/places26/p26imgplaces";
 const FETCH_URL = `${SERVER_URL}/${USERS_PATH}`;
 
 // Der Bildupload geschieht über die Datei places26userroutes.js in _places, das mit REACT programmiert wurde

@@ -19,7 +19,7 @@ import { GiPadlock } from "react-icons/gi";
 export default function RegisterForm() {
   const SERVER_URL = "https://beihaggis.de";
   // const SERVER_URL = "http://localhost:5001";
-  const USERS_PATH = "api/places26/user";
+  const USERS_PATH = "api/places26/p26imgusers";
   const FETCH_URL = `${SERVER_URL}/${USERS_PATH}`;
 
   const {
@@ -89,7 +89,7 @@ export default function RegisterForm() {
       // Optionen für die Bildkomprimierung
       const options = {
         maxSizeMB: 1,
-        maxWidthOrHeight: 1400,
+        maxWidthOrHeight: 1200,
         useWebWorker: true,
       };
 
@@ -143,12 +143,12 @@ export default function RegisterForm() {
   return (
     <Card className="w-2/5 mx-auto">
       <CardHeader className="flex flex-col items-center justify-center">
-        <div className="flex flex-col gap-2 items-center text-blue-600">
+        <div className="flex flex-col gap-2 items-center text-pprimary-600">
           <div className="flex flex-row items-center gap-3">
             <GiPadlock size={30} />
             <h1 className="text-3xl font-semibold">Register</h1>
           </div>
-          <p className="text-blue-600">Welcome to Places26</p>
+          <p className="text-pprimary-600">Welcome to Places26</p>
         </div>
       </CardHeader>
       <CardBody>
@@ -171,7 +171,7 @@ export default function RegisterForm() {
             </label>
             <input id="image" type="file" accept="image/*" onChange={handleFileChange} className="w-full border p-2 rounded" />
 
-            <Button isLoading={isSubmitting} isDisabled={!isValid} fullWidth className="bg-blue-600" type="submit">
+            <Button isLoading={isSubmitting} isDisabled={!isValid} fullWidth className="bg-pprimary-600" type="submit">
               Register
             </Button>
             <ToastContainer />

@@ -3,7 +3,14 @@ import Link from "next/link";
 import CardPic from "@/components/cardsplaces/CardPic";
 
 const PicsCardWithPlaceId = async ({ params }) => {
-  const pics = await getPicsByBelongstoid(params.id);
+  // Prüfe, ob params vorhanden ist
+  if (!params || !params.id) {
+    throw new Error("Fehlende Route-Parameter: params.id ist nicht definiert.");
+  }
+
+  // `id` sicher extrahieren
+  const id = String(params.id); // Explizite Konvertierung in einen String
+  const pics = await getPicsByBelongstoid(id);
 
   const sortedPics = pics.sort((a, b) => new Date(b.created.$date) - new Date(a.created.$date));
   console.log("pics: ", pics);

@@ -15,7 +15,7 @@ import { useSession } from "next-auth/react";
 
 // import { uploadImage } from "@/lib/util/uploadImage";
 const SERVER_URL = "https://beihaggis.de";
-const USERS_PATH = "api/places26/user";
+const USERS_PATH = "api/places26/p26imgsubjects";
 const FETCH_URL = `${SERVER_URL}/${USERS_PATH}`;
 
 // Der Bildupload geschieht über die Datei places26userroutes.js in _places, das mit REACT programmiert wurde
@@ -86,7 +86,9 @@ export default function SubjectForm() {
     try {
       const response = await fetch(FETCH_URL, {
         method: "POST",
-        headers: { "x-upload-password": "ga?m0Wq1jznVb<RU" },
+        headers: {
+          "x-upload-password": "ga?m0Wq1jznVb<RU",
+        },
         body: formData,
       });
 
@@ -95,8 +97,18 @@ export default function SubjectForm() {
         throw new Error(error.message || "Failed to upload image.");
       }
 
-      const { uploadResult } = await response.json();
-      return uploadResult ? { imageUrl: uploadResult.imageUrl, width: uploadResult.width, height: uploadResult.height } : null;
+      const result = await response.json();
+      console.log("result:", result); // Debug-Ausgabe zur Überprüfung der API-Antwort
+
+      // Extrahiere `uploadResult` aus der API-Antwort
+      const { uploadResult } = result;
+      if (!uploadResult) throw new Error("Invalid upload result.");
+
+      return {
+        imageUrl: uploadResult.imageUrl,
+        width: uploadResult.width,
+        height: uploadResult.height,
+      };
     } catch (error) {
       console.error("Error uploading image:", error);
       toast.error("Failed to upload image.");
@@ -114,10 +126,17 @@ export default function SubjectForm() {
 
       if (!isUpdateMode || imageFile) {
         if (imageFile) {
+          // Optionen für die Bildkomprimierung
+          const options = {
+            maxSizeMB: 1,
+            maxWidthOrHeight: 1200,
+            useWebWorker: true,
+          };
+
           // Bild komprimieren
-          const compressedFile = await imageCompression(imageFile, { maxSizeMB: 1, maxWidthOrHeight: 1400, useWebWorker: true });
+          const compressedFile = await imageCompression(imageFile, options);
           const uploadResult = await uploadImage(compressedFile);
-          if (!uploadResult) throw new Error("Image upload failed.");
+          if (!uploadResult) throw new Error("Image upload failed. hier");
           imageUrl = uploadResult.imageUrl;
           imgwidth = uploadResult.width;
           imgheight = uploadResult.height;
@@ -161,7 +180,7 @@ export default function SubjectForm() {
       }
     } catch (error) {
       console.error("Error submitting form:", error);
-      toast.error("Failed to process request.");
+      toast.error("Failed to process request yo.");
     }
   };
 

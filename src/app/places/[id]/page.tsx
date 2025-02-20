@@ -2,13 +2,13 @@ import { getPlacesByCreatorsubject } from "@/app/actions/placeActions";
 import CardPlace from "@/components/cardsplaces/CardPlace";
 import Link from "next/link";
 
-// export type ParamsType = { id: string };
+type Props = {
+  params: Promise<{ id: string }>;
+};
 
-// export default async function PlacesList({ params }: { params: Awaited<ParamsType> }) {
-export default async function PlacesList(params) {
-  const resolvedParams = await params;
-  const { id } = resolvedParams;
-
+export default async function PlacesList({ params }: Props) {
+  const { id } = await params;
+  console.log("id für places: ", id);
   const places = await getPlacesByCreatorsubject(id);
   const sortedPlaces = places && places.sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime());
 

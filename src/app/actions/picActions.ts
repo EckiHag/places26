@@ -6,23 +6,23 @@ import fs from "fs";
 import path from "path";
 import { z } from "zod";
 
-export type Slide = {
-  id: string;
-  image?: string | null;
-  created: Date;
-  imgwidth?: number | null;
-  imgheight?: number | null;
-  copyright?: string | null;
-  title: string | null; // `null` erlauben
-  description: string | null;
-  belongstoid: string;
-  ord: number;
-  video: boolean;
-};
+// export type Slide = {
+//   id: string;
+//   image?: string | null;
+//   created: Date;
+//   imgwidth?: number | null;
+//   imgheight?: number | null;
+//   copyright?: string | null;
+//   title: string | null; // `null` erlauben
+//   description: string | null;
+//   belongstoid: string;
+//   ord: number;
+//   video: boolean;
+// };
 
 export type ActionResult<T> = { status: "success"; data: T } | { status: "error"; error: string | z.ZodIssue[] };
 
-export async function getPicsTwenty(): Promise<Slide[]> {
+export async function getPicsTwenty() {
   try {
     const data = await prisma.pics.findMany({
       skip: 1200,

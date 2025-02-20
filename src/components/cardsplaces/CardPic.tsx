@@ -2,7 +2,6 @@
 import { Card, CardHeader, CardBody, Divider, Image } from "@heroui/react";
 
 interface CardPicProps {
-  id: string;
   image: string | null;
   title: string;
   description: string;

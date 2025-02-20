@@ -1,13 +1,13 @@
 "use server";
 
-import { getPicsTwenty } from "@/app/actions/picActions";
+// import { getPicsTwenty } from "@/app/actions/picActions";
 // import CardPic from "@/components/cardsplaces/CardPic";
 
 export default async function PicsList() {
-  const pics = await getPicsTwenty();
+  // const pics = await getPicsTwenty();
   // const sortedPics = pics && pics.sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime());
 
-  console.log("Fetched Pics:", JSON.stringify(pics, null, 2));
+  // console.log("Fetched Pics:", JSON.stringify(pics, null, 2));
 
   return (
     <div>

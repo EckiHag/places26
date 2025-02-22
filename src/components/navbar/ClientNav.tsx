@@ -73,7 +73,7 @@ export default function ClientNav({ session }: ClientNavProps) {
       {/* Mobile Navigation */}
       {isOpen && (
         <div className="absolute right-0 top-full w-32 bg-gradient-to-r from-pprimary-600 to-pprimary-700 p-4 flex flex-col items-center space-y-2 shadow-lg">
-          <NavLink href="/subjects" label="Subjects" isMobile onClick={closeMenu} />
+          {session?.user?.role === "ADMIN" && <NavLink href="/subjects" label="Subjects" isMobile onClick={closeMenu} />}
           {session?.user?.role === "ADMIN" && <NavLink href="/places" label="Places" isMobile onClick={closeMenu} />}
           {session?.user?.role === "ADMIN" && <NavLink href="/pics" label="Pics" isMobile onClick={closeMenu} />}
           {session?.user?.role === "ADMIN" && <NavLink href="/quiz" label="Quiz" isMobile onClick={closeMenu} />}

@@ -17,6 +17,8 @@ import { useSession } from "next-auth/react";
 const SERVER_URL = "https://beihaggis.de";
 const USERS_PATH = "api/places26/p26imgsubjects";
 const FETCH_URL = `${SERVER_URL}/${USERS_PATH}`;
+const Bildsize = 1200;
+const BildsizeMb = 0.1;
 
 // Der Bildupload geschieht über die Datei places26userroutes.js in _places, das mit REACT programmiert wurde
 // in app.js muss dort auch noch die route gelinkt werden: app.use("/api/places26/user", places26userroutes);
@@ -128,8 +130,8 @@ export default function SubjectForm() {
         if (imageFile) {
           // Optionen für die Bildkomprimierung
           const options = {
-            maxSizeMB: 1,
-            maxWidthOrHeight: 1200,
+            maxSizeMB: BildsizeMb,
+            maxWidthOrHeight: Bildsize,
             useWebWorker: true,
           };
 

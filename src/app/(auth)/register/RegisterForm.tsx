@@ -21,6 +21,8 @@ export default function RegisterForm() {
   // const SERVER_URL = "http://localhost:5001";
   const USERS_PATH = "api/places26/p26imgusers";
   const FETCH_URL = `${SERVER_URL}/${USERS_PATH}`;
+  const Bildsize = 1200;
+  const BildsizeMb = 0.1;
 
   const {
     register,
@@ -88,8 +90,8 @@ export default function RegisterForm() {
     try {
       // Optionen für die Bildkomprimierung
       const options = {
-        maxSizeMB: 1,
-        maxWidthOrHeight: 1200,
+        maxSizeMB: BildsizeMb,
+        maxWidthOrHeight: Bildsize,
         useWebWorker: true,
       };
 

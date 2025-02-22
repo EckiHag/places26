@@ -18,6 +18,8 @@ import { useSearchParams } from "next/navigation";
 const SERVER_URL = "https://beihaggis.de";
 const USERS_PATH = "api/places26/p26imgpics";
 const FETCH_URL = `${SERVER_URL}/${USERS_PATH}`;
+const Bildsize = 1200;
+const BildsizeMb = 0.1;
 
 // Der Bildupload geschieht über die Datei places26userroutes.js in _places, das mit REACT programmiert wurde
 // in app.js muss dort auch noch die route gelinkt werden: app.use("/api/places26/user", places26userroutes);
@@ -120,7 +122,7 @@ export default function PicForm() {
       if (!isUpdateMode || imageFile) {
         if (imageFile) {
           // Bild komprimieren
-          const compressedFile = await imageCompression(imageFile, { maxSizeMB: 1, maxWidthOrHeight: 1400, useWebWorker: true });
+          const compressedFile = await imageCompression(imageFile, { maxSizeMB: BildsizeMb, maxWidthOrHeight: Bildsize, useWebWorker: true });
           const uploadResult = await uploadImage(compressedFile);
           if (!uploadResult) throw new Error("Image upload failed.");
           imageUrl = uploadResult.imageUrl;
@@ -146,7 +148,7 @@ export default function PicForm() {
 
       if (result?.status === "success") {
         toast.success(isUpdateMode ? "Pic updated successfully." : "Pic added successfully.");
-        router.push("/subjects");
+        router.push(`/pics/cards/${placeId}`);
       } else {
         if (Array.isArray(result?.error)) {
           result.error.forEach((err) => {

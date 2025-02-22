@@ -18,6 +18,8 @@ import { useSearchParams } from "next/navigation";
 const SERVER_URL = "https://beihaggis.de";
 const USERS_PATH = "api/places26/p26imgplaces";
 const FETCH_URL = `${SERVER_URL}/${USERS_PATH}`;
+const Bildsize = 1200;
+const BildsizeMb = 0.1;
 
 // Der Bildupload geschieht über die Datei places26userroutes.js in _places, das mit REACT programmiert wurde
 // in app.js muss dort auch noch die route gelinkt werden: app.use("/api/places26/user", places26userroutes);
@@ -116,7 +118,7 @@ export default function PlaceForm() {
       if (!isUpdateMode || imageFile) {
         if (imageFile) {
           // Bild komprimieren
-          const compressedFile = await imageCompression(imageFile, { maxSizeMB: 1, maxWidthOrHeight: 1400, useWebWorker: true });
+          const compressedFile = await imageCompression(imageFile, { maxSizeMB: BildsizeMb, maxWidthOrHeight: Bildsize, useWebWorker: true });
           const uploadResult = await uploadImage(compressedFile);
           if (!uploadResult) throw new Error("Image upload failed.");
           imageUrl = uploadResult.imageUrl;
@@ -146,7 +148,7 @@ export default function PlaceForm() {
 
       if (result?.status === "success") {
         toast.success(isUpdateMode ? "Place updated successfully." : "Place added successfully.");
-        router.push("/subjects");
+        router.push(`/places/${subjectId}`);
       } else {
         if (Array.isArray(result?.error)) {
           result.error.forEach((err) => {
@@ -165,12 +167,12 @@ export default function PlaceForm() {
   return (
     <Card className="max-w-full sm:max-w-3xl md:max-w-2xl lg:max-w-xl xl:max-w-2xl mx-auto">
       <CardHeader className="flex flex-col items-center justify-center">
-        <div className="flex flex-col gap-2 items-center text-yellow-400">
+        <div className="flex flex-col gap-2 items-center text-pplaces-400">
           <div className="flex flex-row items-center gap-3">
             <div>Bearbeite Place für das Subject Nr:: {subjectId}</div>
             <h1 className="text-3xl font-semibold">{isUpdateMode ? "Update Place" : "Add Place"}</h1>
           </div>
-          <p className="text-yellow-400">Manage your places</p>
+          <p className="text-pplaces-400">Manage your places</p>
         </div>
       </CardHeader>
       <CardBody>
@@ -208,7 +210,7 @@ export default function PlaceForm() {
           {errors.root?.serverError && <p className="text-danger text-sm">{errors.root.serverError.message}</p>}
 
           {/* Submit Button */}
-          <Button isLoading={isSubmitting} isDisabled={!isValid} fullWidth className="bg-yellow-400" type="submit">
+          <Button isLoading={isSubmitting} isDisabled={!isValid} fullWidth className="bg-pplaces-400" type="submit">
             {isUpdateMode ? "Update Place" : "Add Place"}
           </Button>
 

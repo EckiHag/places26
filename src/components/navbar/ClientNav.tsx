@@ -35,13 +35,13 @@ export default function ClientNav({ session }: ClientNavProps) {
 
         {/* Desktop-Navigation */}
         <div className="hidden md:flex gap-4">
-          <NavLink href="/subjects" label="Subjects" />
+          {session?.user?.role === "ADMIN" && <NavLink href="/subjects" label="Subjects" />}
           {session?.user?.role === "ADMIN" && <NavLink href="/places" label="Places" />}
           {session?.user?.role === "ADMIN" && <NavLink href="/pics" label="Pics" />}
           {session?.user?.role === "ADMIN" && <NavLink href="/quiz" label="Quiz" />}
+          {session?.user?.role === "ADMIN" && <NavLink href="/conv" label="conv" />}
           <NavLink href="/lb" label="LB" />
           <NavLink href="/farben" label="Farben" />
-          <NavLink href="/conv" label="conv" />
           <NavLink href="/settings" label="set" />
           <NavLink href="/quadrate" label="qua" />
           <NavLink href="/tabs" label="tabs" />
@@ -77,9 +77,9 @@ export default function ClientNav({ session }: ClientNavProps) {
           {session?.user?.role === "ADMIN" && <NavLink href="/places" label="Places" isMobile onClick={closeMenu} />}
           {session?.user?.role === "ADMIN" && <NavLink href="/pics" label="Pics" isMobile onClick={closeMenu} />}
           {session?.user?.role === "ADMIN" && <NavLink href="/quiz" label="Quiz" isMobile onClick={closeMenu} />}
+          {session?.user?.role === "ADMIN" && <NavLink href="/conv" label="conv" isMobile onClick={closeMenu} />}
           <NavLink href="/lb" label="LB" isMobile onClick={closeMenu} />
           <NavLink href="/farben" label="Farben" />
-          <NavLink href="/conv" label="conv" isMobile onClick={closeMenu} />
           <NavLink href="/settings" label="set" isMobile onClick={closeMenu} />
           <NavLink href="/quadrate" label="qua" isMobile onClick={closeMenu} />
           <NavLink href="/tabs" label="tabs" isMobile onClick={closeMenu} />

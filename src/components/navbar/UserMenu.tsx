@@ -21,8 +21,7 @@ export default function UserMenu({ userInfo }: Props) {
       <DropdownTrigger>
         <Avatar
           as="button"
-          className="transition-transform"
-          color="success"
+          className="transition-transform bg-pprimary-700"
           style={{ borderColor: "#FFFFFF", borderWidth: "2px" }} // Orange Farbe
           name={userInfo?.name || "user avatar"}
           size="sm"

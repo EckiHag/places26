@@ -7,9 +7,13 @@ interface CardPicProps {
     description: string;
     image?: string | null; // Hier `null` explizit erlauben
   };
+  place: {
+    title: string;
+    description: string;
+  } | null;
 }
 
-export default function CardPic({ pic }: CardPicProps) {
+export default function CardPic({ pic, place }: CardPicProps) {
   // console.log("Id von pic für die Card: ", id);
   if (!pic) {
     console.error("CardPic: pic is undefined!");
@@ -20,13 +24,13 @@ export default function CardPic({ pic }: CardPicProps) {
     <Card className="max-w-[400px] min-h-[200px]">
       <CardHeader className="flex gap-3 bg-ppics-400">
         <div className="flex flex-col">
-          <p className="text-2xl">{pic.title}</p>
+          <p className="text-2xl">{pic.title === "pic" ? place?.title || "Kein Place-Titel" : pic.title}</p>
         </div>
       </CardHeader>
       <Divider />
       <CardBody className="bg-ppics-100 items-center">
         {pic.image && <Image isZoomed alt="NextUI place Image" src={`https://beihaggis.de/${pic.image.replace(/^.\//, "")}`} width={300} />}
-        <span className="text-xs">{pic.description}</span>
+        <span className="text-xs">{pic.description === "nothing to say" ? "" : pic.description}</span>
       </CardBody>
     </Card>
   );

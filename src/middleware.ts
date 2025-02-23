@@ -13,7 +13,7 @@ export default auth((req) => {
 
   const userRole = req.auth?.user?.role; // Rolle des Benutzers aus der Session extrahieren
   // Geschützte Admin-Pfade
-  const adminRoutes = ["/subjects", "/places", "/pics"];
+  const adminRoutes = ["/subjects", "/places", "/pics", "/conv"];
   const isAdminRoute = adminRoutes.some((route) => nextUrl.pathname.startsWith(route));
 
   if (isPublic) {

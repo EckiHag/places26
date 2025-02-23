@@ -1,4 +1,5 @@
 import { getPicsByBelongstoid } from "@/app/actions/picActions";
+import { getPlaceById } from "@/app/actions/placeActions";
 import Link from "next/link";
 import CardPic from "@/components/cardsplaces/CardPic";
 
@@ -9,6 +10,7 @@ type Props = {
 export default async function PicsCardWithPlaceId({ params }: Props) {
   const { id } = await params;
   const pics = await getPicsByBelongstoid(id);
+  const place = await getPlaceById(id);
   const sortedPics = pics && pics.sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime());
   // const sortedPics = pics?.sort((a, b) => new Date(b.created.$date) - new Date(a.created.$date));
   // console.log("pics: ", pics);
@@ -28,7 +30,7 @@ export default async function PicsCardWithPlaceId({ params }: Props) {
           {sortedPics &&
             sortedPics.map((pic) => (
               <div key={pic.id}>
-                <CardPic pic={pic} />
+                <CardPic pic={pic} place={place} />
               </div>
             ))}
         </div>

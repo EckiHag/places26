@@ -6,6 +6,7 @@ import CardPic from "@/components/cardsplaces/CardPic";
 export default async function PicsList() {
   const pics = await getPicsTwenty();
   const sortedPics = pics && pics.sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime());
+  const place = null;
 
   console.log("Fetched Pics:", JSON.stringify(pics, null, 2));
 
@@ -18,7 +19,7 @@ export default async function PicsList() {
           {sortedPics &&
             sortedPics.map((pic) => (
               <div key={pic.id}>
-                <CardPic pic={pic} place={null} />
+                <CardPic pic={pic} place={place} />
               </div>
             ))}
         </div>

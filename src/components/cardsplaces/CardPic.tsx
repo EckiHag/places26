@@ -24,13 +24,13 @@ export default function CardPic({ pic, place }: CardPicProps) {
     <Card className="max-w-[400px] min-h-[200px]">
       <CardHeader className="flex gap-3 bg-ppics-400">
         <div className="flex flex-col">
-          <p className="text-2xl">{pic.title === "pic" ? place?.title || "Kein Place-Titel" : pic.title}</p>
+          <p className="text-2xl">{pic.title === "pic" || pic.title === "Pic" ? place?.title || "Picture" : pic.title}</p>
         </div>
       </CardHeader>
       <Divider />
       <CardBody className="bg-ppics-100 items-center">
         {pic.image && <Image isZoomed alt="NextUI place Image" src={`https://beihaggis.de/${pic.image.replace(/^.\//, "")}`} width={300} />}
-        <span className="text-xs">{pic.description === "nothing to say" ? "" : pic.description}</span>
+        <span className="text-xs">{pic.description === "nothing to say" || pic.description === "No description" ? "" : pic.description}</span>
       </CardBody>
     </Card>
   );

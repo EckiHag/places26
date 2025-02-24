@@ -19,14 +19,14 @@ export async function signInUser(data: LoginSchema): Promise<ActionResult<string
       redirect: false,
     });
     console.log(result);
-
     return { status: "success", data: "Logged in" };
   } catch (error) {
-    console.log(error);
+    console.log("Error in signInUser:", error);
+    // return { status: "error", error: "Something went wrong" };
     if (error instanceof AuthError) {
       switch (error.type) {
         case "CredentialsSignin":
-          return { status: "error", error: "Invalid credentials" };
+          return { status: "error", error: "Email oder Password falsch! ☹️" };
         default:
           return { status: "error", error: "Something went wrong" };
       }

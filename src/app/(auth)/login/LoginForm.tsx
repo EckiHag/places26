@@ -8,7 +8,7 @@ import { LoginSchema, loginSchema } from "@/lib/schemas/loginSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signInUser } from "@/app/actions/authActions";
 import { useRouter } from "next/navigation";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -22,6 +22,7 @@ export default function LoginForm() {
   });
 
   const onSubmit = async (data: LoginSchema) => {
+    // toast("Wow so easy!");
     const result = await signInUser(data);
     if (result.status === "success") {
       console.log("success beim login!");
@@ -59,6 +60,7 @@ export default function LoginForm() {
             <Button isLoading={isSubmitting} isDisabled={!isValid} fullWidth className="bg-pprimary-600" type="submit">
               Login
             </Button>
+            <ToastContainer />
           </div>
         </form>
       </CardBody>

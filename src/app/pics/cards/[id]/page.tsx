@@ -3,12 +3,12 @@ import { getPlaceById } from "@/app/actions/placeActions";
 import Link from "next/link";
 import CardPic from "@/components/cardsplaces/CardPic";
 
-interface PageProps {
-  params: { id: string };
-  searchParams: { subjectId?: string };
-}
+// interface PageProps {
+//   params: { id: string };
+//   searchParams: { subjectId?: string };
+// }
 
-export default async function PicsCardWithPlaceId({ params, searchParams }: PageProps) {
+export default async function PicsCardWithPlaceId({ params, searchParams }: { params: { id: string }; searchParams: { subjectId?: string } }) {
   const { id } = params;
   const { subjectId } = searchParams;
   const pics = await getPicsByBelongstoid(id);

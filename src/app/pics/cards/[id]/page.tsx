@@ -4,12 +4,14 @@ import Link from "next/link";
 import CardPic from "@/components/cardsplaces/CardPic";
 
 interface PageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
   searchParams: { subjectId?: string };
 }
 
 export default async function PicsCardWithPlaceId({ params, searchParams }: PageProps) {
-  const { id } = params;
+  const resolvedParams = await params;
+  const { id } = resolvedParams;
+  // const { id } = params;
   const { subjectId } = searchParams;
   const pics = await getPicsByBelongstoid(id);
   const place = await getPlaceById(id);

@@ -11,6 +11,7 @@ interface CardSubjectProps {
 }
 
 export default function CardSubject({ id, image, title, description }: CardSubjectProps) {
+  console.log("subjectId in CardSubject: ", id);
   const maxNumberOfChars = 80;
   const [showFullDescription, setShowFullDescription] = useState(false);
 

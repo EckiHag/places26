@@ -3,12 +3,14 @@ import { getPlaceById } from "@/app/actions/placeActions";
 import Link from "next/link";
 import CardPic from "@/components/cardsplaces/CardPic";
 
-type Props = {
-  params: Promise<{ id: string }>;
-};
+interface PageProps {
+  params: { id: string };
+  searchParams: { subjectId?: string };
+}
 
-export default async function PicsCardWithPlaceId({ params }: Props) {
-  const { id } = await params;
+export default async function PicsCardWithPlaceId({ params, searchParams }: PageProps) {
+  const { id } = params;
+  const { subjectId } = searchParams;
   const pics = await getPicsByBelongstoid(id);
   const place = await getPlaceById(id);
   const sortedPics = pics && pics.sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime());
@@ -17,10 +19,11 @@ export default async function PicsCardWithPlaceId({ params }: Props) {
   return (
     <>
       <div className="mb-6 text-center">
+        {/* Hier muss eine deleteAction ausgeführt werden */}
         <Link href={`/pics/editpic/new?placeId=${id}`}>New Pic</Link>
       </div>
-      <div className="mt-16 mb-8">
-        <Link href="/places" className="btn btn-accent">
+      <div className="mt- mb-2">
+        <Link href={`/places/${subjectId}`} className="btn btn-accent">
           Back to Places
         </Link>
       </div>

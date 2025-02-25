@@ -2,8 +2,6 @@
 import { prisma } from "@/lib/prisma";
 import { PicSchema, picSchema } from "@/lib/schemas/picSchema";
 import { Pics } from "@prisma/client";
-import fs from "fs";
-import path from "path";
 import { z } from "zod";
 
 // export type Slide = {
@@ -142,34 +140,57 @@ export async function updatePic(id: string, data: PicSchema): Promise<ActionResu
   }
 }
 
-export const deletePicWithId = async (image: string, id: string) => {
-  console.log("Die Funktion deletePicWithId wurde mit folgendem image aufgerufen: ", image);
-  try {
-    const filePath = path.join(process.cwd(), "public", image);
-
-    fs.unlink(filePath, (err) => {
-      if (err) {
-        console.error("Fehler beim Löschen der Datei:", err);
-        return;
-      }
-      console.log("Die Datei wurde erfolgreich gelöscht.");
-    });
-  } catch (error) {
-    console.error("Fehler beim Löschen des Bildes:", error);
-    return false;
-  }
+export const deletePicWithId = async (id: string, image: string): Promise<boolean> => {
+  console.log("deletePicWithId wurde mit folgendem image aufgerufen: ", image);
+  // Stelle sicher, dass du auf den Abschluss von deleteImage wartest, wenn nötig:
+  await deleteImage(image);
 
   try {
     const deletedPic = await prisma.pics.delete({
-      where: {
-        id: id,
-      },
+      where: { id },
     });
-
     console.log("Der Datensatz wurde erfolgreich gelöscht: ", deletedPic);
     return true;
   } catch (error) {
     console.error("Fehler beim Löschen des Datensatzes: ", error);
     return false;
+  }
+};
+
+export const deleteImage = async (imagePath: string): Promise<void> => {
+  try {
+    // Extrahiere den relativen Pfad, falls imagePath eine vollständige URL ist
+    let relativePath = imagePath;
+    try {
+      const url = new URL(imagePath);
+      relativePath = url.pathname; // z.B. "/uploads/p26imgpics/..."
+    } catch (err) {
+      console.log(err);
+      // Falls imagePath bereits relativ ist, passiert nichts
+    }
+
+    // URL-Encoding des relativen Pfads
+    const encodedPath = encodeURIComponent(relativePath);
+
+    // Definiere die Basis-URL (z.B. via Umgebungsvariable oder direkt)
+    const baseUrl = "https://beihaggis.de";
+    const fullUrl = `${baseUrl}/api/places26/p26picdelete/${encodedPath}`;
+    console.log("fullUrl: ", fullUrl);
+    const response = await fetch(fullUrl, {
+      method: "DELETE",
+      headers: {
+        "x-upload-password": "ga?m0Wq1jznVb<RU",
+      },
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      console.error("Fehler beim Löschen:", data.message);
+    } else {
+      console.log("Bild erfolgreich gelöscht:", data.message);
+    }
+  } catch (error) {
+    console.error("Request-Fehler:", error);
   }
 };

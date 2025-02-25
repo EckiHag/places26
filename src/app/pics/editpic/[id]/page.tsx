@@ -1,6 +1,6 @@
 "use client";
 
-import { Card, CardHeader, CardBody, Button, Input, Switch } from "@heroui/react";
+import { Card, CardHeader, CardBody, Button, Input, Switch, Checkbox } from "@heroui/react";
 import { Controller, useForm } from "react-hook-form";
 import Image from "next/image";
 import { ToastContainer, toast } from "react-toastify";
@@ -43,6 +43,7 @@ export default function PicForm() {
   const isUpdateMode = Boolean(picId && picId !== "new");
   // console.log("subjectId: ", picId);
   // console.log("isUpdateMode: ", isUpdateMode);
+  const [eingabeWeiter, setEingabeWeiter] = useState(false);
 
   const {
     handleSubmit,
@@ -148,7 +149,9 @@ export default function PicForm() {
 
       if (result?.status === "success") {
         toast.success(isUpdateMode ? "Pic updated successfully." : "Pic added successfully.");
-        router.push(`/pics/cards/${placeId}`);
+        if (eingabeWeiter) {
+          router.push(`/pics/cards/${placeId}`);
+        }
       } else {
         if (Array.isArray(result?.error)) {
           result.error.forEach((err) => {
@@ -186,9 +189,8 @@ export default function PicForm() {
               render={({ field }) => <Input {...field} placeholder="Enter title" isInvalid={!!errors.title} errorMessage={errors.title?.message} />}
             />
           </div>
-
           {/* Description */}
-          <div>
+          <div className="mt-7">
             <label className="block text-sm font-medium text-gray-700">Description</label>
             <Controller
               name="description"
@@ -197,7 +199,7 @@ export default function PicForm() {
             />
 
             {/* Copyright */}
-            <div>
+            <div className="mt-4">
               <label className="block text-sm font-medium text-gray-700">Copyright</label>
               <Controller
                 name="copyright"
@@ -207,7 +209,7 @@ export default function PicForm() {
             </div>
 
             {/* Ord */}
-            <div>
+            <div className="mt-4">
               <label className="block text-sm font-medium text-gray-700">Ord</label>
               <Controller
                 name="ord"
@@ -217,6 +219,7 @@ export default function PicForm() {
                   <Input
                     {...field}
                     type="number"
+                    className="w-24"
                     placeholder="Enter ord"
                     isInvalid={!!errors.ord}
                     errorMessage={errors.ord?.message}
@@ -228,34 +231,35 @@ export default function PicForm() {
             </div>
 
             {/* Video */}
-            <Controller
-              name="video"
-              control={control}
-              defaultValue={false} // Sicherstellen, dass es einen Startwert gibt
-              render={({ field: { value, onChange } }) => (
-                <Switch isSelected={value ?? false} onValueChange={(val) => onChange(val)}>
-                  Video aktivieren
-                </Switch>
-              )}
-            />
+            <div className="mt-4">
+              <Controller
+                name="video"
+                control={control}
+                defaultValue={false} // Sicherstellen, dass es einen Startwert gibt
+                render={({ field: { value, onChange } }) => (
+                  <Switch isSelected={value ?? false} onValueChange={(val) => onChange(val)}>
+                    Video aktivieren
+                  </Switch>
+                )}
+              />
+            </div>
           </div>
           {/* Existing Image */}
           {existingImage ? <Image src={existingImage} width={128} height={128} alt="Existing Image" className="rounded-md" /> : <p>No Image Available</p>}
-
           {/* File Upload */}
           <div>
             <label className="block text-sm font-medium text-gray-700">Upload Image</label>
             <input id="image" type="file" accept="image/*" onChange={handleFileChange} className="w-full border p-2 rounded" />
           </div>
-
           {/* Fehler-Nachricht vom Server */}
           {errors.root?.serverError && <p className="text-danger text-sm">{errors.root.serverError.message}</p>}
-
           {/* Submit Button */}
           <Button isLoading={isSubmitting} isDisabled={!isValid} fullWidth className="bg-ppics-400" type="submit">
             {isUpdateMode ? "Update Pic" : "Add Pic"}
           </Button>
-
+          <Checkbox name="EingabeWeiter" checked={eingabeWeiter} onChange={(e) => setEingabeWeiter(e.target.checked)}>
+            Eingabe beenden
+          </Checkbox>
           <ToastContainer />
         </form>
       </CardBody>

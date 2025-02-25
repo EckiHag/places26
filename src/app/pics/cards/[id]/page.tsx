@@ -4,12 +4,14 @@ import Link from "next/link";
 import CardPic from "@/components/cardsplaces/CardPic";
 
 // interface PageProps {
-//   params: { id: string };
+//   params: { id: string } | Promise<{ id: string }>;
 //   searchParams: { subjectId?: string };
 // }
 
-export default async function PicsCardWithPlaceId({ params, searchParams }: { params: { id: string }; searchParams: { subjectId?: string } }) {
-  const { id } = params;
+export default async function PicsCardWithPlaceId({ params, searchParams }: { params: { id: string } | Promise<{ id: string }>; searchParams: { subjectId?: string } }) {
+  // Await params in case it is a Promise
+  const resolvedParams = await params;
+  const { id } = resolvedParams;
   const { subjectId } = searchParams;
   const pics = await getPicsByBelongstoid(id);
   const place = await getPlaceById(id);

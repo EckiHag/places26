@@ -40,8 +40,8 @@ export default async function PlacesWithCreatorsubject(props: { params: paramsTy
     copyright: slide.copyright ?? undefined, // `null` in `undefined` umwandeln
   }));
 
-  console.log("Gallery pics (slides): ", slides);
-  console.log("Gallery pics (slides): Ende");
+  // console.log("Gallery pics (slides): ", slides);
+  // console.log("Gallery pics (slides): Ende");
 
   return <GalleryPage slides={slides ?? []} />;
 }

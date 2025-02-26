@@ -3,10 +3,13 @@ import { getPlaceById } from "@/app/actions/placeActions";
 import Link from "next/link";
 import CardPic from "@/components/cardsplaces/CardPic";
 
-export default async function PicsCardWithPlaceId({ searchParams }: { searchParams?: { [key: string]: string | string[] | undefined } }) {
-  const id = typeof searchParams?.id === "string" ? searchParams.id : undefined;
-  const subjectId = typeof searchParams?.subjectId === "string" ? searchParams.subjectId : undefined;
+interface Props {
+  searchParams: Promise<{ id: string; subjectId: string }>;
+}
 
+export default async function PicsCardWithPlaceId({ searchParams }: Props) {
+  // Warten auf die Auflösung des Promises
+  const { id, subjectId } = await searchParams;
   console.log("PicsCardWithPlaceId subjectId:", subjectId);
   console.log("PicsCardWithPlaceId id:", id);
 

@@ -12,7 +12,7 @@ export default async function PicsCardWithPlaceId({ searchParams }: { searchPara
 
   console.log("PicsCardWithPlaceId subjectId:", subjectId);
   console.log("PicsCardWithPlaceId id:", id);
-
+  console.log("Nur zum Verändern", id);
   if (!id) {
     return <div>Error: Missing place ID</div>;
   }

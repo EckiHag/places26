@@ -11,7 +11,7 @@ interface CardPlaceProps {
   description: string;
 }
 
-export default function CardPlace({ subjectId, id, image, title, description }: CardPlaceProps) {
+export default function CardPlace({ id, image, title, description }: CardPlaceProps) {
   return (
     <Card className="max-w-[400px] lg:max-w-[400px] min-h-[200px] mx-4  bg-pplaces-100">
       <CardHeader className="flex justify-between items-center gap-3 bg-pplaces-400 p-4">
@@ -32,7 +32,7 @@ export default function CardPlace({ subjectId, id, image, title, description }: 
         </CardBody>
       </ScrollShadow>
       <CardFooter className="flex flex-row gap-2 items-center justify-start mt-auto">
-        <Button as={Link} href={`/pics/cards/${id}?subjectId=${subjectId}`} variant="solid" className="bg-pplaces-400">
+        <Button as={Link} href={`/pics/cards/${id}`} variant="solid" className="bg-pplaces-400">
           PicCards
         </Button>
         <Button as={Link} href={`/pics/gallery/${id}`} variant="solid" className="bg-pplaces-400">

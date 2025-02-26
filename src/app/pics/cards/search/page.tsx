@@ -3,12 +3,24 @@ import { getPlaceById } from "@/app/actions/placeActions";
 import Link from "next/link";
 import CardPic from "@/components/cardsplaces/CardPic";
 
-type Props = {
-  params: Promise<{ id: string }>;
-};
+import { type NextRequest } from "next/server";
 
-export default async function PicsCardWithPlaceId({ params }: Props) {
-  const { id } = await params;
+// type Props = {
+//   params: Promise<{ id: string }>;
+// };
+
+export default async function PicsCardWithPlaceId(request: NextRequest) {
+  const subjectId = request.nextUrl.searchParams.get("subjectId");
+  // const searchParams = request.nextUrl.searchParams;
+  console.log("PicsCardWithPlaceId subjectId: ", subjectId);
+
+  let id = request.nextUrl.searchParams.get("id");
+  if (!id) {
+    id = "";
+  }
+  // const subjectId = searchParams.get("subjectId");
+
+  console.log("PicsCardWithPlaceId id: ", id);
   // const { id } = await params;
   const pics = await getPicsByBelongstoid(id);
   const place = await getPlaceById(id);

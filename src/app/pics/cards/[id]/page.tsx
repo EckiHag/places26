@@ -18,7 +18,6 @@ export default async function PicsCardWithPlaceId({ params }: Props) {
   return (
     <>
       <div className="mb-6 text-center">
-        {/* Hier muss eine deleteAction ausgeführt werden */}
         <Link href={`/pics/editpic/new?placeId=${id}`}>New Pic</Link>
       </div>
       <div className="mt- mb-2">

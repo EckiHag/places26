@@ -3,50 +3,47 @@ import { getPlaceById } from "@/app/actions/placeActions";
 import Link from "next/link";
 import CardPic from "@/components/cardsplaces/CardPic";
 
-import { type NextRequest } from "next/server";
+interface PicsCardWithPlaceIdProps {
+  searchParams: {
+    subjectId?: string;
+    id?: string;
+  };
+}
 
-// type Props = {
-//   params: Promise<{ id: string }>;
-// };
+export default async function PicsCardWithPlaceId({ searchParams }: PicsCardWithPlaceIdProps) {
+  const { subjectId, id } = searchParams;
 
-export default async function PicsCardWithPlaceId(request: NextRequest) {
-  const subjectId = request.nextUrl.searchParams.get("subjectId");
-  // const searchParams = request.nextUrl.searchParams;
-  console.log("PicsCardWithPlaceId subjectId: ", subjectId);
+  console.log("PicsCardWithPlaceId subjectId:", subjectId);
+  console.log("PicsCardWithPlaceId id:", id);
 
-  let id = request.nextUrl.searchParams.get("id");
   if (!id) {
-    id = "";
+    return <div>Error: Missing place ID</div>;
   }
-  // const subjectId = searchParams.get("subjectId");
 
-  console.log("PicsCardWithPlaceId id: ", id);
-  // const { id } = await params;
   const pics = await getPicsByBelongstoid(id);
   const place = await getPlaceById(id);
-  const sortedPics = pics && pics.sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime());
-  // const sortedPics = pics?.sort((a, b) => new Date(b.created.$date) - new Date(a.created.$date));
-  // console.log("pics: ", pics);
+  const sortedPics = pics?.sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime());
+
   return (
     <>
       <div className="mb-6 text-center">
-        {/* Hier muss eine deleteAction ausgeführt werden */}
         <Link href={`/pics/editpic/new?placeId=${id}`}>New Pic</Link>
       </div>
-      <div className="mt- mb-2">
-        <Link href="/places" className="btn btn-accent">
-          Back to Places
-        </Link>
+      <div className="mt-2 mb-2">
+        {subjectId && (
+          <Link href={`/places/${subjectId}`} className="btn btn-accent">
+            Back to Places
+          </Link>
+        )}
       </div>
 
       <div className="flex justify-center">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 max-w-6xl mx-auto justify-items-center">
-          {sortedPics &&
-            sortedPics.map((pic) => (
-              <div key={pic.id}>
-                <CardPic pic={pic} place={place} />
-              </div>
-            ))}
+          {sortedPics?.map((pic) => (
+            <div key={pic.id}>
+              <CardPic pic={pic} place={place} />
+            </div>
+          ))}
         </div>
       </div>
     </>

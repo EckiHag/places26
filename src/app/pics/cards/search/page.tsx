@@ -3,15 +3,9 @@ import { getPlaceById } from "@/app/actions/placeActions";
 import Link from "next/link";
 import CardPic from "@/components/cardsplaces/CardPic";
 
-interface PicsCardWithPlaceIdProps {
-  searchParams: {
-    subjectId?: string;
-    id?: string;
-  };
-}
-
-export default async function PicsCardWithPlaceId({ searchParams }: PicsCardWithPlaceIdProps) {
-  const { subjectId, id } = searchParams;
+export default async function PicsCardWithPlaceId({ searchParams }: { searchParams: Record<string, string | undefined> }) {
+  const id = searchParams?.id;
+  const subjectId = searchParams?.subjectId;
 
   console.log("PicsCardWithPlaceId subjectId:", subjectId);
   console.log("PicsCardWithPlaceId id:", id);

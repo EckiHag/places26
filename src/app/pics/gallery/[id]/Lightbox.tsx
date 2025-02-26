@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import Image from "next/image";
 
 interface LightboxProps {
   isOpen: boolean;
@@ -43,16 +44,18 @@ const Lightbox: React.FC<LightboxProps> = ({ isOpen, onClose, imageSrc }) => {
       }}
     >
       {imageSrc ? (
-        <img
-          src={imageSrc}
-          alt="Lightbox"
-          style={{
-            maxWidth: "90%",
-            maxHeight: "90%",
-            boxShadow: "0 4px 16px rgba(0, 0, 0, 0.5)",
-          }}
-        />
+        <Image src={imageSrc} alt={"Lightbox"} width={500} height={500} />
       ) : (
+        // <img
+        //   src={imageSrc}
+        //   alt="Lightbox"
+        //   style={{
+        //     maxWidth: "90%",
+        //     maxHeight: "90%",
+        //     boxShadow: "0 4px 16px rgba(0, 0, 0, 0.5)",
+        //   }}
+        // />
+
         <p style={{ color: "white" }}>Bild wird geladen...</p>
       )}
     </div>

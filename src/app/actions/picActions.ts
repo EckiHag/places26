@@ -141,9 +141,10 @@ export async function updatePic(id: string, data: PicSchema): Promise<ActionResu
 }
 
 export const deletePicWithId = async (id: string, image: string): Promise<boolean> => {
+  console.log("deletePicWithId wurde mit folgende id aufgerufen: ", id);
   console.log("deletePicWithId wurde mit folgendem image aufgerufen: ", image);
-  // Stelle sicher, dass du auf den Abschluss von deleteImage wartest, wenn nötig:
-  await deleteImage(image);
+
+  await deleteImageFile(image);
 
   try {
     const deletedPic = await prisma.pics.delete({
@@ -157,40 +158,22 @@ export const deletePicWithId = async (id: string, image: string): Promise<boolea
   }
 };
 
-export const deleteImage = async (imagePath: string): Promise<void> => {
+export const deleteImageFile = async (imagePath: string): Promise<void> => {
   try {
-    // Extrahiere den relativen Pfad, falls imagePath eine vollständige URL ist
-    let relativePath = imagePath;
-    try {
-      const url = new URL(imagePath);
-      relativePath = url.pathname; // z.B. "/uploads/p26imgpics/..."
-    } catch (err) {
-      console.log(err);
-      // Falls imagePath bereits relativ ist, passiert nichts
-    }
+    if (imagePath) {
+      const response = await fetch("https://beihaggis.de/api/places26/p26picdelete/delete", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ filePath: imagePath }),
+      });
 
-    // URL-Encoding des relativen Pfads
-    const encodedPath = encodeURIComponent(relativePath);
+      const data = await response.json();
+      console.log("Fetch: ", `https://beihaggis.de/api/places26/p26picdelete/delete`);
+      console.log("Server-Antwort:", data);
 
-    // Definiere die Basis-URL (z.B. via Umgebungsvariable oder direkt)
-    const baseUrl = "https://beihaggis.de";
-    const fullUrl = `${baseUrl}/api/places26/p26picdelete/${encodedPath}`;
-    console.log("fullUrl: ", fullUrl);
-    const response = await fetch(fullUrl, {
-      method: "DELETE",
-      headers: {
-        "x-upload-password": "ga?m0Wq1jznVb<RU",
-      },
-    });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      console.error("Fehler beim Löschen:", data.message);
-    } else {
-      console.log("Bild erfolgreich gelöscht:", data.message);
+      return data;
     }
   } catch (error) {
-    console.error("Request-Fehler:", error);
+    console.error("Fehler beim Löschen der Datei:", error);
   }
 };

@@ -151,6 +151,7 @@ export default function PicForm() {
         toast.success(isUpdateMode ? "Pic updated successfully." : "Pic added successfully.");
         if (eingabeWeiter) {
           router.push(`/pics/cards/${placeId}`);
+          // href={`/pics/cards/search?id=${id}&subjectId=${subjectId}`} Da stimmt was nicht
         }
       } else {
         if (Array.isArray(result?.error)) {

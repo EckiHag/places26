@@ -10,38 +10,39 @@ interface Props {
 export default async function PicsCardWithPlaceId({ searchParams }: Props) {
   // Warten auf die Auflösung des Promises
   const { id, subjectId } = await searchParams;
-  console.log("PicsCardWithPlaceId subjectId:", subjectId);
-  console.log("PicsCardWithPlaceId id:", id);
+  // console.log("PicsCardWithPlaceId subjectId:", subjectId);
+  // console.log("PicsCardWithPlaceId id:", id);
 
-  console.log("PicsCardWithPlaceId subjectId:", subjectId);
-  console.log("PicsCardWithPlaceId id:", id);
-  console.log("Nur zum Verändern", id);
+  // console.log("PicsCardWithPlaceId subjectId:", subjectId);
+  // console.log("PicsCardWithPlaceId id:", id);
   if (!id) {
     return <div>Error: Missing place ID</div>;
   }
 
-  const pics = await getPicsByBelongstoid(id);
   const place = await getPlaceById(id);
+  const pics = await getPicsByBelongstoid(id);
   const sortedPics = pics?.sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime());
 
   return (
     <>
       <div className="mb-6 text-center">
-        <Link href={`/pics/editpic/new?placeId=${id}`}>New Pic</Link>
-      </div>
-      <div className="mt-2 mb-2">
-        {subjectId && (
-          <Link href={`/places/${subjectId}`} className="btn btn-accent">
-            Back to Places
+        <div className="flex justify-center space-x-4">
+          <Link href={`/pics/editpic/new?placeId=${id}`} className="mt-2 px-4 py-2 bg-pprimary-400 text-white rounded-lg shadow-md hover:bg-pprimary-300 transition">
+            New Pic
           </Link>
-        )}
+          {subjectId && (
+            <Link href={`/places/${subjectId}`} className="mt-2 px-4 py-2 bg-pprimary-400 text-white rounded-lg shadow-md hover:bg-pprimary-300 transition">
+              Back to Places
+            </Link>
+          )}
+        </div>
       </div>
 
       <div className="flex justify-center">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 max-w-6xl mx-auto justify-items-center">
           {sortedPics?.map((pic) => (
             <div key={pic.id}>
-              <CardPic pic={pic} place={place} />
+              <CardPic place={place} pic={pic} />
             </div>
           ))}
         </div>

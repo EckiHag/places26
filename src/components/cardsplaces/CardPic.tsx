@@ -6,19 +6,19 @@ import { useRouter } from "next/navigation";
 import { ToastContainer, toast } from "react-toastify";
 
 interface CardPicProps {
+  place: {
+    title: string;
+    description: string;
+  } | null;
   pic: {
     id: string;
     title: string;
     description: string;
     image?: string | null; // Hier `null` explizit erlauben
   };
-  place: {
-    title: string;
-    description: string;
-  } | null;
 }
 
-export default function CardPic({ pic, place }: CardPicProps) {
+export default function CardPic({ place, pic }: CardPicProps) {
   const router = useRouter();
   // console.log("Id von pic für die Card: ", id);
   if (!pic) {
@@ -30,16 +30,17 @@ export default function CardPic({ pic, place }: CardPicProps) {
     if (pic.image) {
       const userConfirmed = window.confirm("Möchten Sie das Bild wirklich löschen?");
       if (!userConfirmed) {
-        return; // Abbruch, wenn der Benutzer nicht bestätigt
+        return;
       }
-      const result = await deletePicWithId(pic.id, `https://beihaggis.de${pic.image.replace(/^.\//, "")}`);
+      const result = await deletePicWithId(pic.id, pic.image);
       console.log("Result of deletePic", result);
       if (result == true) {
         toast("Bild wurde erfolgreich gelöscht");
-        // 2025-02-22_20-16-13-7b399130-f151-11ef-bfe8-bf16ee8b31ff.jpg
       }
       router.refresh();
     }
+
+    router.refresh();
   };
 
   return (

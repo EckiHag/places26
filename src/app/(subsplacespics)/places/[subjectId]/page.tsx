@@ -1,4 +1,5 @@
 import { getPlacesByCreatorsubject } from "@/app/actions/placeActions";
+import { getSubjectById } from "@/app/actions/subjectActions";
 import CardPlace from "@/components/cardsplaces/CardPlace";
 import Link from "next/link";
 
@@ -9,12 +10,14 @@ type Props = {
 export default async function PlacesList({ params }: Props) {
   const { subjectId } = await params;
   console.log("subjectId in PlacesList: ", subjectId);
+  const subjects = await getSubjectById(subjectId);
   const places = await getPlacesByCreatorsubject(subjectId);
   const sortedPlaces = places && places.sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime());
 
   return (
     <div className="mx-auto flex justify-center flex-col mt-3">
       <div className="mb-6 text-center">
+        <span className="mr-2 text-2xl">{subjects?.title}</span>
         <Link href={`/subjects`} className="mt-2 mr-2 px-4 py-2 bg-pprimary-400 text-white rounded-lg shadow-md hover:bg-pprimary-300 transition">
           Back to Subjects
         </Link>

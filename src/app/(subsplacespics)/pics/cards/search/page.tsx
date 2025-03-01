@@ -21,8 +21,9 @@ export default async function PicsCardWithPlaceId({ searchParams }: Props) {
 
   const place = await getPlaceById(placeId);
   const pics = await getPicsByBelongstoid(placeId);
-  const sortedPics = pics?.sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime());
-
+  // const sortedPics = pics?.sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime());
+  const sortedPics = pics?.sort((a, b) => a.ord - b.ord);
+  // const sortedPics = pics?.sort((a, b) => b.ord - a.ord);
   return (
     <>
       <div className="mb-6 text-center">

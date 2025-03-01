@@ -44,7 +44,7 @@ const Lightbox: React.FC<LightboxProps> = ({ isOpen, onClose, imageSrc }) => {
       }}
     >
       {imageSrc ? (
-        <Image src={imageSrc} alt={"Lightbox"} width={500} height={500} />
+        <Image src={imageSrc} alt={"Lightbox"} width={900} height={900} />
       ) : (
         // <img
         //   src={imageSrc}

@@ -8,6 +8,7 @@ export const placeSchema = z.object({
   image: z.string().optional(), // Optionales Feld für den Bildpfad
   imgwidth: z.number().positive("Image width must be a positive number").optional(),
   imgheight: z.number().positive("Image height must be a positive number").optional(),
+  ord: z.number().int().default(0), // Standardwert 0 für die Reihenfolge
 });
 
 // Update-Schema: Gleiche Struktur, aber ohne "image"

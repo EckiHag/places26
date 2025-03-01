@@ -51,7 +51,7 @@ export default function PlaceForm() {
   } = useForm<PlaceSchema | PlaceUpdateSchema>({
     resolver: zodResolver(isUpdateMode ? placeUpdateSchema : placeSchema),
     mode: "onTouched",
-    defaultValues: { title: "", description: "", creator: "", creatorsubject: "" }, // Kein image bei default
+    defaultValues: { title: "", description: "", creator: "", creatorsubject: "", ord: 0 }, // Kein image bei default
   });
 
   useEffect(() => {
@@ -194,6 +194,28 @@ export default function PlaceForm() {
               name="description"
               control={control}
               render={({ field }) => <Input {...field} placeholder="Enter description" isInvalid={!!errors.description} errorMessage={errors.description?.message} />}
+            />
+          </div>
+
+          {/* Ord */}
+          <div className="mt-4">
+            <label className="block text-sm font-medium text-gray-700">Ord</label>
+            <Controller
+              name="ord"
+              control={control}
+              rules={{ required: "Ord is required" }} // Falls erforderlich
+              render={({ field }) => (
+                <Input
+                  {...field}
+                  type="number"
+                  className="w-24"
+                  placeholder="Enter ord"
+                  isInvalid={!!errors.ord}
+                  errorMessage={errors.ord?.message}
+                  value={field.value?.toString() || ""} // Zahl als String umwandeln
+                  onChange={(e) => field.onChange(e.target.value ? Number(e.target.value) : "")} // Wert als Number speichern
+                />
+              )}
             />
           </div>
 

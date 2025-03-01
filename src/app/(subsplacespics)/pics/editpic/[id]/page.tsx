@@ -49,6 +49,7 @@ export default function PicForm() {
   const {
     handleSubmit,
     setValue,
+    watch,
     control,
     formState: { errors, isValid, isSubmitting },
   } = useForm<PicSchema | PicUpdateSchema>({
@@ -153,6 +154,10 @@ export default function PicForm() {
         if (eingabeWeiter) {
           router.push(`/pics/cards/search?placeId=${placeId}&subjectId=${subjectId}`);
           // href={`/pics/cards/search?id=${id}&subjectId=${subjectId}`} Da stimmt was nicht
+        } else {
+          // Aktuellen Wert abrufen und um 5 erhöhen
+          const currentOrd = watch("ord") || 0; // Falls undefined, als 0 behandeln
+          setValue("ord", currentOrd + 10);
         }
       } else {
         if (Array.isArray(result?.error)) {

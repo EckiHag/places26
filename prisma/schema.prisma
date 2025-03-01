@@ -64,7 +64,7 @@ model Subjects {
   description     String      @db.Text
   creator         String      // Assuming creator is the ID of the User
   created         DateTime    @default(now())
-  ord             DateTime    @default(now())
+  ord             Int         @default(0)
   group           String
   imgwidth        Int?
   imgheight       Int?
@@ -84,6 +84,7 @@ model Places {
   creator         String      // Assuming creator is the ID of the User
   creatorsubject  String      // Assuming creatorsubject is the ID of the Subject
   created         DateTime    @default(now())
+  ord             Int         @default(0)
   imgwidth        Int?
   imgheight       Int?
 }

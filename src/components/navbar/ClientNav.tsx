@@ -37,7 +37,6 @@ export default function ClientNav({ session }: ClientNavProps) {
         <div className="hidden md:flex gap-4">
           {session?.user?.role === "ADMIN" && <NavLink href="/subjects" label="Subjects" />}
           {session?.user?.role === "ADMIN" && <NavLink href="/places" label="Places" />}
-          {session?.user?.role === "ADMIN" && <NavLink href="/pics" label="Pics" />}
           {session?.user?.role === "ADMIN" && <NavLink href="/quiz" label="Quiz" />}
           {session?.user?.role === "ADMIN" && <NavLink href="/conv" label="conv" />}
           <NavLink href="/lb" label="LB" />
@@ -75,7 +74,6 @@ export default function ClientNav({ session }: ClientNavProps) {
         <div className="absolute right-0 top-full w-32 bg-gradient-to-r from-pprimary-600 to-pprimary-700 p-4 flex flex-col items-center space-y-2 shadow-lg">
           {session?.user?.role === "ADMIN" && <NavLink href="/subjects" label="Subjects" isMobile onClick={closeMenu} />}
           {session?.user?.role === "ADMIN" && <NavLink href="/places" label="Places" isMobile onClick={closeMenu} />}
-          {session?.user?.role === "ADMIN" && <NavLink href="/pics" label="Pics" isMobile onClick={closeMenu} />}
           {session?.user?.role === "ADMIN" && <NavLink href="/quiz" label="Quiz" isMobile onClick={closeMenu} />}
           {session?.user?.role === "ADMIN" && <NavLink href="/conv" label="conv" isMobile onClick={closeMenu} />}
           <NavLink href="/lb" label="LB" isMobile onClick={closeMenu} />

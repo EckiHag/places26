@@ -4,30 +4,33 @@ import Link from "next/link";
 import CardPic from "@/components/cardsplaces/CardPic";
 
 interface Props {
-  searchParams: Promise<{ id: string; subjectId: string }>;
+  searchParams: Promise<{ placeId: string; subjectId: string }>;
 }
 
 export default async function PicsCardWithPlaceId({ searchParams }: Props) {
   // Warten auf die Auflösung des Promises
-  const { id, subjectId } = await searchParams;
+  const { placeId, subjectId } = await searchParams;
   // console.log("PicsCardWithPlaceId subjectId:", subjectId);
   // console.log("PicsCardWithPlaceId id:", id);
 
   // console.log("PicsCardWithPlaceId subjectId:", subjectId);
   // console.log("PicsCardWithPlaceId id:", id);
-  if (!id) {
+  if (!placeId) {
     return <div>Error: Missing place ID</div>;
   }
 
-  const place = await getPlaceById(id);
-  const pics = await getPicsByBelongstoid(id);
+  const place = await getPlaceById(placeId);
+  const pics = await getPicsByBelongstoid(placeId);
   const sortedPics = pics?.sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime());
 
   return (
     <>
       <div className="mb-6 text-center">
         <div className="flex justify-center space-x-4">
-          <Link href={`/pics/editpic/new?placeId=${id}`} className="mt-2 px-4 py-2 bg-pprimary-400 text-white rounded-lg shadow-md hover:bg-pprimary-300 transition">
+          <Link
+            href={`/pics/editpic/new?placeId=${placeId}&subjectId=${subjectId}`}
+            className="mt-2 px-4 py-2 bg-pprimary-400 text-white rounded-lg shadow-md hover:bg-pprimary-300 transition"
+          >
             New Pic
           </Link>
           {subjectId && (

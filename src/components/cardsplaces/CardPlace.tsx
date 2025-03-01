@@ -5,20 +5,20 @@ import { FiEdit } from "react-icons/fi";
 
 interface CardPlaceProps {
   subjectId: string;
-  id: string;
+  placeId: string;
   image: string | null;
   title: string;
   description: string;
 }
 
-export default function CardPlace({ subjectId, id, image, title, description }: CardPlaceProps) {
+export default function CardPlace({ subjectId, placeId, image, title, description }: CardPlaceProps) {
   return (
     <Card className="max-w-[400px] lg:max-w-[400px] min-h-[200px] mx-4  bg-pplaces-100">
       <CardHeader className="flex justify-between items-center gap-3 bg-pplaces-400 p-4">
         <span className="text-2lg leading-relaxed text-center mt-4">{title}</span>
         <div className="flex flex-col items-end space-y-2">
           <Tooltip content="Edit ✏️">
-            <Link href={`/places/editplace/${id}`}>
+            <Link href={`/places/editplace/${placeId}`}>
               <FiEdit size={25} className="text-pplaces-900" />
             </Link>
           </Tooltip>
@@ -35,10 +35,10 @@ export default function CardPlace({ subjectId, id, image, title, description }: 
         {/* <Button as={Link} href={`/pics/cards/${id}`} variant="solid" className="bg-pplaces-400">
           PicCards
         </Button> */}
-        <Button as={Link} href={`/pics/cards/search?id=${id}&subjectId=${subjectId}`} variant="solid" className="bg-pplaces-400">
+        <Button as={Link} href={`/pics/cards/search?placeId=${placeId}&subjectId=${subjectId}`} variant="solid" className="bg-pplaces-400">
           PicCards
         </Button>
-        <Button as={Link} href={`/pics/gallery/${id}`} variant="solid" className="bg-pplaces-400">
+        <Button as={Link} href={`/pics/gallery/${placeId}`} variant="solid" className="bg-pplaces-400">
           PicGallery
         </Button>
       </CardFooter>

@@ -4,14 +4,14 @@ import { Avatar, Card, CardHeader, CardBody, Divider, Link, Tooltip } from "@her
 import { FiEdit } from "react-icons/fi";
 
 interface CardSubjectProps {
-  id: string;
+  subjectId: string;
   image: string;
   title: string;
   description: string;
 }
 
-export default function CardSubject({ id, image, title, description }: CardSubjectProps) {
-  console.log("subjectId in CardSubject: ", id);
+export default function CardSubject({ subjectId, image, title, description }: CardSubjectProps) {
+  console.log("subjectId in CardSubject: ", subjectId);
   const maxNumberOfChars = 80;
   const [showFullDescription, setShowFullDescription] = useState(false);
 
@@ -20,7 +20,7 @@ export default function CardSubject({ id, image, title, description }: CardSubje
   return (
     <Card className="max-w-[300px] lg:max-w-[400px] min-h-[200px] mx-4">
       <CardHeader className="flex justify-between items-center gap-3 bg-pprimary-400 p-4">
-        <Link href={`/places/${id}`} className="flex items-center gap-3 ml-3">
+        <Link href={`/places/${subjectId}`} className="flex items-center gap-3 ml-3">
           <Avatar
             className="w-20 h-20 transition-transform rounded-full bg-pprimary-400"
             style={{ borderColor: "#FFFFFF", borderWidth: "2px" }}
@@ -34,7 +34,7 @@ export default function CardSubject({ id, image, title, description }: CardSubje
         </div>
         <div className="flex flex-col items-end space-y-2">
           <Tooltip content="Edit ✏️">
-            <Link href={`/subjects/editsubject/${id}`}>
+            <Link href={`/subjects/editsubject/${subjectId}`}>
               <FiEdit size={25} className="text-primary-900" />
             </Link>
           </Tooltip>

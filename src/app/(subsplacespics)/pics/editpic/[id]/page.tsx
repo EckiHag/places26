@@ -34,6 +34,7 @@ export default function PicForm() {
   // const userId = session?.user?.id;
   const searchParams = useSearchParams();
   const placeId = searchParams.get("placeId");
+  const subjectId = searchParams.get("subjectId");
   const { id } = useParams();
   const picId = Array.isArray(id) ? id[0] : id ?? "";
 
@@ -150,7 +151,7 @@ export default function PicForm() {
       if (result?.status === "success") {
         toast.success(isUpdateMode ? "Pic updated successfully." : "Pic added successfully.");
         if (eingabeWeiter) {
-          router.push(`/pics/cards/${placeId}`);
+          router.push(`/pics/cards/search?placeId=${placeId}&subjectId=${subjectId}`);
           // href={`/pics/cards/search?id=${id}&subjectId=${subjectId}`} Da stimmt was nicht
         }
       } else {

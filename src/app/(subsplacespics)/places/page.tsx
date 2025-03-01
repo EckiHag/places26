@@ -16,7 +16,7 @@ export default async function PlacesList() {
           {sortedPlaces &&
             sortedPlaces.map((place) => (
               <div key={place.id}>
-                <CardPlace subjectId="" id={place.id} image={place.image} title={place.title} description={place.description} />
+                <CardPlace subjectId="" placeId={place.id} image={place.image} title={place.title} description={place.description} />
               </div>
             ))}
         </div>

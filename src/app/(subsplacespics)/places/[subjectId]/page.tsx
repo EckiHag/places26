@@ -15,6 +15,10 @@ export default async function PlacesList({ params }: Props) {
   return (
     <div className="mx-auto flex justify-center flex-col mt-3">
       <div className="mb-6 text-center">
+        <Link href={`/subjects`} className="mt-2 mr-2 px-4 py-2 bg-pprimary-400 text-white rounded-lg shadow-md hover:bg-pprimary-300 transition">
+          Back to Subjects
+        </Link>
+
         <Link href={`/places/editplace/new?subjectId=${subjectId}`} className="mt-2 px-4 py-2 bg-pprimary-400 text-white rounded-lg shadow-md hover:bg-pprimary-300 transition">
           New Place
         </Link>
@@ -25,7 +29,7 @@ export default async function PlacesList({ params }: Props) {
           {sortedPlaces &&
             sortedPlaces.map((place) => (
               <div key={place.id}>
-                <CardPlace subjectId={subjectId} id={place.id} image={place.image} title={place.title} description={place.description} />
+                <CardPlace subjectId={subjectId} placeId={place.id} image={place.image} title={place.title} description={place.description} />
               </div>
             ))}
         </div>

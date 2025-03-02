@@ -24,7 +24,7 @@ export default async function PlacesWithCreatorsubject(props: { params: paramsTy
   }
 
   const pics = (await getPicsByBelongstoid(id)) ?? [];
-  const sortedPics = pics && pics.sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime());
+  const sortedPics = pics?.sort((a, b) => a.ord - b.ord); // von 1 nach  100 ...
 
   // const sls = await getPicsTwenty();
   // console.log("sls: ", sls);

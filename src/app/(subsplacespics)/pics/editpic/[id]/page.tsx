@@ -144,6 +144,7 @@ export default function PicForm() {
 
       let result;
       if (isUpdateMode) {
+        console.log("picId:", picId);
         result = await updatePic(picId, picData);
       } else {
         result = await addPic(picData);
@@ -151,7 +152,7 @@ export default function PicForm() {
 
       if (result?.status === "success") {
         toast.success(isUpdateMode ? "Pic updated successfully." : "Pic added successfully.");
-        if (eingabeWeiter) {
+        if (eingabeWeiter || isUpdateMode) {
           router.push(`/pics/cards/search?placeId=${placeId}&subjectId=${subjectId}`);
           // href={`/pics/cards/search?id=${id}&subjectId=${subjectId}`} Da stimmt was nicht
         } else {
@@ -179,7 +180,7 @@ export default function PicForm() {
       <CardHeader className="flex flex-col items-center justify-center">
         <div className="flex flex-col gap-2 items-center text-ppics-400">
           <div className="flex flex-row items-center gap-3">
-            <div>Bearbeite Pic für Place Nr:: {placeId}</div>
+            <div>Bearbeite Pic für Place Nr.: {placeId}</div>
             <h1 className="text-3xl font-semibold">{isUpdateMode ? "Update Pic" : "Add Pic"}</h1>
           </div>
           <p className="text-ppics-400">Manage your pics</p>
@@ -264,9 +265,11 @@ export default function PicForm() {
           <Button isLoading={isSubmitting} isDisabled={!isValid} fullWidth className="bg-ppics-400" type="submit">
             {isUpdateMode ? "Update Pic" : "Add Pic"}
           </Button>
-          <Checkbox name="EingabeWeiter" checked={eingabeWeiter} onChange={(e) => setEingabeWeiter(e.target.checked)}>
-            Eingabe beenden
-          </Checkbox>
+          {!isUpdateMode && (
+            <Checkbox name="EingabeWeiter" checked={eingabeWeiter} onChange={(e) => setEingabeWeiter(e.target.checked)}>
+              Eingabe beenden
+            </Checkbox>
+          )}
           <ToastContainer />
         </form>
       </CardBody>

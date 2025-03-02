@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const picSchema = z.object({
   title: z.string().min(3, "Title must be at least 3 characters long"),
-  description: z.string().min(10, "Description must be at least 10 characters long"),
+  description: z.string().min(7, "Description must be at least 10 characters long"),
   belongstoid: z.string().optional(), // Optional weil vom Code übergeben
   image: z.string().optional(), // Optionales Feld für den Bildpfad
   imgwidth: z.number().positive("Image width must be a positive number").optional(),

@@ -114,7 +114,7 @@ export async function updatePic(id: string, data: PicSchema): Promise<ActionResu
     const { title, description, image, copyright, ord, video } = validated.data;
 
     // Prüfen, ob das Fach existiert
-    const existingPic = await prisma.places.findUnique({ where: { id } });
+    const existingPic = await prisma.pics.findUnique({ where: { id } });
 
     if (!existingPic) {
       return { status: "error", error: "Pic not found" };

@@ -193,8 +193,16 @@ export default function PlaceForm() {
             <Controller
               name="description"
               control={control}
-              render={({ field }) => <Input {...field} placeholder="Enter description" isInvalid={!!errors.description} errorMessage={errors.description?.message} />}
+              render={({ field }) => (
+                <textarea
+                  {...field}
+                  rows={3}
+                  className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 ${errors.description ? "border-red-500" : ""}`}
+                  placeholder="Enter description"
+                />
+              )}
             />
+            {errors.description && <p className="mt-1 text-sm text-red-500">{errors.description.message}</p>}
           </div>
 
           {/* Ord */}

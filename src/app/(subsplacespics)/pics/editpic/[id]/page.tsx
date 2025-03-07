@@ -205,53 +205,49 @@ export default function PicForm() {
               control={control}
               render={({ field }) => <Input {...field} placeholder="Enter description" isInvalid={!!errors.description} errorMessage={errors.description?.message} />}
             />
-
-            {/* Copyright */}
-            <div className="mt-4">
-              <label className="block text-sm font-medium text-gray-700">Copyright</label>
-              <Controller
-                name="copyright"
-                control={control}
-                render={({ field }) => <Input {...field} placeholder="Enter copyright" isInvalid={!!errors.copyright} errorMessage={errors.copyright?.message} />}
-              />
-            </div>
-
-            {/* Ord */}
-            <div className="mt-4">
-              <label className="block text-sm font-medium text-gray-700">Ord</label>
-              <Controller
-                name="ord"
-                control={control}
-                rules={{ required: "Ord is required" }} // Falls erforderlich
-                render={({ field }) => (
-                  <Input
-                    {...field}
-                    type="number"
-                    className="w-24"
-                    placeholder="Enter ord"
-                    isInvalid={!!errors.ord}
-                    errorMessage={errors.ord?.message}
-                    value={field.value?.toString() || ""} // Zahl als String umwandeln
-                    onChange={(e) => field.onChange(e.target.value ? Number(e.target.value) : "")} // Wert als Number speichern
-                  />
-                )}
-              />
-            </div>
-
-            {/* Video */}
-            <div className="mt-4">
-              <Controller
-                name="video"
-                control={control}
-                defaultValue={false} // Sicherstellen, dass es einen Startwert gibt
-                render={({ field: { value, onChange } }) => (
-                  <Switch isSelected={value ?? false} onValueChange={(val) => onChange(val)}>
-                    Video aktivieren
-                  </Switch>
-                )}
-              />
-            </div>
           </div>
+          {/* Copyright */}
+          <div className="mt-4">
+            <label className="block text-sm font-medium text-gray-700">Copyright</label>
+            <Controller
+              name="copyright"
+              control={control}
+              render={({ field }) => <Input {...field} placeholder="Enter copyright" isInvalid={!!errors.copyright} errorMessage={errors.copyright?.message} />}
+            />
+          </div>
+
+          {/* Ord */}
+          <div className="mt-4">
+            <label className="block text-sm font-medium text-gray-700">Ord</label>
+            <Controller
+              name="description"
+              control={control}
+              render={({ field }) => (
+                <textarea
+                  {...field}
+                  rows={3}
+                  className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 ${errors.description ? "border-red-500" : ""}`}
+                  placeholder="Enter description"
+                />
+              )}
+            />
+            {errors.description && <p className="mt-1 text-sm text-red-500">{errors.description.message}</p>}
+          </div>
+
+          {/* Video */}
+          <div className="mt-4">
+            <Controller
+              name="video"
+              control={control}
+              defaultValue={false} // Sicherstellen, dass es einen Startwert gibt
+              render={({ field: { value, onChange } }) => (
+                <Switch isSelected={value ?? false} onValueChange={(val) => onChange(val)}>
+                  Video aktivieren
+                </Switch>
+              )}
+            />
+          </div>
+
           {/* Existing Image */}
           {existingImage ? <Image src={existingImage} width={128} height={128} alt="Existing Image" className="rounded-md" /> : <p>No Image Available</p>}
           {/* File Upload */}

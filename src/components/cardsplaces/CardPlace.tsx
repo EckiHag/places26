@@ -38,6 +38,9 @@ export default function CardPlace({ subjectId, placeId, image, title, descriptio
         <Button as={Link} href={`/pics/cards/search?placeId=${placeId}&subjectId=${subjectId}`} variant="solid" className="bg-pplaces-400">
           PicCards
         </Button>
+        <Button as={Link} href={`/pics/cards/searchFormat2?placeId=${placeId}&subjectId=${subjectId}`} variant="solid" className="bg-pplaces-400">
+          C2
+        </Button>
         <Button as={Link} href={`/pics/gallery/${placeId}`} variant="solid" className="bg-pplaces-400">
           PicGallery
         </Button>

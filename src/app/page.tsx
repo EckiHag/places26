@@ -29,7 +29,7 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="py-4 text-center bg-gray-800 text-sm">© 2024 Places26 co by EckiHag | Bilder: EckiHag</footer>
+      <footer className="py-4 text-center bg-gray-800 text-sm">© 2025 Places26 co by EckiHag | Bilder: EckiHag</footer>
     </div>
   );
 }

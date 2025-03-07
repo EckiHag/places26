@@ -26,20 +26,18 @@ export default async function PicsCardWithPlaceId({ searchParams }: Props) {
   // const sortedPics = pics?.sort((a, b) => b.ord - a.ord);
   return (
     <>
-      <div className="mb-6 text-center">
-        <div className="flex justify-center space-x-4">
-          <Link
-            href={`/pics/editpic/new?placeId=${placeId}&subjectId=${subjectId}`}
-            className="mt-2 px-4 py-2 bg-pprimary-400 text-white rounded-lg shadow-md hover:bg-pprimary-300 transition"
-          >
-            New Pic
+      <div className="mx-auto flex justify-center flex-col mt-3">
+        <Link
+          href={`/pics/editpic/new?placeId=${placeId}&subjectId=${subjectId}`}
+          className="mt-2 px-4 py-2 bg-pprimary-400 text-white rounded-lg shadow-md hover:bg-pprimary-300 transition"
+        >
+          New Pic
+        </Link>
+        {subjectId && (
+          <Link href={`/places/${subjectId}`} className="mt-2 px-4 py-2 bg-pprimary-400 text-white rounded-lg shadow-md hover:bg-pprimary-300 transition">
+            Back to Places
           </Link>
-          {subjectId && (
-            <Link href={`/places/${subjectId}`} className="mt-2 px-4 py-2 bg-pprimary-400 text-white rounded-lg shadow-md hover:bg-pprimary-300 transition">
-              Back to Places
-            </Link>
-          )}
-        </div>
+        )}
       </div>
 
       <div className="flex justify-center">

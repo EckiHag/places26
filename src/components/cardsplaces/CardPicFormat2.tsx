@@ -1,11 +1,10 @@
 "use client";
-import { Card, CardHeader, CardBody, Tooltip, Divider, Button, Modal, ModalContent, ModalHeader, ModalBody, Accordion, AccordionItem, CardFooter } from "@heroui/react";
+import { Card, CardHeader, CardBody, Tooltip, Divider, Button, Modal, ModalContent, ModalHeader, ModalBody, Accordion, AccordionItem, CardFooter, Image } from "@heroui/react";
 import { MdDelete } from "react-icons/md";
 import { deletePicWithId } from "@/app/actions/picActions";
 import { useRouter } from "next/navigation";
 import { ToastContainer, toast } from "react-toastify";
 import { useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { FiEdit } from "react-icons/fi";
 
@@ -63,7 +62,7 @@ export default function CardPic({ subjectId, place, pic }: CardPicProps) {
   </Link>;
   return (
     <>
-      <Card className="mt-5 w-full min-w-[400px] md:min-w-[650px] lg:min-w-[800px] h-[600px] flex flex-col">
+      <Card className="mt-5 max-w-[400px] lg:max-w-[400px] min-h-[650px] mx-4">
         <CardHeader className="flex justify-between items-center bg-red-600 p-4"></CardHeader>
         <Divider />
         <CardBody className="bg-white flex-grow flex justify-center items-center">
@@ -71,13 +70,20 @@ export default function CardPic({ subjectId, place, pic }: CardPicProps) {
             <div className="w-full max-w-[500px] h-full max-h-[400px] flex justify-center">
               <Image
                 alt="NextUI place Image"
+                src={`https://beihaggis.de/${pic.image?.replace(/^.\//, "")}`}
+                width={350}
+                className="cursor-pointer w-full max-w-full h-auto object-contain"
+                onClick={() => setIsOpen(true)}
+              />
+              {/* <Image
+                alt="NextUI place Image"
                 src={`https://beihaggis.de/${pic.image.replace(/^.\//, "")}`}
                 width={0} // Entfernt die feste Breite
                 height={0} // Entfernt die feste Höhe
                 sizes="100vw" // Passt das Bild an die Bildschirmbreite an
                 className="cursor-pointer w-full max-w-full h-auto object-contain"
                 onClick={() => setIsOpen(true)}
-              />
+              /> */}
             </div>
           )}
         </CardBody>

@@ -45,6 +45,7 @@ export default function PicForm() {
   // console.log("subjectId: ", picId);
   // console.log("isUpdateMode: ", isUpdateMode);
   const [eingabeWeiter, setEingabeWeiter] = useState(false);
+  const [skipordmi1, setSkipordmi1] = useState(false);
 
   const {
     handleSubmit,
@@ -158,7 +159,11 @@ export default function PicForm() {
         } else {
           // Aktuellen Wert abrufen und um 5 erhöhen
           const currentOrd = watch("ord") || 0; // Falls undefined, als 0 behandeln
-          setValue("ord", currentOrd + 10);
+          if (skipordmi1) {
+            setValue("ord", currentOrd + -1);
+          } else {
+            setValue("ord", currentOrd + 10);
+          }
         }
       } else {
         if (Array.isArray(result?.error)) {
@@ -217,21 +222,30 @@ export default function PicForm() {
           </div>
 
           {/* Ord */}
-          <div className="mt-4">
+          <div className="mt-4 flex flex-row">
             <label className="block text-sm font-medium text-gray-700">Ord</label>
             <Controller
-              name="description"
+              name="ord"
               control={control}
+              rules={{ required: "Ord is required" }} // Falls erforderlich
               render={({ field }) => (
-                <textarea
+                <Input
                   {...field}
-                  rows={3}
-                  className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 ${errors.description ? "border-red-500" : ""}`}
-                  placeholder="Enter description"
+                  type="number"
+                  className="w-24"
+                  placeholder="Enter ord"
+                  isInvalid={!!errors.ord}
+                  errorMessage={errors.ord?.message}
+                  value={field.value?.toString() || ""} // Zahl als String umwandeln
+                  onChange={(e) => field.onChange(e.target.value ? Number(e.target.value) : "")} // Wert als Number speichern
                 />
               )}
             />
-            {errors.description && <p className="mt-1 text-sm text-red-500">{errors.description.message}</p>}
+            {!isUpdateMode && (
+              <Checkbox className="ml-4" name="skipordmi1" checked={skipordmi1} onChange={(e) => setSkipordmi1(e.target.checked)}>
+                Skip ord -1
+              </Checkbox>
+            )}
           </div>
 
           {/* Video */}

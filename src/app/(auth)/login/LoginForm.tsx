@@ -34,8 +34,8 @@ export default function LoginForm() {
   };
 
   return (
-    <Card className="w-2/5 mx-auto">
-      <CardHeader className="flex flex-col items-center justify-center">
+    <Card className="w-full max-w-[400px] lg:max-w-[400px] min-h-[200px] mx-auto">
+      <CardHeader>
         <div className="flex flex-col gap-2 items-center text-pprimary-600">
           <div className="flex flex-row items-center gap-3">
             <GiPadlock size={30} />

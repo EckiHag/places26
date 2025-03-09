@@ -1,5 +1,5 @@
 "use client";
-import { Card, CardHeader, CardBody, Tooltip, Divider, Button, Modal, ModalContent, ModalHeader, ModalBody, Accordion, AccordionItem, CardFooter, Image } from "@heroui/react";
+import { Card, CardHeader, CardBody, Tooltip, Divider, Button, Modal, ModalContent, ModalHeader, ModalBody, Accordion, AccordionItem, CardFooter } from "@heroui/react";
 import { MdDelete } from "react-icons/md";
 import { deletePicWithId } from "@/app/actions/picActions";
 import { useRouter } from "next/navigation";
@@ -7,7 +7,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { useState } from "react";
 import Link from "next/link";
 import { FiEdit } from "react-icons/fi";
-
+import Image from "next/image";
 interface CardPicProps {
   subjectId: string;
   place: {
@@ -62,20 +62,20 @@ export default function CardPic({ subjectId, place, pic }: CardPicProps) {
   </Link>;
   return (
     <>
-      <Card className="mt-5 max-w-[400px] lg:max-w-[400px] min-h-[650px] mx-4">
+      <Card className="mt-3 min-w-[400px] lg:min-w-[600px] mx-auto">
         <CardHeader className="flex justify-between items-center bg-red-600 p-4"></CardHeader>
         <Divider />
         <CardBody className="bg-white flex-grow flex justify-center items-center">
           {pic.image && (
             <div className="w-full max-w-[500px] h-full max-h-[400px] flex justify-center">
-              <Image
+              {/* <Image
                 alt="NextUI place Image"
                 src={`https://beihaggis.de/${pic.image?.replace(/^.\//, "")}`}
                 width={350}
                 className="cursor-pointer w-full max-w-full h-auto object-contain"
                 onClick={() => setIsOpen(true)}
-              />
-              {/* <Image
+              /> */}
+              <Image
                 alt="NextUI place Image"
                 src={`https://beihaggis.de/${pic.image.replace(/^.\//, "")}`}
                 width={0} // Entfernt die feste Breite
@@ -83,7 +83,7 @@ export default function CardPic({ subjectId, place, pic }: CardPicProps) {
                 sizes="100vw" // Passt das Bild an die Bildschirmbreite an
                 className="cursor-pointer w-full max-w-full h-auto object-contain"
                 onClick={() => setIsOpen(true)}
-              /> */}
+              />
             </div>
           )}
         </CardBody>
@@ -120,15 +120,15 @@ export default function CardPic({ subjectId, place, pic }: CardPicProps) {
       {/* Modal for full-screen image using HeroUI */}
       {isOpen && window.innerWidth >= 1024 && (
         <Modal isOpen={isOpen} placement="center" backdrop="opaque" onClose={() => setIsOpen(false)}>
-          <ModalContent className="flex flex-col items-center bg-white max-w-full max-h-full">
+          <ModalContent className="flex flex-col items-center bg-transparent max-w-full max-h-full">
             <ModalHeader></ModalHeader>
             <ModalBody className="flex justify-center items-center h-full">
               <Image
                 alt="Full Size Image"
                 src={`https://beihaggis.de/${pic.image?.replace(/^.\//, "")}`}
-                width={800}
-                height={800}
-                className="max-w-[85%] max-h-[90dvh] object-contain cursor-pointer"
+                width={900}
+                height={900}
+                className="max-w-[100%] max-h-[95dvh] object-contain cursor-pointer"
                 onClick={() => setIsOpen(false)}
               />
             </ModalBody>

@@ -25,30 +25,28 @@ export default async function PicsCardWithPlaceId({ searchParams }: Props) {
   const sortedPics = pics?.sort((a, b) => a.ord - b.ord); // von 1 nach  100 ...
   // const sortedPics = pics?.sort((a, b) => b.ord - a.ord);
   return (
-    <>
-      <div className="mx-auto flex justify-center flex-col mt-3">
+    <div className="flex flex-col items-center">
+      <div className="flex flex-row items-center">
         <Link
           href={`/pics/editpic/new?placeId=${placeId}&subjectId=${subjectId}`}
-          className="mt-2 px-4 py-2 bg-pprimary-400 text-white rounded-lg shadow-md hover:bg-pprimary-300 transition"
+          className="mt-3 mr-3 px-4 py-2 bg-pprimary-400 text-white rounded-lg shadow-md hover:bg-pprimary-300 transition"
         >
           New Pic
         </Link>
         {subjectId && (
-          <Link href={`/places/${subjectId}`} className="mt-2 px-4 py-2 bg-pprimary-400 text-white rounded-lg shadow-md hover:bg-pprimary-300 transition">
+          <Link href={`/places/${subjectId}`} className="mt-3 px-4 py-2 bg-pprimary-400 text-white rounded-lg shadow-md hover:bg-pprimary-300 transition">
             Back to Places
           </Link>
         )}
       </div>
 
-      <div className="flex justify-center">
-        <div className="grid grid-cols-1 mx-auto justify-items-center">
-          {sortedPics?.map((pic) => (
-            <div key={pic.id}>
-              <CardPicFormat2 subjectId={subjectId} place={place} pic={pic} />
-            </div>
-          ))}
-        </div>
+      <div className="grid grid-cols-1 justify-items-center">
+        {sortedPics?.map((pic) => (
+          <div key={pic.id}>
+            <CardPicFormat2 subjectId={subjectId} place={place} pic={pic} />
+          </div>
+        ))}
       </div>
-    </>
+    </div>
   );
 }

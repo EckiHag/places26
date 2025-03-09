@@ -61,7 +61,7 @@ export default function CardPic({ subjectId, place, pic }: CardPicProps) {
   </Link>;
   return (
     <>
-      <Card className="max-w-[400px] min-h-[200px]">
+      <Card className="min-w-[400px] min-h-[550px]">
         <CardHeader className="flex justify-between items-center bg-pplaces-400 p-4">
           <span className="text-1xl font-semibold">{pic.title === "pic" || pic.title === "Pic" ? place?.title || "Picture" : pic.title}</span>
           <div className="flex items-center gap-[1px]">
@@ -94,7 +94,7 @@ export default function CardPic({ subjectId, place, pic }: CardPicProps) {
           )}
           {pic.description !== "nothing to say" && pic.description !== "No description" && (
             <Accordion>
-              <AccordionItem title={getFirstWords(pic.description, 5)}>
+              <AccordionItem className="max-w-[350px]" title={getFirstWords(pic.description, 5)}>
                 <p dangerouslySetInnerHTML={{ __html: pic.description }} />
               </AccordionItem>
             </Accordion>

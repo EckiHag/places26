@@ -73,7 +73,7 @@ export async function updatePlace(id: string, data: PlaceSchema): Promise<Action
       return { status: "error", error: validated.error.errors };
     }
 
-    const { title, description, image } = validated.data;
+    const { title, description, ord, image } = validated.data;
 
     // Prüfen, ob das Fach existiert
     const existingSubject = await prisma.places.findUnique({ where: { id } });
@@ -88,6 +88,7 @@ export async function updatePlace(id: string, data: PlaceSchema): Promise<Action
       data: {
         title,
         description,
+        ord,
         image,
       },
     });

@@ -9,13 +9,15 @@ interface CardPlaceProps {
   image: string | null;
   title: string;
   description: string;
+  ord: number;
 }
 
-export default function CardPlace({ subjectId, placeId, image, title, description }: CardPlaceProps) {
+export default function CardPlace({ subjectId, placeId, image, title, description, ord }: CardPlaceProps) {
   return (
     <Card className="max-w-[400px] lg:max-w-[400px] min-h-[200px] mx-4 bg-pplaces-100">
       <CardHeader className="flex justify-between items-center gap-3 bg-pplaces-400 p-4">
         <span className="text-2lg leading-relaxed text-center mt-4">{title}</span>
+        <span className="mr-6">{ord}</span>
         <div className="flex flex-col items-end space-y-2">
           <Tooltip content="Edit ✏️">
             <Link href={`/places/editplace/${placeId}`}>

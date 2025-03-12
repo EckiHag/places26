@@ -21,6 +21,7 @@ interface CardPicProps {
     title: string;
     description: string;
     image?: string | null; // Hier `null` explizit erlauben
+    ord: number | null;
   };
 }
 // href={`/pics/editpic/new?placeId=${placeId}&subjectId=${subjectId}`}
@@ -36,32 +37,49 @@ export default function CardPic({ subjectId, place, pic }: CardPicProps) {
   const getFirstWords = (text: string, wordCount: number) => {
     return text.split(" ").slice(0, wordCount).join(" ") + " ...";
   };
-
+  const getRemainingWords = (text: string, numWords: number) => {
+    const words = text.split(" ");
+    return words.slice(numWords).join(" ");
+  };
   const handleDelete = async () => {
-    if (pic.image) {
-      const userConfirmed = window.confirm("Möchten Sie das Bild wirklich löschen?");
-      if (!userConfirmed) {
+    try {
+      const uploadPassword = process.env.NEXT_PUBLIC_UPLOAD_PASSWORD;
+
+      if (!pic?.image) {
+        toast.error("Kein Bild vorhanden.");
         return;
       }
+
+      const userConfirmed = window.confirm("Möchten Sie das Bild wirklich löschen?");
+      if (!userConfirmed) {
+        toast.error("Das Löschen wurde nicht bestätigt!");
+        return;
+      }
+
+      if (!uploadPassword) {
+        toast.error("Zum Löschen fehlt das UPLOAD_PASSWORD!");
+        return;
+      }
+
       const result = await deletePicWithId(pic.id, pic.image);
       console.log("Result of deletePic", result);
-      if (result == true) {
-        toast("Bild wurde erfolgreich gelöscht");
+
+      if (result === true) {
+        toast.success("Bild wurde erfolgreich gelöscht");
+      } else {
+        toast.error("Fehler beim Löschen");
       }
+    } catch (error) {
+      console.error("Unerwarteter Fehler beim Löschen:", error);
+      toast.error("Ein unerwarteter Fehler ist aufgetreten.");
+    } finally {
       router.refresh();
     }
-
-    router.refresh();
   };
-  <Link
-    href={`/pics/editpic/new?placeId=${place?.id}&subjectId=${subjectId}`}
-    className="mt-2 px-4 py-2 bg-pprimary-400 text-white rounded-lg shadow-md hover:bg-pprimary-300 transition"
-  >
-    New Pic
-  </Link>;
+
   return (
     <>
-      <Card className="min-w-[400px] min-h-[550px]">
+      <Card className="max-w-[350px] md:min-w-[400px] lg:min-w-[500px] min-h-[700px]">
         <CardHeader className="flex justify-between items-center bg-pplaces-400 p-4">
           <span className="text-1xl font-semibold">{pic.title === "pic" || pic.title === "Pic" ? place?.title || "Picture" : pic.title}</span>
           <div className="flex items-center gap-[1px]">
@@ -78,6 +96,7 @@ export default function CardPic({ subjectId, place, pic }: CardPicProps) {
                 <FiEdit size={25} className="text-pplaces-900" />
               </Link>
             </Tooltip>
+            <span className="ml-6">{pic.ord}</span>
           </div>
         </CardHeader>
         <Divider />
@@ -86,16 +105,17 @@ export default function CardPic({ subjectId, place, pic }: CardPicProps) {
             <Image
               alt="NextUI place Image"
               src={`https://beihaggis.de/${pic.image.replace(/^.\//, "")}`}
-              width={300}
-              height={200}
-              className="cursor-pointer"
+              width={500}
+              height={500}
+              priority
+              className="cursor-pointer w-full max-w-full h-auto object-contain"
               onClick={() => setIsOpen(true)}
             />
           )}
-          {pic.description !== "nothing to say" && pic.description !== "No description" && (
+          {pic.title !== "Pic" && pic.description !== "nothing to say" && pic.description !== "No description" && (
             <Accordion>
               <AccordionItem className="max-w-[350px]" title={getFirstWords(pic.description, 5)}>
-                <p dangerouslySetInnerHTML={{ __html: pic.description }} />
+                <p dangerouslySetInnerHTML={{ __html: `... ${getRemainingWords(pic.description, 5)}` }} />
               </AccordionItem>
             </Accordion>
           )}

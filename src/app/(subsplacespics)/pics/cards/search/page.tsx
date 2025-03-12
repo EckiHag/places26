@@ -42,14 +42,12 @@ export default async function PicsCardWithPlaceId({ searchParams }: Props) {
         </div>
       </div>
 
-      <div className="flex justify-center">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mx-auto justify-items-center">
-          {sortedPics?.map((pic) => (
-            <div key={pic.id}>
-              <CardPic subjectId={subjectId} place={place} pic={pic} />
-            </div>
-          ))}
-        </div>
+      <div className="mb-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-3 gap-10 mx-auto justify-items-center">
+        {sortedPics?.map((pic) => (
+          <div key={pic.id}>
+            <CardPic subjectId={subjectId} place={place} pic={pic} />
+          </div>
+        ))}
       </div>
     </>
   );

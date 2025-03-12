@@ -12,8 +12,9 @@ export default async function PlacesList({ params }: Props) {
   console.log("subjectId in PlacesList: ", subjectId);
   const subjects = await getSubjectById(subjectId);
   const places = await getPlacesByCreatorsubject(subjectId);
-  const sortedPlaces = places && places.sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime());
 
+  // const sortedPlaces = places && places.sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime());
+  const sortedPlaces = places?.sort((a, b) => a.ord - b.ord); // von 1 nach  100 ...
   return (
     <div className="mx-auto flex justify-center flex-col mt-3">
       <div className="mb-6 text-center">
@@ -32,7 +33,7 @@ export default async function PlacesList({ params }: Props) {
           {sortedPlaces &&
             sortedPlaces.map((place) => (
               <div key={place.id}>
-                <CardPlace subjectId={subjectId} placeId={place.id} image={place.image} title={place.title} description={place.description} />
+                <CardPlace subjectId={subjectId} placeId={place.id} image={place.image} title={place.title} description={place.description} ord={place.ord} />
               </div>
             ))}
         </div>

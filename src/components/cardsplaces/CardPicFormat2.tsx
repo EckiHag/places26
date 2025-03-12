@@ -22,6 +22,7 @@ interface CardPicProps {
     image?: string | null; // Hier `null` explizit erlauben
     imgwidth: number | null;
     imgheight: number | null;
+    ord: number | null;
   };
 }
 // href={`/pics/editpic/new?placeId=${placeId}&subjectId=${subjectId}`}
@@ -39,27 +40,41 @@ export default function CardPic({ subjectId, place, pic }: CardPicProps) {
   };
 
   const handleDelete = async () => {
-    if (pic.image) {
-      const userConfirmed = window.confirm("Möchten Sie das Bild wirklich löschen?");
-      if (!userConfirmed) {
+    try {
+      const uploadPassword = process.env.NEXT_PUBLIC_UPLOAD_PASSWORD;
+
+      if (!pic?.image) {
+        toast.error("Kein Bild vorhanden.");
         return;
       }
+
+      const userConfirmed = window.confirm("Möchten Sie das Bild wirklich löschen?");
+      if (!userConfirmed) {
+        toast.error("Das Löschen wurde nicht bestätigt!");
+        return;
+      }
+
+      if (!uploadPassword) {
+        toast.error("Zum Löschen fehlt das UPLOAD_PASSWORD!");
+        return;
+      }
+
       const result = await deletePicWithId(pic.id, pic.image);
       console.log("Result of deletePic", result);
-      if (result == true) {
-        toast("Bild wurde erfolgreich gelöscht");
+
+      if (result === true) {
+        toast.success("Bild wurde erfolgreich gelöscht");
+      } else {
+        toast.error("Fehler beim Löschen");
       }
+    } catch (error) {
+      console.error("Unerwarteter Fehler beim Löschen:", error);
+      toast.error("Ein unerwarteter Fehler ist aufgetreten.");
+    } finally {
       router.refresh();
     }
-
-    router.refresh();
   };
-  <Link
-    href={`/pics/editpic/new?placeId=${place?.id}&subjectId=${subjectId}`}
-    className="mt-2 px-4 py-2 bg-pprimary-400 text-white rounded-lg shadow-md hover:bg-pprimary-300 transition"
-  >
-    New Pic
-  </Link>;
+
   return (
     <>
       <Card className="mt-3 min-w-[400px] lg:min-w-[600px] mx-auto">
@@ -68,19 +83,12 @@ export default function CardPic({ subjectId, place, pic }: CardPicProps) {
         <CardBody className="bg-white flex-grow flex justify-center items-center">
           {pic.image && (
             <div className="w-full max-w-[500px] h-full max-h-[400px] flex justify-center">
-              {/* <Image
-                alt="NextUI place Image"
-                src={`https://beihaggis.de/${pic.image?.replace(/^.\//, "")}`}
-                width={350}
-                className="cursor-pointer w-full max-w-full h-auto object-contain"
-                onClick={() => setIsOpen(true)}
-              /> */}
               <Image
                 alt="NextUI place Image"
                 src={`https://beihaggis.de/${pic.image.replace(/^.\//, "")}`}
-                width={0} // Entfernt die feste Breite
-                height={0} // Entfernt die feste Höhe
-                sizes="100vw" // Passt das Bild an die Bildschirmbreite an
+                width={500} // Setze eine sinnvolle Breite
+                height={500} // Setze eine sinnvolle Höhe
+                priority
                 className="cursor-pointer w-full max-w-full h-auto object-contain"
                 onClick={() => setIsOpen(true)}
               />
@@ -89,7 +97,7 @@ export default function CardPic({ subjectId, place, pic }: CardPicProps) {
         </CardBody>
         <CardFooter className="flex flex-col w-full">
           <div className="text-1xl font-semibold">{pic.title === "pic" || pic.title === "Pic" ? place?.title || "Picture" : pic.title}</div>
-          {pic.description !== "nothing to say" && pic.description !== "No description" && (
+          {pic.title !== "Pic" && pic.description !== "nothing to say" && pic.description !== "No description" && (
             <div>
               <Accordion className="mt-5 max-w-[600px] w-full">
                 <AccordionItem title={getFirstWords(pic.description, 5)}>
@@ -113,6 +121,7 @@ export default function CardPic({ subjectId, place, pic }: CardPicProps) {
                 <FiEdit size={25} className="text-pplaces-900" />
               </Link>
             </Tooltip>
+            <span className="ml-6">{pic.ord}</span>
           </div>
         </CardFooter>
       </Card>

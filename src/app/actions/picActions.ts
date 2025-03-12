@@ -140,40 +140,88 @@ export async function updatePic(id: string, data: PicSchema): Promise<ActionResu
   }
 }
 
-export const deletePicWithId = async (id: string, image: string): Promise<boolean> => {
-  console.log("deletePicWithId wurde mit folgende id aufgerufen: ", id);
-  console.log("deletePicWithId wurde mit folgendem image aufgerufen: ", image);
+export async function updatePicsOrd(sortedPics: Pics[]) {
+  try {
+    // Update jedes Bild in der DB mit ord + 5
+    const updatedPics = sortedPics.map((pic) => ({
+      ...pic,
+      ord: (pic.ord || 0) + 5,
+    }));
 
-  await deleteImageFile(image);
+    // Beispiel: Speichern in der DB (falls Prisma genutzt wird)
+    await Promise.all(
+      updatedPics.map((pic) =>
+        prisma.pics.update({
+          where: { id: pic.id },
+          data: { ord: pic.ord },
+        })
+      )
+    );
+
+    return { success: true, updatedPics };
+  } catch (error) {
+    console.error("Fehler beim Aktualisieren der Pics:", error);
+    return { success: false, error: "Fehler beim Aktualisieren der Bilder." };
+  }
+}
+
+export const deletePicWithId = async (id: string, image: string): Promise<boolean> => {
+  console.log("deletePicWithId wurde mit folgender ID aufgerufen:", id);
+  console.log("deletePicWithId wurde mit folgendem Bild aufgerufen:", image);
+
+  const deleteResponse = await deleteImageFile(image);
+
+  if (!deleteResponse.success) {
+    console.error("Bild konnte nicht gelöscht werden:", deleteResponse.message);
+    return false;
+  }
 
   try {
     const deletedPic = await prisma.pics.delete({
       where: { id },
     });
-    console.log("Der Datensatz wurde erfolgreich gelöscht: ", deletedPic);
+    console.log("Der Datensatz wurde erfolgreich gelöscht:", deletedPic);
     return true;
   } catch (error) {
-    console.error("Fehler beim Löschen des Datensatzes: ", error);
+    console.error("Fehler beim Löschen des Datensatzes:", error);
     return false;
   }
 };
 
-export const deleteImageFile = async (imagePath: string): Promise<void> => {
+export const deleteImageFile = async (imagePath: string): Promise<{ success: boolean; message?: string }> => {
   try {
-    if (imagePath) {
-      const response = await fetch("https://beihaggis.de/api/places26/p26picdelete/delete", {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ filePath: imagePath }),
-      });
-
-      const data = await response.json();
-      console.log("Fetch: ", `https://beihaggis.de/api/places26/p26picdelete/delete`);
-      console.log("Server-Antwort:", data);
-
-      return data;
+    if (!imagePath) {
+      console.error("Fehler: Kein Bildpfad angegeben.");
+      return { success: false, message: "Kein Bildpfad angegeben." };
     }
+
+    const uploadPassword = process.env.NEXT_PUBLIC_UPLOAD_PASSWORD;
+    if (!uploadPassword) {
+      console.error("Fehler: UPLOAD_PASSWORD ist nicht gesetzt.");
+      return { success: false, message: "UPLOAD_PASSWORD nicht gesetzt." };
+    }
+
+    const response = await fetch("https://beihaggis.de/api/places26/p26picdelete/delete", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "x-upload-password": uploadPassword,
+      },
+      body: JSON.stringify({ filePath: imagePath }),
+    });
+
+    if (!response.ok) {
+      const errorMessage = `Fehler beim Löschen: ${response.statusText}`;
+      console.error(errorMessage);
+      return { success: false, message: errorMessage };
+    }
+
+    const data = await response.json();
+    console.log("Server Antwort:", data);
+
+    return { success: true, message: data.message };
   } catch (error) {
     console.error("Fehler beim Löschen der Datei:", error);
+    return { success: false, message: "Server-Fehler beim Löschen." };
   }
 };

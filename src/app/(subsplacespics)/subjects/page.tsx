@@ -9,7 +9,7 @@ export default async function SubjectsList() {
   const sortedSubjects = subjects && subjects.sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime());
 
   return (
-    <div className="mx-auto flex justify-center flex-col mt-3">
+    <div className="mx-auto flex justify-center flex-col mt-24">
       <div className="mb-6 text-center">
         <Link href={`/subjects/editsubject/new`}>New Subject</Link>
       </div>

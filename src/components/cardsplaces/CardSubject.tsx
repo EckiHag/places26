@@ -20,7 +20,7 @@ export default function CardSubject({ subjectId, image, title, description }: Ca
   return (
     <Card className="max-w-[300px] lg:max-w-[400px] min-h-[200px] mx-4">
       <CardHeader className="flex justify-between items-center gap-3 bg-pprimary-400 p-4">
-        <Link href={`/places/${subjectId}`} className="flex items-center gap-3 ml-3">
+        <Link href={`/places/${subjectId}/default`} className="flex items-center gap-3 ml-3">
           <Avatar
             className="w-20 h-20 transition-transform rounded-full bg-pprimary-400"
             style={{ borderColor: "#FFFFFF", borderWidth: "2px" }}
@@ -29,6 +29,7 @@ export default function CardSubject({ subjectId, image, title, description }: Ca
             src={`https://beihaggis.de/${image}`}
           />
         </Link>
+
         <div>
           <p className="text-2xl text-pprimary-900">{title}</p>
         </div>
@@ -38,6 +39,11 @@ export default function CardSubject({ subjectId, image, title, description }: Ca
               <FiEdit size={25} className="text-primary-900" />
             </Link>
           </Tooltip>
+        </div>
+        <div>
+          <Link href={`/places/${subjectId}/format2`} className="ml-3">
+            C2
+          </Link>
         </div>
       </CardHeader>
 

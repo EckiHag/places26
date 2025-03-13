@@ -22,7 +22,7 @@ export default function ClientNav({ session }: ClientNavProps) {
   const userInfo = session?.user;
 
   return (
-    <Navbar className="bg-gradient-to-r from-pprimary-400 to-pprimary-700 px-4 py-2">
+    <Navbar className="fixed top-0 left-0 w-full z-50 bg-gradient-to-r from-pprimary-400 to-pprimary-700 px-4 py-2">
       <div className="flex justify-between items-center w-full">
         {/* Logo */}
         <NavbarBrand as={Link} href="/" className="flex items-center">

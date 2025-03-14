@@ -3,6 +3,7 @@ import { getPlaceById } from "@/app/actions/placeActions";
 import Link from "next/link";
 import PicsCardClient from "./pageClient";
 import { Places } from "@prisma/client";
+
 interface Props {
   searchParams: Promise<{ placeId: string; subjectId: string }>;
 }

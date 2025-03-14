@@ -78,7 +78,7 @@ export default function CardPic({ subjectId, place, pic }: CardPicProps) {
   return (
     <>
       <Card className="mt-3 min-w-[400px] lg:min-w-[600px] mx-auto">
-        <CardHeader className="flex justify-between items-center bg-red-600 p-4"></CardHeader>
+        <CardHeader className="flex justify-between items-center bg-pprimary-500 p-4"></CardHeader>
         <Divider />
         <CardBody className="bg-white flex-grow flex justify-center items-center">
           {pic.image && (

@@ -4,11 +4,16 @@ import CardPlace from "@/components/cardsplaces/CardPlace";
 import CardPlaceFormat2 from "@/components/cardsplaces/CardPlaceFormat2";
 import Link from "next/link";
 
-type Props = {
-  params: { subjectId: string; cardform: string };
-};
+// type Props = {
+//   params: { subjectId: string; cardform: string };
+// };
+
+interface Props {
+  params: Promise<{ subjectId: string; cardform: string }>;
+}
 export default async function PlacesList({ params }: Props) {
   const { subjectId, cardform } = await params;
+
   console.log("subjectId in PlacesList: ", subjectId);
   const subjects = await getSubjectById(subjectId);
   const places = await getPlacesByCreatorsubject(subjectId);

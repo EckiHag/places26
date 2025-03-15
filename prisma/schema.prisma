@@ -17,9 +17,14 @@ datasource db {
 }
 
 enum UserRole {
-  ADMIN
-  USER
-  NEWBIE
+NEWBIE
+ADMIN26
+CORDULA
+INGA
+MARTIN
+REISEN
+KANUSA
+
 }
 
 

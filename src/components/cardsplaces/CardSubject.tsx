@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { Avatar, Card, CardHeader, CardBody, Divider, Link, Tooltip } from "@heroui/react";
 import { FiEdit } from "react-icons/fi";
+import { useSession } from "next-auth/react";
 
 interface CardSubjectProps {
   subjectId: string;
@@ -11,6 +12,8 @@ interface CardSubjectProps {
 }
 
 export default function CardSubject({ subjectId, image, title, description }: CardSubjectProps) {
+  const { data: session } = useSession();
+  const userRole = session?.user?.role as string | undefined; // Explizite Typisierung als string | undefined
   console.log("subjectId in CardSubject: ", subjectId);
   const maxNumberOfChars = 80;
   const [showFullDescription, setShowFullDescription] = useState(false);
@@ -33,13 +36,15 @@ export default function CardSubject({ subjectId, image, title, description }: Ca
         <div>
           <p className="text-2xl text-pprimary-900">{title}</p>
         </div>
-        <div className="flex flex-col items-end space-y-2">
-          <Tooltip content="Edit ✏️">
-            <Link href={`/subjects/editsubject/${subjectId}`}>
-              <FiEdit size={25} className="text-primary-900" />
-            </Link>
-          </Tooltip>
-        </div>
+        {userRole === "ADMIN26" && (
+          <div className="flex flex-col items-end space-y-2">
+            <Tooltip content="Edit ✏️">
+              <Link href={`/subjects/editsubject/${subjectId}`}>
+                <FiEdit size={25} className="text-primary-900" />
+              </Link>
+            </Tooltip>
+          </div>
+        )}
         <div>
           <Link href={`/places/${subjectId}/format2`} className="ml-3">
             C2

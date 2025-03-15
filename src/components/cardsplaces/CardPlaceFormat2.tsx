@@ -3,6 +3,7 @@
 import { Card, CardHeader, CardBody, CardFooter, Divider, Link, Button, Tooltip } from "@heroui/react";
 import { FiEdit } from "react-icons/fi";
 import Image from "next/image";
+import { useState } from "react";
 
 interface CardPlaceProps {
   subjectId: string;
@@ -14,6 +15,9 @@ interface CardPlaceProps {
 }
 
 export default function CardPlace({ subjectId, placeId, image, title, description, ord }: CardPlaceProps) {
+  const [expanded, setExpanded] = useState(false);
+  const words = description.split(" ");
+  const shortDescription = words.slice(0, 20).join(" ") + (words.length > 20 ? "..." : "");
   return (
     <Card className="max-w-[400px] lg:max-w-[600px] lg:min-w-[600px] min-h-[200px] mx-4 bg-pplaces-300">
       <CardHeader className="relative w-full items-center justify-center p-0">
@@ -22,7 +26,14 @@ export default function CardPlace({ subjectId, placeId, image, title, descriptio
       <Divider />
       <CardBody className="flex flex-col justify-between items-center gap-3 bg-pplaces-400 p-4">
         <div className="text-3xl text-center mt-4">{title}</div>
-        <div className="text-lg text-center mt-4">{description}</div>
+        <div className="text-lg text-center mt-4">
+          {expanded ? description : shortDescription}
+          {words.length > 20 && (
+            <button className="text-blue-500 ml-2 underline" onClick={() => setExpanded(!expanded)}>
+              {expanded ? " weniger" : " mehr"}
+            </button>
+          )}
+        </div>
       </CardBody>
       <CardFooter className="flex flex-row justify-between items-center mt-auto">
         {/* Linke Seite: Buttons */}

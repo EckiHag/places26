@@ -11,10 +11,10 @@ export default auth((req) => {
   const isPublic = publicRoutes.includes(nextUrl.pathname);
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
 
-  const userRole = req.auth?.user?.role; // Rolle des Benutzers aus der Session extrahieren
+  // const userRole = req.auth?.user?.role; // Rolle des Benutzers aus der Session extrahieren
   // Geschützte Admin-Pfade
-  const adminRoutes = ["/subjects", "/places", "/pics", "/conv"];
-  const isAdminRoute = adminRoutes.some((route) => nextUrl.pathname.startsWith(route));
+  // const adminRoutes = ["/subjects", "/places", "/pics", "/conv"];
+  // const isAdminRoute = adminRoutes.some((route) => nextUrl.pathname.startsWith(route));
 
   if (isPublic) {
     return NextResponse.next();
@@ -32,9 +32,9 @@ export default auth((req) => {
   }
 
   // Admin-Check für "/subjects"
-  if (isAdminRoute && userRole !== "ADMIN") {
-    return NextResponse.redirect(new URL("/forbidden", nextUrl)); // Auf eine Fehlerseite umleiten
-  }
+  // if (isAdminRoute && userRole !== "ADMIN26") {
+  //   return NextResponse.redirect(new URL("/forbidden", nextUrl)); // Auf eine Fehlerseite umleiten
+  // }
 
   return NextResponse.next();
 });

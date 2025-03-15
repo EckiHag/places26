@@ -8,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Card, CardHeader, CardBody, Button, Input } from "@heroui/react";
 import { useForm } from "react-hook-form";
 import { GiPadlock } from "react-icons/gi";
+import { sendeMail } from "@/app/actions/sendeMail";
 
 // Der Bildupload geschieht über die Datei places26userroutes.js in _places, das mit REACT programmiert wurde
 // in app.js muss dort auch noch die route gelinkt werden: app.use("/api/places26/user", places26userroutes);
@@ -23,6 +24,19 @@ export default function RegisterForm() {
   const FETCH_URL = `${SERVER_URL}/${USERS_PATH}`;
   const Bildsize = 1200;
   const BildsizeMb = 0.1;
+
+  const [resultmessage, setResultMessage] = useState("");
+
+  const handleSendMail = async (mailTo: string, mailSubject: string, mailMessage: string) => {
+    try {
+      const result = await sendeMail(mailTo, mailSubject, mailMessage);
+      setResultMessage(result.message);
+    } catch (error) {
+      setResultMessage(`Fehler beim Mailen: ${error}`);
+    } finally {
+      console.log("Mail wurde gesendet!", resultmessage);
+    }
+  };
 
   const {
     register,
@@ -122,7 +136,10 @@ export default function RegisterForm() {
       const result = await registerUser(userData);
 
       if (result.status === "success") {
-        toast.success("User registered successfully.");
+        await handleSendMail("eu@hagemeier-web.de", "Testmail an EckiHag von EckiHag", `Achtung, es gibt einen neuen User 😊:\n\n${userData.name}\n\n${userData.email}`);
+        await handleSendMail(userData.email, "Registrierung auf Places26", `Liebe/r: ${userData.name}\n\ndu wurdest als neuer User mit der Rolle NEWBIE registiert. 😊`);
+
+        toast.success("Erfolgreich registriert. Du bekommst jetzt eine Mail an die angegebenene Adresse. 😊 Mail send!");
         console.log("User registered successfully:", result);
       } else {
         if (Array.isArray(result.error)) {

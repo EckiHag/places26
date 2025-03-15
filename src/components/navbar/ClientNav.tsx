@@ -35,9 +35,9 @@ export default function ClientNav({ session }: ClientNavProps) {
 
         {/* Desktop-Navigation */}
         <div className="hidden md:flex gap-4">
-          {session?.user?.role === "ADMIN" && <NavLink href="/subjects" label="Subjects" />}
-          {session?.user?.role === "ADMIN" && <NavLink href="/quiz" label="Quiz" />}
-          {session?.user?.role === "ADMIN" && <NavLink href="/conv" label="conv" />}
+          <NavLink href="/subjects" label="Subjects" />
+          <NavLink href="/quiz" label="Quiz" />
+          {session?.user?.role === "ADMIN26" && <NavLink href="/conv" label="conv" />}
           <NavLink href="/lb" label="LB" />
           <NavLink href="/farben" label="Farben" />
           <NavLink href="/settings" label="set" />

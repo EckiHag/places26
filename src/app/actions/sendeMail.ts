@@ -1,11 +1,10 @@
 "use server";
 
-import { sendRegistrationEmail } from "@/lib/util/nodemailer";
+import { sendEmail } from "@/lib/util/nodemailer";
 
-export async function sendeMail(subject: string, message: string) {
+export async function sendeMail(mailTo: string, mailSubject: string, mailMessage: string) {
   try {
-    const mailText = `Betreff: ${subject}\n\n${message}`;
-    await sendRegistrationEmail("eu@hagemeier-web.de", subject, mailText);
+    await sendEmail(mailTo, mailSubject, mailMessage);
 
     return { success: true, message: "E-Mail erfolgreich gesendet!" };
   } catch (error) {

@@ -40,17 +40,19 @@ export default function Conv() {
   };
   return (
     <>
-      <div style={{ padding: "20px", textAlign: "center" }}>
-        <h1>Update Image Dimensions</h1>
+      <div className="flex flex-col items-center mt-36">
+        <h1>Update Image Dimensions:</h1>
         <Button className="bg-pprimary-500" onPress={handleUpdateDimensions} disabled={loading} auto>
           {loading ? "Updating..." : "Update Dimensions"}
         </Button>
         {message && <p style={{ marginTop: "20px" }}>{message}</p>}
-      </div>
-      <div>
-        <Button className="bg-pprimary-500" onPress={handleSendMail} disabled={loading} auto>
-          Send a Mail
-        </Button>
+
+        <div className="mt-12">
+          <h1>Test zum Mail senden:</h1>
+          <Button className="bg-pprimary-500" onPress={handleSendMail} disabled={loading} auto>
+            Send a Mail
+          </Button>
+        </div>
       </div>
     </>
   );

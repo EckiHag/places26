@@ -29,13 +29,16 @@ export default async function PlacesList({ params }: Props) {
   const sortedPlaces = places?.sort((a, b) => a.ord - b.ord); // von 1 nach  100 ...
   return (
     <div className="flex flex-col justify-center mx-auto mt-3 mb-3">
-      <div className="sticky top-16 bg-white z-40 flex flex-col justify-center mx-auto mt-3 mb-3 shadow-md p-4">
+      <div className="sticky top-16 bg-white z-40 flex flex-col mt-1 mb-1 shadow-md p-4">
         <div className="flex flex-col justify-center mx-auto text-2xl">{subjects?.title}</div>
         <div className="flex flex-row justify-center mx-auto">
-          <Link href={`/subjects`} className="mt-2 mr-2 px-4 py-2 bg-pprimary-400 text-white rounded-lg shadow-md hover:bg-pprimary-300 transition">
+          <Link href={`/subjects`} className="mt-1 mr-2 px-2 py-1 bg-pprimary-400 text-sm text-white rounded-lg shadow-md hover:bg-pprimary-300 transition">
             Back to Subjects
           </Link>
-          <Link href={`/places/editplace/new?subjectId=${subjectId}`} className="mt-2 px-4 py-2 bg-pprimary-400 text-white rounded-lg shadow-md hover:bg-pprimary-300 transition">
+          <Link
+            href={`/places/editplace/new?subjectId=${subjectId}`}
+            className="mt-1 mr-2 px-2 py-1 bg-pprimary-400 text-sm text-white rounded-lg shadow-md hover:bg-pprimary-300 transition"
+          >
             New Place
           </Link>
         </div>

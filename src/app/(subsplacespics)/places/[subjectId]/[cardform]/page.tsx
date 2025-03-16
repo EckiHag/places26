@@ -1,18 +1,21 @@
+//places/[subjectId]/[cardform]/page.tsx
+
 import { getPlacesByCreatorsubject } from "@/app/actions/placeActions";
 import { getSubjectById } from "@/app/actions/subjectActions";
 import CardPlace from "@/components/cardsplaces/CardPlace";
 import CardPlaceFormat2 from "@/components/cardsplaces/CardPlaceFormat2";
 import Link from "next/link";
-
-// type Props = {
-//   params: { subjectId: string; cardform: string };
-// };
+// import { auth } from "@/auth";
+import { Session } from "next-auth";
 
 interface Props {
   params: Promise<{ subjectId: string; cardform: string }>;
+  session: Session | null;
 }
-export default async function PlacesList({ params }: Props) {
+
+export default async function PlacesList({ params, session }: Props) {
   const { subjectId, cardform } = await params;
+  const userRole = session?.user.role;
 
   console.log("subjectId in PlacesList: ", subjectId);
   const subjects = await getSubjectById(subjectId);
@@ -35,12 +38,14 @@ export default async function PlacesList({ params }: Props) {
           <Link href={`/subjects`} className="mt-1 mr-2 px-2 py-1 bg-pprimary-400 text-sm text-white rounded-lg shadow-md hover:bg-pprimary-300 transition">
             Back to Subjects
           </Link>
-          <Link
-            href={`/places/editplace/new?subjectId=${subjectId}`}
-            className="mt-1 mr-2 px-2 py-1 bg-pprimary-400 text-sm text-white rounded-lg shadow-md hover:bg-pprimary-300 transition"
-          >
-            New Place
-          </Link>
+          {userRole === "ADMIN26" && (
+            <Link
+              href={`/places/editplace/new?subjectId=${subjectId}`}
+              className="mt-1 mr-2 px-2 py-1 bg-pprimary-400 text-sm text-white rounded-lg shadow-md hover:bg-pprimary-300 transition"
+            >
+              New Place
+            </Link>
+          )}
         </div>
       </div>
       <div className="flex justify-center mt-16">

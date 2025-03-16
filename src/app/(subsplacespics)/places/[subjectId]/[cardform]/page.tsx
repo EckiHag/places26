@@ -5,16 +5,14 @@ import { getSubjectById } from "@/app/actions/subjectActions";
 import CardPlace from "@/components/cardsplaces/CardPlace";
 import CardPlaceFormat2 from "@/components/cardsplaces/CardPlaceFormat2";
 import Link from "next/link";
-// import { auth } from "@/auth";
-import { Session } from "next-auth";
+import { auth } from "@/auth";
 
 interface Props {
-  params: { subjectId: string; cardform: string }; // Remove Promise<>
-  session: Session | null;
+  params: Promise<{ subjectId: string; cardform: string }>;
 }
-
-export default async function PlacesList({ params, session }: Props) {
-  const { subjectId, cardform } = params; // No need to await
+export default async function PlacesList({ params }: Props) {
+  const { subjectId, cardform } = await params;
+  const session = await auth(); // Server-seitige Authentifizierung
   const userRole = session?.user?.role;
 
   console.log("subjectId in PlacesList: ", subjectId);

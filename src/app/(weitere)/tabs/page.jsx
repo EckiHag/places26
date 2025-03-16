@@ -18,7 +18,7 @@ export default function App() {
       >
         Vertical
       </Switch>
-      <div className="flex w-full flex-col">
+      <div className="flex w-full flex-col mt-24">
         <Tabs aria-label="Options" isVertical={isVertical}>
           <Tab key="weisheiten" title="Weisheiten">
             <Card>

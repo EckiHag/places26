@@ -8,7 +8,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-export async function sendEmail(mailTo: string, mailSubject: string, mailText: string): Promise<void> {
+export async function sendEmail(mailTo: string, mailSubject: string, mailText: string, mailHtml?: string): Promise<void> {
   console.log("Empfänger:", mailTo);
   console.log("Betreff:", mailSubject);
   console.log("Text:", mailText);
@@ -17,6 +17,7 @@ export async function sendEmail(mailTo: string, mailSubject: string, mailText: s
     to: mailTo,
     subject: mailSubject, // Hier wird der übergebene Betreff gesetzt
     text: mailText, // Hier wird die übergebene Nachricht gesetzt
+    html: mailHtml, // Hier wird die übergebene Nachricht gesetzt
   };
 
   try {

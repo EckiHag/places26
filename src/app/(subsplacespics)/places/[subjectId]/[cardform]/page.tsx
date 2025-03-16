@@ -9,13 +9,13 @@ import Link from "next/link";
 import { Session } from "next-auth";
 
 interface Props {
-  params: Promise<{ subjectId: string; cardform: string }>;
+  params: { subjectId: string; cardform: string }; // Remove Promise<>
   session: Session | null;
 }
 
 export default async function PlacesList({ params, session }: Props) {
-  const { subjectId, cardform } = await params;
-  const userRole = session?.user.role;
+  const { subjectId, cardform } = params; // No need to await
+  const userRole = session?.user?.role;
 
   console.log("subjectId in PlacesList: ", subjectId);
   const subjects = await getSubjectById(subjectId);

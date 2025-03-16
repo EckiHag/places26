@@ -3,13 +3,14 @@
 import React, { useState } from "react";
 import { Button } from "@heroui/react";
 import { writehw } from "@/app/actions/writehw";
-import { sendeMail } from "@/app/actions/sendeMail";
+import { sendeMail, sendeMultipartMail } from "@/app/actions/sendeMail";
 
 export default function Conv() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
-  const [subject, setSubject] = useState("Testmail von places26");
-  const [emailMessage, setEmailMessage] = useState("Hier ist die Nachricht!");
+  const [mailTo, setMailTo] = useState("eu@hagemeier-web.de");
+  const [mailSubject, setMailSubject] = useState("Testmail von places26");
+  const [mailMessage, setMailMessage] = useState("Hier ist die Nachricht!");
 
   const handleUpdateDimensions = async () => {
     setLoading(true);
@@ -30,7 +31,7 @@ export default function Conv() {
     setMessage("");
 
     try {
-      const result = await sendeMail(subject, emailMessage);
+      const result = await sendeMultipartMail(mailTo, mailSubject, mailMessage);
       setMessage(result.message);
     } catch (error) {
       setMessage(`Fehler: ${error.message}`);
@@ -38,6 +39,7 @@ export default function Conv() {
       setLoading(false);
     }
   };
+
   return (
     <>
       <div className="flex flex-col items-center mt-36">

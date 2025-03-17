@@ -82,6 +82,7 @@ export default function CardPic({ subjectId, place, pic }: CardPicProps) {
       <Card className="max-w-[350px] md:min-w-[400px] lg:min-w-[500px] min-h-[700px]">
         <CardHeader className="flex justify-between items-center bg-pplaces-400 p-4">
           <span className="text-1xl font-semibold">{pic.title === "pic" || pic.title === "Pic" ? place?.title || "Picture" : pic.title}</span>
+
           <div className="flex items-center gap-[1px]">
             <Tooltip content="Delete 🚮">
               <Button

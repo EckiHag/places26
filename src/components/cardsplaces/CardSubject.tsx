@@ -45,11 +45,13 @@ export default function CardSubject({ subjectId, image, title, description }: Ca
             </Tooltip>
           </div>
         )}
-        <div>
-          <Link href={`/places/${subjectId}/format2`} className="ml-3">
-            C2
-          </Link>
-        </div>
+        {userRole === "ADMIN26" && (
+          <div>
+            <Link href={`/places/${subjectId}/format2`} className="ml-3">
+              C2
+            </Link>
+          </div>
+        )}
       </CardHeader>
 
       <Divider />

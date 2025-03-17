@@ -8,6 +8,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { FiEdit } from "react-icons/fi";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
+
 interface CardPicProps {
   subjectId: string;
   place: {
@@ -27,6 +29,8 @@ interface CardPicProps {
 }
 // href={`/pics/editpic/new?placeId=${placeId}&subjectId=${subjectId}`}
 export default function CardPic({ subjectId, place, pic }: CardPicProps) {
+  const { data: session } = useSession();
+  const userRole = session?.user?.role as string | undefined; // Explizite Typisierung als string | undefined
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   // console.log("Id von pic für die Card: ", id);
@@ -107,22 +111,24 @@ export default function CardPic({ subjectId, place, pic }: CardPicProps) {
             </div>
           )}
 
-          <div className="flex items-center gap-[1px]">
-            <Tooltip content="Delete 🚮">
-              <Button
-                className="bg-transparent p-0 mr-3 hover:bg-transparent focus:ring-0 shadow-none w-[30px] h-[30px] min-w-0 min-h-0 flex items-center justify-center rounded-full"
-                onPress={handleDelete}
-              >
-                <MdDelete size={25} className="text-pplaces-900" />
-              </Button>
-            </Tooltip>
-            <Tooltip content="Edit ✏️">
-              <Link href={`/pics/editpic/${pic.id}?placeId=${place?.id}&subjectId=${subjectId}`}>
-                <FiEdit size={25} className="text-pplaces-900" />
-              </Link>
-            </Tooltip>
-            <span className="ml-6">{pic.ord}</span>
-          </div>
+          {userRole === "ADMIN26" && (
+            <div className="flex items-center gap-[1px]">
+              <Tooltip content="Delete 🚮">
+                <Button
+                  className="bg-transparent p-0 mr-3 hover:bg-transparent focus:ring-0 shadow-none w-[30px] h-[30px] min-w-0 min-h-0 flex items-center justify-center rounded-full"
+                  onPress={handleDelete}
+                >
+                  <MdDelete size={25} className="text-pplaces-900" />
+                </Button>
+              </Tooltip>
+              <Tooltip content="Edit ✏️">
+                <Link href={`/pics/editpic/${pic.id}?placeId=${place?.id}&subjectId=${subjectId}`}>
+                  <FiEdit size={25} className="text-pplaces-900" />
+                </Link>
+              </Tooltip>
+              <span className="ml-6">{pic.ord}</span>
+            </div>
+          )}
         </CardFooter>
       </Card>
 

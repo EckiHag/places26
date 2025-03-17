@@ -21,9 +21,9 @@ export default async function PlacesList({ params }: Props) {
 
   let formatPage = "";
   if (cardform === "default") {
-    formatPage = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 max-w-6xl mx-auto justify-items-center";
-  } else if (cardform === "format2") {
     formatPage = "grid grid-cols-1 gap-10 max-w-6xl mx-auto justify-items-center"; // Eine Spalte -> untereinander
+  } else if (cardform === "format2") {
+    formatPage = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 max-w-6xl mx-auto justify-items-center";
   }
 
   // const sortedPlaces = places && places.sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime());
@@ -51,10 +51,10 @@ export default async function PlacesList({ params }: Props) {
           {sortedPlaces &&
             sortedPlaces.map((place) => (
               <div key={place.id}>
-                {cardform === "format2" && (
+                {cardform === "default" && (
                   <CardPlaceFormat2 subjectId={subjectId} placeId={place.id} image={place.image} title={place.title} description={place.description} ord={place.ord} />
                 )}
-                {cardform === "default" && (
+                {cardform === "format2" && (
                   <CardPlace subjectId={subjectId} placeId={place.id} image={place.image} title={place.title} description={place.description} ord={place.ord} />
                 )}
               </div>

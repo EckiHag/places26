@@ -38,12 +38,12 @@ export default function ClientNav({ session }: ClientNavProps) {
           <NavLink href="/subjects" label="Subjects" />
           <NavLink href="/quiz" label="Quiz" />
           {session?.user?.role === "ADMIN26" && <NavLink href="/conv" label="conv" />}
-          <NavLink href="/lb" label="LB" />
-          <NavLink href="/farben" label="Farben" />
-          <NavLink href="/settings" label="set" />
-          <NavLink href="/quadrate" label="qua" />
-          <NavLink href="/tabs" label="tabs" />
-          <NavLink href="/cardtesting" label="card" />
+          {session?.user?.role === "ADMIN26" && <NavLink href="/lb" label="LB" />}
+          {session?.user?.role === "ADMIN26" && <NavLink href="/farben" label="Farben" />}
+          {session?.user?.role === "ADMIN26" && <NavLink href="/settings" label="set" />}
+          {session?.user?.role === "ADMIN26" && <NavLink href="/quadrate" label="qua" />}
+          {session?.user?.role === "ADMIN26" && <NavLink href="/tabs" label="tabs" />}
+          {session?.user?.role === "ADMIN26" && <NavLink href="/cardtesting" label="card" />}
         </div>
 
         {/* Benutzerbereich */}
@@ -71,15 +71,15 @@ export default function ClientNav({ session }: ClientNavProps) {
       {/* Mobile Navigation */}
       {isOpen && (
         <div className="absolute right-0 top-full w-32 bg-gradient-to-r from-pprimary-600 to-pprimary-700 p-4 flex flex-col items-center space-y-2 shadow-lg">
-          {session?.user?.role === "ADMIN" && <NavLink href="/subjects" label="Subjects" isMobile onClick={closeMenu} />}
-          {session?.user?.role === "ADMIN" && <NavLink href="/quiz" label="Quiz" isMobile onClick={closeMenu} />}
-          {session?.user?.role === "ADMIN" && <NavLink href="/conv" label="conv" isMobile onClick={closeMenu} />}
-          <NavLink href="/lb" label="LB" isMobile onClick={closeMenu} />
-          <NavLink href="/farben" label="Farben" />
-          <NavLink href="/settings" label="set" isMobile onClick={closeMenu} />
-          <NavLink href="/quadrate" label="qua" isMobile onClick={closeMenu} />
-          <NavLink href="/tabs" label="tabs" isMobile onClick={closeMenu} />
-          <NavLink href="/cardtesting" label="card" isMobile onClick={closeMenu} />
+          <NavLink href="/subjects" label="Subjects" isMobile onClick={closeMenu} />
+          <NavLink href="/quiz" label="Quiz" isMobile onClick={closeMenu} />
+          {session?.user?.role === "ADMIN26" && <NavLink href="/conv" label="conv" isMobile onClick={closeMenu} />}
+          {session?.user?.role === "ADMIN26" && <NavLink href="/lb" label="LB" isMobile onClick={closeMenu} />}
+          {session?.user?.role === "ADMIN26" && <NavLink href="/farben" label="Farben" />}
+          {session?.user?.role === "ADMIN26" && <NavLink href="/settings" label="set" isMobile onClick={closeMenu} />}
+          {session?.user?.role === "ADMIN26" && <NavLink href="/quadrate" label="qua" isMobile onClick={closeMenu} />}
+          {session?.user?.role === "ADMIN26" && <NavLink href="/tabs" label="tabs" isMobile onClick={closeMenu} />}
+          {session?.user?.role === "ADMIN26" && <NavLink href="/cardtesting" label="card" isMobile onClick={closeMenu} />}
 
           {/* Mobile Benutzerbereich */}
           {userInfo ? (

@@ -54,7 +54,14 @@ export default function SubjectsListClient({ subjects }: SubjectsListClientProps
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 items-center gap-6 mt-14">
         {filteredSubjects.map((subject) => (
-          <CardSubject key={subject.id} subjectId={subject.id} image={subject.image ?? "/fallback-image.jpg"} title={subject.title} description={subject.description} />
+          <CardSubject
+            key={subject.id}
+            subjectId={subject.id}
+            image={subject.image ?? "/fallback-image.jpg"}
+            title={subject.title}
+            description={subject.description}
+            ord={subject.ord}
+          />
         ))}
       </div>
     </div>

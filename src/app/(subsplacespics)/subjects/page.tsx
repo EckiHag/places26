@@ -4,7 +4,9 @@ import SubjectsListClient from "./subjectsListClient";
 
 export default async function SubjectsList() {
   const subjects = await getSubjectsAll();
-  const sortedSubjects = (subjects ?? []).sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime());
+
+  const sortedSubjects = (subjects ?? []).sort((a, b) => a.ord - b.ord); // von 1 nach  100 ...
+  // const sortedSubjects = (subjects ?? []).sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime());
 
   return (
     <div>

@@ -78,7 +78,7 @@ export async function updateSubject(id: string, data: SubjectSchema): Promise<Ac
       return { status: "error", error: validated.error.errors };
     }
 
-    const { title, description, image, group } = validated.data;
+    const { title, description, image, group, ord } = validated.data;
 
     // Prüfen, ob das Fach existiert
     const existingSubject = await prisma.subjects.findUnique({ where: { id } });
@@ -95,6 +95,7 @@ export async function updateSubject(id: string, data: SubjectSchema): Promise<Ac
         description,
         image,
         group,
+        ord,
       },
     });
 

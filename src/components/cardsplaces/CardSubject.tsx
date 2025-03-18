@@ -9,9 +9,10 @@ interface CardSubjectProps {
   image: string;
   title: string;
   description: string;
+  ord: number;
 }
 
-export default function CardSubject({ subjectId, image, title, description }: CardSubjectProps) {
+export default function CardSubject({ subjectId, image, title, description, ord }: CardSubjectProps) {
   const { data: session } = useSession();
   const userRole = session?.user?.role as string | undefined; // Explizite Typisierung als string | undefined
   console.log("subjectId in CardSubject: ", subjectId);
@@ -23,35 +24,36 @@ export default function CardSubject({ subjectId, image, title, description }: Ca
   return (
     <Card className="max-w-[300px] lg:max-w-[400px] min-h-[200px] mx-4">
       <CardHeader className="flex justify-between items-center gap-3 bg-pprimary-400 p-4">
-        <Link href={`/places/${subjectId}/default`} className="flex items-center gap-3 ml-3">
-          <Avatar
-            className="w-20 h-20 transition-transform rounded-full bg-pprimary-400"
-            style={{ borderColor: "#FFFFFF", borderWidth: "2px" }}
-            name="subject avatar"
-            size="md"
-            src={`https://beihaggis.de/${image}`}
-          />
-        </Link>
-
-        <div>
+        {/* Linke Gruppe */}
+        <div className="flex items-center gap-3">
+          <Link href={`/places/${subjectId}/default`} className="flex items-center gap-3">
+            <Avatar
+              className="w-20 h-20 transition-transform rounded-full bg-pprimary-400"
+              style={{ borderColor: "#FFFFFF", borderWidth: "2px" }}
+              name="subject avatar"
+              size="md"
+              src={`https://beihaggis.de/${image}`}
+            />
+          </Link>
           <p className="text-2xl text-pprimary-900">{title}</p>
         </div>
-        {userRole === "ADMIN26" && (
-          <div className="flex flex-col items-end space-y-2">
-            <Tooltip content="Edit ✏️">
-              <Link href={`/subjects/editsubject/${subjectId}`}>
-                <FiEdit size={25} className="text-primary-900" />
+
+        {/* Rechte Gruppe */}
+        <div className="flex items-center gap-3">
+          {userRole === "ADMIN26" && (
+            <>
+              <Tooltip content="Edit ✏️">
+                <Link href={`/subjects/editsubject/${subjectId}`}>
+                  <FiEdit size={25} className="text-primary-900" />
+                </Link>
+              </Tooltip>
+              <Link href={`/places/${subjectId}/format2`} className="ml-3">
+                C2
               </Link>
-            </Tooltip>
-          </div>
-        )}
-        {userRole === "ADMIN26" && (
-          <div>
-            <Link href={`/places/${subjectId}/format2`} className="ml-3">
-              C2
-            </Link>
-          </div>
-        )}
+              <span className="ml-2 text-black">{ord}</span>
+            </>
+          )}
+        </div>
       </CardHeader>
 
       <Divider />

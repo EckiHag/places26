@@ -62,6 +62,7 @@ export default function PlaceForm() {
         if (placeData) {
           setValue("title", placeData.title || "");
           setValue("description", placeData.description || "");
+          setValue("ord", placeData.ord || 0);
           // `https://beihaggis.de/${image.replace(/^.\//, "")}`
           // setExistingImage(subjectData.image ?? null);
           setExistingImage(`https://beihaggis.de/${placeData.image}`);

@@ -9,7 +9,7 @@ import { Card, CardHeader, CardBody, Button, Input } from "@heroui/react";
 import { useForm } from "react-hook-form";
 import { GiPadlock } from "react-icons/gi";
 import { sendeMail } from "@/app/actions/sendeMail";
-
+import { useRouter } from "next/navigation";
 // Der Bildupload geschieht über die Datei places26userroutes.js in _places, das mit REACT programmiert wurde
 // in app.js muss dort auch noch die route gelinkt werden: app.use("/api/places26/user", places26userroutes);
 // "use" wird gebraucht um middleware zu setzen
@@ -18,6 +18,7 @@ import { sendeMail } from "@/app/actions/sendeMail";
 // Danach muss die App bei netcup neu gestartet werden und hier der USERS_PATH geändert werden
 
 export default function RegisterForm() {
+  const router = useRouter();
   const SERVER_URL = "https://beihaggis.de";
   // const SERVER_URL = "http://localhost:5001";
   const USERS_PATH = "api/places26/p26imgusers";
@@ -141,6 +142,8 @@ export default function RegisterForm() {
 
         toast.success("Erfolgreich registriert. Du bekommst jetzt eine Mail an die angegebenene Adresse. 😊 Mail send!");
         console.log("User registered successfully:", result);
+        router.push("/");
+        router.refresh();
       } else {
         if (Array.isArray(result.error)) {
           result.error.forEach((err) => {

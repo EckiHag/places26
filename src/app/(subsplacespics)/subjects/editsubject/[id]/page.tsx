@@ -49,7 +49,7 @@ export default function SubjectForm() {
   } = useForm<SubjectSchema | SubjectUpdateSchema>({
     resolver: zodResolver(isUpdateMode ? subjectUpdateSchema : subjectSchema),
     mode: "onTouched",
-    defaultValues: { title: "", description: "", creator: "", group: "" }, // Kein image bei default
+    defaultValues: { title: "", description: "", creator: "", group: "", ord: 0 }, // Kein image bei default
   });
 
   useEffect(() => {
@@ -61,6 +61,7 @@ export default function SubjectForm() {
           setValue("title", subjectData.title || "");
           setValue("description", subjectData.description || "");
           setValue("group", subjectData.group || "");
+          setValue("ord", subjectData.ord || 0);
           // `https://beihaggis.de/${image.replace(/^.\//, "")}`
           // setExistingImage(subjectData.image ?? null);
           setExistingImage(`https://beihaggis.de/${subjectData.image}`);
@@ -226,7 +227,27 @@ export default function SubjectForm() {
               render={({ field }) => <Input {...field} placeholder="Enter group" isInvalid={!!errors.description} errorMessage={errors.description?.message} />}
             />
           </div>
-
+          {/* Ord */}
+          <div className="mt-4">
+            <label className="block text-sm font-medium text-gray-700">Ord</label>
+            <Controller
+              name="ord"
+              control={control}
+              rules={{ required: "Ord is required" }} // Falls erforderlich
+              render={({ field }) => (
+                <Input
+                  {...field}
+                  type="number"
+                  className="w-24"
+                  placeholder="Enter ord"
+                  isInvalid={!!errors.ord}
+                  errorMessage={errors.ord?.message}
+                  value={field.value?.toString() || ""} // Zahl als String umwandeln
+                  onChange={(e) => field.onChange(e.target.value ? Number(e.target.value) : "")} // Wert als Number speichern
+                />
+              )}
+            />
+          </div>
           {/* Existing Image */}
           {existingImage ? <Image src={existingImage} width={128} height={128} alt="Existing Image" className="rounded-md" /> : <p>No Image Available</p>}
 

@@ -10,6 +10,7 @@ export const subjectSchema = z.object({
   group: z.string().min(1, {
     message: "Group is required",
   }),
+  ord: z.number().int().default(0), // Standardwert 0 für die Reihenfolge
 });
 
 // Update-Schema: Gleiche Struktur, aber ohne "image"

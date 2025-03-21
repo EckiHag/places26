@@ -8,7 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Card, CardHeader, CardBody, Button, Input } from "@heroui/react";
 import { useForm } from "react-hook-form";
 import { GiPadlock } from "react-icons/gi";
-import { sendeMail } from "@/app/actions/sendeMail";
+import { sendeMail, sendeMailToNewUser } from "@/app/actions/sendeMail";
 import { useRouter } from "next/navigation";
 // Der Bildupload geschieht über die Datei places26userroutes.js in _places, das mit REACT programmiert wurde
 // in app.js muss dort auch noch die route gelinkt werden: app.use("/api/places26/user", places26userroutes);
@@ -138,7 +138,7 @@ export default function RegisterForm() {
 
       if (result.status === "success") {
         await handleSendMail("eu@hagemeier-web.de", "Testmail an EckiHag von EckiHag", `Achtung, es gibt einen neuen User 😊:\n\n${userData.name}\n\n${userData.email}`);
-        await handleSendMail(userData.email, "Registrierung auf Places26", `Liebe/r: ${userData.name}\n\ndu wurdest als neuer User mit der Rolle NEWBIE registiert. 😊`);
+        await sendeMailToNewUser(userData.email, userData.name);
 
         toast.success("Erfolgreich registriert. Du bekommst jetzt eine Mail an die angegebenene Adresse. 😊 Mail send!");
         console.log("User registered successfully:", result);
@@ -163,7 +163,7 @@ export default function RegisterForm() {
   };
 
   return (
-    <Card className="w-full max-w-[400px] lg:max-w-[400px] min-h-[200px] mx-auto">
+    <Card className="w-full max-w-[350px] lg:max-w-[400px] min-h-[200px] mx-auto">
       <CardHeader>
         <div className="text-pprimary-600">
           <div className="flex flex-row items-center gap-3">

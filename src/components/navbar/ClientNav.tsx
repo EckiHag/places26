@@ -7,7 +7,7 @@ import { GiJourney } from "react-icons/gi";
 import { FiMenu, FiX } from "react-icons/fi";
 import NavLink from "./NavLink";
 import UserMenu from "./UserMenu";
-
+import { useRouter } from "next/navigation"; // wichtig für App Router
 import { Session } from "next-auth";
 
 interface ClientNavProps {
@@ -20,6 +20,12 @@ export default function ClientNav({ session }: ClientNavProps) {
   const toggleMenu = () => setIsOpen((prev) => !prev);
   const closeMenu = () => setIsOpen(false);
   const userInfo = session?.user;
+  const router = useRouter();
+  const handleClick = (href: string) => {
+    console.log("handleClick");
+    closeMenu();
+    router.push(href);
+  };
 
   return (
     <Navbar className="fixed top-0 left-0 w-full z-50 bg-gradient-to-r from-pprimary-400 to-pprimary-700 px-4 py-2">
@@ -52,10 +58,10 @@ export default function ClientNav({ session }: ClientNavProps) {
             <UserMenu userInfo={userInfo} />
           ) : (
             <>
-              <Button as={Link} href="/login" variant="bordered" className="text-white">
+              <Button variant="bordered" className="text-white w-full" onPress={() => handleClick("/login")}>
                 Login
               </Button>
-              <Button as={Link} href="/register" variant="bordered" className="text-white">
+              <Button variant="bordered" className="text-white w-full" onPress={() => handleClick("/register")}>
                 Register
               </Button>
             </>
@@ -86,10 +92,10 @@ export default function ClientNav({ session }: ClientNavProps) {
             <UserMenu userInfo={userInfo} />
           ) : (
             <>
-              <Button as={Link} href="/login" variant="bordered" className="text-white w-full">
+              <Button variant="bordered" className="text-white w-full" onPress={() => handleClick("/login")}>
                 Login
               </Button>
-              <Button as={Link} href="/register" variant="bordered" className="text-white w-full">
+              <Button variant="bordered" className="text-white w-full" onPress={() => handleClick("/register")}>
                 Register
               </Button>
             </>

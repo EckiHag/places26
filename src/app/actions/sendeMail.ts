@@ -1,6 +1,7 @@
 // src/app/actions/sendeMails.ts
 "use server";
 
+import mailExample from "@/lib/mailing/mailExample";
 import { nodeMailer } from "@/lib/mailing/nodemailer";
 import fs from "fs";
 import path from "path";
@@ -31,6 +32,17 @@ export async function sendeMailToNewUser(mailTo: string, userName: string) {
 }
 
 export async function sendeMultipartMail(mailTo: string, mailSubject: string, mailMessage: string) {
+  const personalizedHtml = mailExample;
+  // const personalizedHtml = htmlTemplate.replace("{{name}}", mailTo); // oder besser: echten Namen einsetzen
+
+  const result = await nodeMailer(mailTo, mailSubject, mailMessage, personalizedHtml);
+
+  return result.success
+    ? { success: true, message: "Message: Multipart-Mail erfolgreich gesendet!", info: result.info }
+    : { success: false, message: "Message: Fehler beim Senden der Multipart-Mail", error: result.error };
+}
+
+export async function xsendeMultipartMail(mailTo: string, mailSubject: string, mailMessage: string) {
   // htmlPath: src/lib/mailing
   const htmlPath = path.join(process.cwd(), "src", "lib", "mailing", "mailExample.html");
   const html = fs.readFileSync(htmlPath, "utf8");

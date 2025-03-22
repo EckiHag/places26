@@ -1,67 +1,45 @@
+// src/app/actions/sendeMails.ts
 "use server";
 
-import { sendEmail } from "@/lib/util/nodemailer";
+import { nodeMailer } from "@/lib/mailing/nodemailer";
 import fs from "fs";
 import path from "path";
 
 export async function sendeMail(mailTo: string, mailSubject: string, mailMessage: string) {
-  try {
-    await sendEmail(mailTo, mailSubject, mailMessage);
+  const result = await nodeMailer(mailTo, mailSubject, mailMessage);
 
-    return { success: true, message: "E-Mail erfolgreich gesendet!" };
-  } catch (error) {
-    console.error("Fehler beim Senden der E-Mail:", error);
-    return { success: false, message: "Fehler beim Senden der Mail" };
+  if (result.success) {
+    return { success: true, message: "E-Mail erfolgreich gesendet!", info: result.info };
+  } else {
+    return { success: false, message: "Fehler beim Senden der Mail", error: result.error };
   }
 }
+
 export async function sendeMailToNewUser(mailTo: string, userName: string) {
-  // const mailHhtml = `<p>${mailMessage}</p><br><strong>Mit freundlichen Grüßen</strong>`;
-  // Lade HTML-Datei
   const emailSubject = `Places26: Erfolgreiche Anmeldung!`;
-  const emailHtmlPath = path.join(process.cwd(), "public", "mailRegistrationToNewUser.html");
-  let emailHtml = fs.readFileSync(emailHtmlPath, "utf8");
-  let emailNurText = `Willkommen userName! 
+  const htmlPath = path.join(process.cwd(), "src", "lib", "mailing", "mailRegistrationToNewUser.html");
+  const html = fs.readFileSync(htmlPath, "utf8").replace(/userName/g, userName);
+  const text = `Willkommen ${userName}!\n\nDanke, dass du dich registriert hast. Ich freue mich, dich an Bord zu haben! Du kannst dich jetzt mit deiner Email-Adresse anmelden! Du hast zunächst als NEWBIE nur Zugang zu den Galerien, kannst aber von mir weitere Zugänge erhalten.\n\nStarte jetzt: https://places26.vercel.app/\n\n© 2026 EckiHag - Alle Rechte vorbehalten.`;
 
-  Danke, dass du dich registriert hast. Ich freue mich, dich an Bord zu haben! Du kannst dich jetzt mit deiner Email-Adresse annmelden! Du hast zunächst als NEWBIE nur Zugang zu den Galerien, kannst aber von mir weitere Zugänge erhalten.
- 
-  
-  Starte jetzt: https://places26.vercel.app/
-  
-  © 2026 EckiHag - Alle Rechte vorbehalten.`;
-  emailNurText = emailNurText.replace("userName", userName);
-  emailHtml = emailHtml.replace("userName", userName);
+  const result = await nodeMailer(mailTo, emailSubject, text, html);
 
-  try {
-    await sendEmail(mailTo, emailSubject, emailNurText, emailHtml);
-
-    return { success: true, message: "E-Mail erfolgreich gesendet!" };
-  } catch (error) {
-    console.error("Fehler beim Senden der E-Mail:", error);
-    return { success: false, message: "Fehler beim Senden der Mail" };
+  if (result.success) {
+    return { success: true, message: "Willkommensmail gesendet!", info: result.info };
+  } else {
+    return { success: false, message: "Fehler beim Senden der Willkommensmail.", error: result.error };
   }
 }
 
 export async function sendeMultipartMail(mailTo: string, mailSubject: string, mailMessage: string) {
-  // const mailHhtml = `<p>${mailMessage}</p><br><strong>Mit freundlichen Grüßen</strong>`;
-  // Lade HTML-Datei
-  const emailHtmlPath = path.join(process.cwd(), "public", "mailExample.html");
-  const emailHtml = fs.readFileSync(emailHtmlPath, "utf8");
-  const emailPlainText = `Willkommen! 
+  // htmlPath: src/lib/mailing
+  const htmlPath = path.join(process.cwd(), "src", "lib", "mailing", "mailExample.html");
+  const html = fs.readFileSync(htmlPath, "utf8");
 
-  Danke, dass du dich registriert hast. Ich freue mich, dich an Bord zu haben! Du kannst dich jetzt mit deiner Email-Adresse annmelden! Du hast zunächst als NEWBIE nur Zugang zu den Galerien, kannst aber von mir weitere Zugänge erhalten.
- 
-  
-  Starte jetzt: https://places26.vercel.app/
-  
-  © 2026 EckiHag - Alle Rechte vorbehalten.`;
-  mailMessage = emailPlainText;
+  const result = await nodeMailer(mailTo, mailSubject, mailMessage, html);
 
-  try {
-    await sendEmail(mailTo, mailSubject, mailMessage, emailHtml);
-
-    return { success: true, message: "E-Mail erfolgreich gesendet!" };
-  } catch (error) {
-    console.error("Fehler beim Senden der E-Mail:", error);
-    return { success: false, message: "Fehler beim Senden der Mail" };
+  if (result.success) {
+    return { success: true, message: "Message: Multipart-Mail erfolgreich gesendet!", info: result.info };
+  } else {
+    return { success: false, message: "Message: Fehler beim Senden der Multipart-Mail", error: result.error };
   }
 }

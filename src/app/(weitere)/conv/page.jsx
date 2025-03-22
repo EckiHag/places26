@@ -32,9 +32,21 @@ export default function Conv() {
 
     try {
       const result = await sendeMultipartMail(mailTo, mailSubject, mailMessage);
-      setMessage(result.message);
+
+      if (result.success) {
+        setMessage(`✅ ${result.message}`);
+        console.log("Mail-Details:", result.info);
+      } else {
+        setMessage(`❌ ${result.message}${result.error ? ` (${result.error})` : ""}`);
+        console.error("Fehlerdetails:", result.error);
+      }
     } catch (error) {
-      setMessage(`Fehler: ${error.message}`);
+      if (error instanceof Error) {
+        setMessage(`❌ Unerwarteter Fehler: ${error.message}`);
+      } else {
+        setMessage("❌ Unerwarteter Fehler beim Mailversand.");
+      }
+      console.error("Fehler im Catch-Block:", error);
     } finally {
       setLoading(false);
     }

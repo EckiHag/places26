@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useState } from "react";
 import imageCompression from "browser-image-compression";
 import { ToastContainer, toast } from "react-toastify";
@@ -11,14 +10,33 @@ import { useForm } from "react-hook-form";
 import { GiPadlock } from "react-icons/gi";
 import { sendeMail, sendeMailToNewUser } from "@/app/actions/sendeMail";
 import { useRouter } from "next/navigation";
+// Der Bildupload geschieht über die Datei places26userroutes.js in _places, das mit REACT programmiert wurde
+// in app.js muss dort auch noch die route gelinkt werden: app.use("/api/places26/user", places26userroutes);
+// "use" wird gebraucht um middleware zu setzen
+// Um eine neue Version zum upload bei _places (REACT) zu bekommen muss neben der Routen-Datei auch app.js überschrieben werden
+// Am besten mit fileZilla
+// Danach muss die App bei netcup neu gestartet werden und hier der USERS_PATH geändert werden
 
 export default function RegisterForm() {
   const router = useRouter();
   const SERVER_URL = "https://beihaggis.de";
+  // const SERVER_URL = "http://localhost:5001";
   const USERS_PATH = "api/places26/p26imgusers";
   const FETCH_URL = `${SERVER_URL}/${USERS_PATH}`;
   const Bildsize = 1200;
   const BildsizeMb = 0.1;
+
+  const [resultmessage, setResultMessage] = useState("");
+
+  const handleSendMail = async (mailTo: string, mailSubject: string, mailMessage: string) => {
+    try {
+      const result = await sendeMail(mailTo, mailSubject, mailMessage);
+      setResultMessage(result.message);
+      return resultmessage;
+    } catch (error) {
+      setResultMessage(`Fehler beim Mailen: ${error}`);
+    }
+  };
 
   const {
     register,
@@ -29,9 +47,9 @@ export default function RegisterForm() {
     resolver: zodResolver(registerSchema),
     mode: "onTouched",
   });
-
   const [imageFile, setImageFile] = useState<File | null>(null);
 
+  // Handler für Dateiauswahl
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     const file = event.target.files?.[0];
     if (file) {
@@ -39,6 +57,7 @@ export default function RegisterForm() {
     }
   };
 
+  // Funktion zum Hochladen des Bildes
   const uploadImage = async (imageFile: File): Promise<{ imageUrl: string; width: number; height: number } | null> => {
     const formData = new FormData();
     formData.append("image", imageFile);
@@ -58,6 +77,9 @@ export default function RegisterForm() {
       }
 
       const result = await response.json();
+      console.log("result:", result); // Debug-Ausgabe zur Überprüfung der API-Antwort
+
+      // Extrahiere `uploadResult` aus der API-Antwort
       const { uploadResult } = result;
       if (!uploadResult) throw new Error("Invalid upload result.");
 
@@ -80,45 +102,51 @@ export default function RegisterForm() {
     }
 
     try {
+      // Optionen für die Bildkomprimierung
       const options = {
         maxSizeMB: BildsizeMb,
         maxWidthOrHeight: Bildsize,
         useWebWorker: true,
       };
 
+      // Bild komprimieren
       const compressedFile = await imageCompression(imageFile, options);
+      console.log("Original File:", imageFile);
+      console.log("Compressed File:", compressedFile);
+
+      // Bild hochladen
       const uploadResult = await uploadImage(compressedFile);
 
-      if (!uploadResult) throw new Error("Image upload failed.");
-
+      if (!uploadResult) {
+        throw new Error("Image upload failed.");
+      }
+      console.log("uploadResult:", uploadResult);
+      // Datensatz erstellen mit Bildinformationen
       const userData = {
         ...data,
         image: uploadResult.imageUrl,
         imgwidth: uploadResult.width,
         imgheight: uploadResult.height,
       };
+      console.log("userData:", userData);
 
+      // Hier wird erfolgt erst der Datenbankeintrag
+      // Hier wird erfolgt erst der Datenbankeintrag
+      // Hier wird erfolgt erst der Datenbankeintrag
       const result = await registerUser(userData);
 
       if (result.status === "success") {
-        const resultMailToAdmin = await sendeMail(
+        const resultMailToAdmin = await handleSendMail(
           "eu@hagemeier-web.de",
           "Neuer User bei Places26!",
           `Achtung, es gibt einen neuen User 😊:\n\n${userData.name}\n\n${userData.email}`
         );
-
+        console.log("resultMailToAdmin: ", resultMailToAdmin);
         const resultMailToNewUser = await sendeMailToNewUser(userData.email, userData.name);
-
-        if (!resultMailToAdmin.success) {
-          toast.error(`Fehler beim Versenden der Admin-Mail: ${resultMailToAdmin.message}`);
-        }
-        if (!resultMailToNewUser.success) {
-          toast.error(`Fehler beim Versenden der Willkommensmail: ${resultMailToNewUser.message}`);
-        }
-        console.log("resultMailToAdmin:", resultMailToAdmin);
-        console.log("resultMailToNewUser:", resultMailToNewUser);
+        console.log("resultMailToNewUser: ", resultMailToNewUser);
 
         toast.success("Erfolgreich registriert. Du bekommst jetzt eine Mail an die angegebenene Adresse. 😊 Mail send!");
+        console.log("User registered successfully:", result);
         router.push("/");
         router.refresh();
       } else {
@@ -130,9 +158,7 @@ export default function RegisterForm() {
             }
           });
         } else {
-          setError("root.serverError", {
-            message: typeof result.error === "string" ? result.error : "Unbekannter Fehler vom Server",
-          });
+          setError("root.serverError", { message: result.error });
         }
       }
     } catch (error) {

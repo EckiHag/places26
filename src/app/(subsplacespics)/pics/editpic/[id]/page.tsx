@@ -154,6 +154,7 @@ export default function PicForm() {
       if (result?.status === "success") {
         toast.success(isUpdateMode ? "Pic updated successfully." : "Pic added successfully.");
         if (eingabeWeiter || isUpdateMode) {
+          // router.back();
           router.push(`/pics/cards/search?placeId=${placeId}&subjectId=${subjectId}`);
           // href={`/pics/cards/search?id=${id}&subjectId=${subjectId}`} Da stimmt was nicht
         } else {
@@ -203,13 +204,21 @@ export default function PicForm() {
             />
           </div>
           {/* Description */}
-          <div className="mt-7">
+          <div>
             <label className="block text-sm font-medium text-gray-700">Description</label>
             <Controller
               name="description"
               control={control}
-              render={({ field }) => <Input {...field} placeholder="Enter description" isInvalid={!!errors.description} errorMessage={errors.description?.message} />}
+              render={({ field }) => (
+                <textarea
+                  {...field}
+                  rows={3}
+                  className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 ${errors.description ? "border-red-500" : ""}`}
+                  placeholder="Enter description"
+                />
+              )}
             />
+            {errors.description && <p className="mt-1 text-sm text-red-500">{errors.description.message}</p>}
           </div>
           {/* Copyright */}
           <div className="mt-4">

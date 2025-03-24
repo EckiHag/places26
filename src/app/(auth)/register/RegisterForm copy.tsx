@@ -8,7 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Card, CardHeader, CardBody, Button, Input } from "@heroui/react";
 import { useForm } from "react-hook-form";
 import { GiPadlock } from "react-icons/gi";
-import { sendeMail, sendeMailToNewUser } from "@/app/actions/sendeMail";
+import { sendeMail, sendeMailToNewUser } from "@/app/actions/mailActions";
 import { useRouter } from "next/navigation";
 // Der Bildupload geschieht über die Datei places26userroutes.js in _places, das mit REACT programmiert wurde
 // in app.js muss dort auch noch die route gelinkt werden: app.use("/api/places26/user", places26userroutes);

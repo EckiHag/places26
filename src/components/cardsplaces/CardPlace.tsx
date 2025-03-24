@@ -47,7 +47,7 @@ export default function CardPlace({ subjectId, placeId, image, title, descriptio
         </Button>
         {userRole === "ADMIN26" && (
           <Button as={Link} href={`/pics/cards/searchFormat2?placeId=${placeId}&subjectId=${subjectId}`} variant="solid" className="bg-pplaces-400">
-            C2
+            3spaltig
           </Button>
         )}
         <Button as={Link} href={`/pics/gallery/${placeId}`} variant="solid" className="bg-pplaces-400">

@@ -2,6 +2,7 @@
 "use server";
 
 import mailExample from "@/lib/mailing/mailExample";
+import mailRegistrationToNewUser from "@/lib/mailing/mailRegistrationToNewUser";
 import { nodeMailer } from "@/lib/mailing/nodemailer";
 import fs from "fs";
 import path from "path";
@@ -17,12 +18,13 @@ export async function sendeMail(mailTo: string, mailSubject: string, mailMessage
 }
 
 export async function sendeMailToNewUser(mailTo: string, userName: string) {
+  const personalizedHtml = mailRegistrationToNewUser.replace("{{userName}}", userName);
   const emailSubject = `Places26: Erfolgreiche Anmeldung!`;
-  const htmlPath = path.join(process.cwd(), "src", "lib", "mailing", "mailRegistrationToNewUser.html");
-  const html = fs.readFileSync(htmlPath, "utf8").replace(/userName/g, userName);
+  // const htmlPath = path.join(process.cwd(), "src", "lib", "mailing", "mailRegistrationToNewUser.html");
+  // const html = fs.readFileSync(htmlPath, "utf8").replace(/userName/g, userName);
   const text = `Willkommen ${userName}!\n\nDanke, dass du dich registriert hast. Ich freue mich, dich an Bord zu haben! Du kannst dich jetzt mit deiner Email-Adresse anmelden! Du hast zunächst als NEWBIE nur Zugang zu den Galerien, kannst aber von mir weitere Zugänge erhalten.\n\nStarte jetzt: https://places26.vercel.app/\n\n© 2026 EckiHag - Alle Rechte vorbehalten.`;
 
-  const result = await nodeMailer(mailTo, emailSubject, text, html);
+  const result = await nodeMailer(mailTo, emailSubject, text, personalizedHtml);
 
   if (result.success) {
     return { success: true, message: "Willkommensmail gesendet!", info: result.info };

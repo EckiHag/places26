@@ -21,7 +21,7 @@ export default async function PicsCardWithPlaceId({ searchParams }: Props) {
 
   return (
     <div className="flex flex-col items-center">
-      <div className="flex flex-row items-center">
+      <div className="flex flex-row items-center mt-24">
         <Link
           href={`/pics/editpic/new?placeId=${placeId}&subjectId=${subjectId}`}
           className="mt-3 mr-3 px-4 py-2 bg-pprimary-400 text-white rounded-lg shadow-md hover:bg-pprimary-300 transition"

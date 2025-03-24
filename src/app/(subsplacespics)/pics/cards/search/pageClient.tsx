@@ -1,12 +1,14 @@
+// src/app/pics/cards/search/pageClient.tsx
+
 "use client";
 
 import { Button, Tooltip } from "@heroui/react";
 import { BsPlusSlashMinus } from "react-icons/bs";
 import { ToastContainer, toast } from "react-toastify";
-import CardPicFormat2 from "@/components/cardsplaces/CardPicFormat2";
+import CardPic from "@/components/cardsplaces/CardPic";
 import { Pics, Places } from "@prisma/client";
 import { updatePicsOrd } from "@/app/actions/picActions"; // Import der Server Action
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 
@@ -45,6 +47,14 @@ export default function PicsCardClient({ sortedPics, subjectId, place }: PicsCar
     router.refresh();
   };
 
+  useEffect(() => {
+    const scrollY = sessionStorage.getItem("scrollY");
+    if (scrollY) {
+      window.scrollTo(0, parseInt(scrollY));
+      sessionStorage.removeItem("scrollY");
+    }
+  }, []);
+
   return (
     <div className="flex flex-col items-center">
       {userRole === "ADMIN26" && (
@@ -62,7 +72,7 @@ export default function PicsCardClient({ sortedPics, subjectId, place }: PicsCar
       <div className="grid grid-cols-1 justify-items-center mt-12">
         {sortedPics?.map((pic) => (
           <div key={pic.id}>
-            <CardPicFormat2 subjectId={subjectId} place={place} pic={pic} />
+            <CardPic subjectId={subjectId} place={place} pic={pic} />
           </div>
         ))}
       </div>

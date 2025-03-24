@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { Button } from "@heroui/react";
 import { writehw } from "@/app/actions/writehw";
-import { sendeMail, sendeMultipartMail } from "@/app/actions/sendeMail";
+import { sendeMultipartMail } from "@/app/actions/mailActions";
 
 export default function Conv() {
   const [loading, setLoading] = useState(false);

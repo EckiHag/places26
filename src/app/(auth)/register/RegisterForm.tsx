@@ -9,7 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Card, CardHeader, CardBody, Button, Input } from "@heroui/react";
 import { useForm } from "react-hook-form";
 import { GiPadlock } from "react-icons/gi";
-import { sendeMail, sendeMailToNewUser } from "@/app/actions/sendeMail";
+import { sendeMail, sendeMailToNewUser } from "@/app/actions/mailActions";
 import { useRouter } from "next/navigation";
 
 export default function RegisterForm() {

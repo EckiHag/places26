@@ -1,13 +1,14 @@
 "use client";
-import { Card, CardHeader, CardBody, Tooltip, Divider, Button, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Accordion, AccordionItem } from "@heroui/react";
+import { Card, CardHeader, CardBody, Tooltip, Divider, Button, Modal, ModalContent, ModalHeader, ModalBody, Accordion, AccordionItem, CardFooter } from "@heroui/react";
 import { MdDelete } from "react-icons/md";
 import { deletePicWithId } from "@/app/actions/picActions";
 import { useRouter } from "next/navigation";
 import { ToastContainer, toast } from "react-toastify";
 import { useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
+// import Link from "next/link";
 import { FiEdit } from "react-icons/fi";
+import Image from "next/image";
+import { useSession } from "next-auth/react";
 
 interface CardPicProps {
   subjectId: string;
@@ -21,11 +22,15 @@ interface CardPicProps {
     title: string;
     description: string;
     image?: string | null; // Hier `null` explizit erlauben
+    imgwidth: number | null;
+    imgheight: number | null;
     ord: number | null;
   };
 }
 // href={`/pics/editpic/new?placeId=${placeId}&subjectId=${subjectId}`}
 export default function CardPic({ subjectId, place, pic }: CardPicProps) {
+  const { data: session } = useSession();
+  const userRole = session?.user?.role as string | undefined; // Explizite Typisierung als string | undefined
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   // console.log("Id von pic für die Card: ", id);
@@ -37,10 +42,7 @@ export default function CardPic({ subjectId, place, pic }: CardPicProps) {
   const getFirstWords = (text: string, wordCount: number) => {
     return text.split(" ").slice(0, wordCount).join(" ") + " ...";
   };
-  const getRemainingWords = (text: string, numWords: number) => {
-    const words = text.split(" ");
-    return words.slice(numWords).join(" ");
-  };
+
   const handleDelete = async () => {
     try {
       const uploadPassword = process.env.NEXT_PUBLIC_UPLOAD_PASSWORD;
@@ -77,72 +79,86 @@ export default function CardPic({ subjectId, place, pic }: CardPicProps) {
     }
   };
 
+  const handleEdit = () => {
+    // ✅ Scrollposition global speichern
+    sessionStorage.setItem("scrollY", window.scrollY.toString());
+
+    // 👉 Zur Bearbeiten-Seite navigieren
+    router.push(`/pics/editpic/${pic.id}?placeId=${place?.id}&subjectId=${subjectId}`);
+  };
+
   return (
     <>
-      <Card className="max-w-[350px] md:min-w-[400px] lg:min-w-[500px] min-h-[700px]">
-        <CardHeader className="flex justify-between items-center bg-pplaces-400 p-4">
-          <span className="text-1xl font-semibold">{pic.title === "pic" || pic.title === "Pic" ? place?.title || "Picture" : pic.title}</span>
-
-          <div className="flex items-center gap-[1px]">
-            <Tooltip content="Delete 🚮">
-              <Button
-                className="bg-transparent p-0 mr-3 hover:bg-transparent focus:ring-0 shadow-none w-[30px] h-[30px] min-w-0 min-h-0 flex items-center justify-center rounded-full"
-                onPress={handleDelete}
-              >
-                <MdDelete size={25} className="text-pplaces-900" />
-              </Button>
-            </Tooltip>
-            <Tooltip content="Edit ✏️">
-              <Link href={`/pics/editpic/${pic.id}?placeId=${place?.id}&subjectId=${subjectId}`}>
-                <FiEdit size={25} className="text-pplaces-900" />
-              </Link>
-            </Tooltip>
-            <span className="ml-6">{pic.ord}</span>
-          </div>
-        </CardHeader>
+      <Card className="mt-3 min-w-[400px] lg:min-w-[600px] mx-auto">
+        <CardHeader className="flex justify-between items-center bg-pprimary-400 p-4"></CardHeader>
         <Divider />
-        <CardBody className="bg-ppics-100 items-center">
+        <CardBody className="bg-white flex-grow flex justify-center items-center">
           {pic.image && (
-            <Image
-              alt="NextUI place Image"
-              src={`https://beihaggis.de/${pic.image.replace(/^.\//, "")}`}
-              width={500}
-              height={500}
-              priority
-              className="cursor-pointer w-full max-w-full h-auto object-contain"
-              onClick={() => setIsOpen(true)}
-            />
-          )}
-          {pic.title !== "Pic" && pic.description !== "nothing to say" && pic.description !== "No description" && (
-            <Accordion>
-              <AccordionItem className="max-w-[350px]" title={getFirstWords(pic.description, 5)}>
-                <p dangerouslySetInnerHTML={{ __html: `... ${getRemainingWords(pic.description, 5)}` }} />
-              </AccordionItem>
-            </Accordion>
+            <div className="w-full max-w-[500px] h-full max-h-[400px] flex justify-center">
+              <Image
+                alt="NextUI place Image"
+                src={`https://beihaggis.de/${pic.image.replace(/^.\//, "")}`}
+                width={500} // Setze eine sinnvolle Breite
+                height={500} // Setze eine sinnvolle Höhe
+                priority
+                className="cursor-pointer w-full max-w-full h-auto object-contain"
+                onClick={() => setIsOpen(true)}
+              />
+            </div>
           )}
         </CardBody>
+        <CardFooter className="flex flex-col w-full">
+          <div className="text-1xl font-semibold">{pic.title === "pic" || pic.title === "Pic" ? place?.title || "Picture" : pic.title}</div>
+          {pic.title !== "Pic" && pic.description !== "nothing to say" && pic.description !== "No description" && (
+            <div>
+              <Accordion className="mt-5 max-w-[600px] w-full">
+                <AccordionItem title={getFirstWords(pic.description, 5)}>
+                  <p dangerouslySetInnerHTML={{ __html: pic.description }} />
+                </AccordionItem>
+              </Accordion>
+            </div>
+          )}
+
+          {userRole === "ADMIN26" && (
+            <div className="flex items-center gap-[1px]">
+              <Tooltip content="Delete 🚮">
+                <Button
+                  className="bg-transparent p-0 mr-3 hover:bg-transparent focus:ring-0 shadow-none w-[30px] h-[30px] min-w-0 min-h-0 flex items-center justify-center rounded-full"
+                  onPress={handleDelete}
+                >
+                  <MdDelete size={25} className="text-pplaces-900" />
+                </Button>
+              </Tooltip>
+              <Tooltip content="Edit ✏️">
+                <Button onPress={handleEdit}>
+                  <FiEdit size={25} className="text-pplaces-900" />
+                </Button>
+              </Tooltip>
+              <span className="ml-6">{pic.ord}</span>
+            </div>
+          )}
+        </CardFooter>
       </Card>
 
       {/* Modal for full-screen image using HeroUI */}
-      <div className="hidden lg:block">
+      {isOpen && window.innerWidth >= 1024 && (
         <Modal isOpen={isOpen} placement="center" backdrop="opaque" onClose={() => setIsOpen(false)}>
-          <ModalContent className="flex flex-col items-center p-1 bg-transparent max-w-full max-h-full">
+          <ModalContent className="flex flex-col items-center bg-transparent max-w-full max-h-full">
             <ModalHeader></ModalHeader>
             <ModalBody className="flex justify-center items-center h-full">
               <Image
                 alt="Full Size Image"
                 src={`https://beihaggis.de/${pic.image?.replace(/^.\//, "")}`}
-                width={800}
-                height={600}
-                className="max-w-[85%] max-h-[85h] object-contain"
+                width={900}
+                height={900}
+                className="max-w-[100%] max-h-[95dvh] object-contain cursor-pointer"
+                onClick={() => setIsOpen(false)}
               />
             </ModalBody>
-            <ModalFooter>
-              <Button onPress={() => setIsOpen(false)}>Close</Button>
-            </ModalFooter>
           </ModalContent>
         </Modal>
-      </div>
+      )}
+
       <ToastContainer />
     </>
   );

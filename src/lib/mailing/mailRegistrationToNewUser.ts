@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+const mailRegistrationToNewUser = `<!DOCTYPE html>
 <html>
   <head>
     <meta charset="UTF-8" />
@@ -33,3 +33,6 @@
     </table>
   </body>
 </html>
+`;
+
+export default mailRegistrationToNewUser;

@@ -48,7 +48,7 @@ export default function CardSubject({ subjectId, image, title, description, ord 
                 </Link>
               </Tooltip>
               <Link href={`/places/${subjectId}/format2`} className="ml-3">
-                C2
+                Spa3
               </Link>
               <span className="ml-2 text-black">{ord}</span>
             </>

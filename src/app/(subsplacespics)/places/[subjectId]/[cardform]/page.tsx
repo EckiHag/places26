@@ -2,10 +2,11 @@
 
 import { getPlacesByCreatorsubject } from "@/app/actions/placeActions";
 import { getSubjectById } from "@/app/actions/subjectActions";
-import CardPlace from "@/components/cardsplaces/CardPlace";
-import CardPlaceFormat2 from "@/components/cardsplaces/CardPlaceFormat2";
+// import CardPlace from "@/components/cardsplaces/CardPlace";
+// import CardPlaceFormat2 from "@/components/cardsplaces/CardPlaceFormat2";
 import Link from "next/link";
 import { auth } from "@/auth";
+import PageClient from "./pageClient";
 
 interface Props {
   params: Promise<{ subjectId: string; cardform: string }>;
@@ -19,15 +20,15 @@ export default async function PlacesList({ params }: Props) {
   const subjects = await getSubjectById(subjectId);
   const places = await getPlacesByCreatorsubject(subjectId);
 
-  let formatPage = "";
-  if (cardform === "default") {
-    formatPage = "grid grid-cols-1 gap-10 max-w-6xl mx-auto justify-items-center"; // Eine Spalte -> untereinander
-  } else if (cardform === "format2") {
-    formatPage = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 max-w-6xl mx-auto justify-items-center";
-  }
+  // let formatPage = "";
+  // if (cardform === "default") {
+  //   formatPage = "grid grid-cols-1 gap-10 max-w-6xl mx-auto justify-items-center"; // Eine Spalte -> untereinander
+  // } else if (cardform === "format2") {
+  //   formatPage = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 max-w-6xl mx-auto justify-items-center";
+  // }
 
   // const sortedPlaces = places && places.sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime());
-  const sortedPlaces = places?.sort((a, b) => a.ord - b.ord); // von 1 nach  100 ...
+  const sortedPlaces = places?.sort((a, b) => a.ord - b.ord) || []; // von 1 nach  100 ...
   return (
     <div className="flex flex-col justify-center mx-auto mt-3 mb-3">
       <div className="sticky top-16 bg-white z-40 flex flex-col mt-1 mb-1 shadow-md p-4">
@@ -46,7 +47,7 @@ export default async function PlacesList({ params }: Props) {
           )}
         </div>
       </div>
-      <div className="flex justify-center mt-16">
+      {/* <div className="flex justify-center mt-16">
         <div className={formatPage}>
           {sortedPlaces &&
             sortedPlaces.map((place) => (
@@ -60,7 +61,10 @@ export default async function PlacesList({ params }: Props) {
               </div>
             ))}
         </div>
-      </div>
+      </div> */}
+
+      {/* Übergabe der Daten an die Client-Komponente */}
+      <PageClient sortedPlaces={sortedPlaces} subjectId={subjectId} cardform={cardform} />
     </div>
   );
 }

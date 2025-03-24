@@ -19,7 +19,7 @@ interface PicsCardClientProps {
   place: Places;
 }
 
-export default function PicsCardClient({ sortedPics, subjectId, place }: PicsCardClientProps) {
+export default function PageClient({ sortedPics, subjectId, place }: PicsCardClientProps) {
   const { data: session } = useSession();
   const userRole = session?.user?.role as string | undefined; // Explizite Typisierung als string | undefined
   const router = useRouter();

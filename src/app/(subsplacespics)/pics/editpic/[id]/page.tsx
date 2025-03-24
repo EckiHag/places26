@@ -154,9 +154,7 @@ export default function PicForm() {
       if (result?.status === "success") {
         toast.success(isUpdateMode ? "Pic updated successfully." : "Pic added successfully.");
         if (eingabeWeiter || isUpdateMode) {
-          // router.back();
           router.push(`/pics/cards/search?placeId=${placeId}&subjectId=${subjectId}`);
-          // href={`/pics/cards/search?id=${id}&subjectId=${subjectId}`} Da stimmt was nicht
         } else {
           // Aktuellen Wert abrufen und um 5 erhöhen
           const currentOrd = watch("ord") || 0; // Falls undefined, als 0 behandeln

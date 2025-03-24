@@ -5,8 +5,9 @@ import { FiEdit } from "react-icons/fi";
 import Image from "next/image";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
-interface CardPlaceProps {
+interface Props {
   subjectId: string;
   placeId: string;
   image: string | null;
@@ -15,12 +16,26 @@ interface CardPlaceProps {
   ord: number;
 }
 
-export default function CardPlace({ subjectId, placeId, image, title, description, ord }: CardPlaceProps) {
+export default function CardPlace({ subjectId, placeId, image, title, description, ord }: Props) {
   const { data: session } = useSession();
   const userRole = session?.user?.role as string | undefined; // Explizite Typisierung als string | undefined
   const [expanded, setExpanded] = useState(false);
   const words = description.split(" ");
   const shortDescription = words.slice(0, 20).join(" ") + (words.length > 20 ? "..." : "");
+  const router = useRouter();
+  const cardform = "default";
+
+  const handleEdit = () => {
+    const queryParams = new URLSearchParams();
+    if (subjectId) queryParams.set("subjectId", subjectId);
+    if (cardform) queryParams.set("cardform", cardform);
+
+    // ✅ Scrollposition global speichern
+    sessionStorage.setItem("scrollYplaces", window.scrollY.toString());
+    // 👉 Zur Bearbeiten-Seite navigieren
+    router.push(`/places/editplace/${placeId}?${queryParams.toString()}`);
+  };
+
   return (
     <Card className="max-w-[350px] lg:max-w-[600px] lg:min-w-[600px] min-h-[200px] mx-4 bg-pplaces-300">
       <CardHeader className="relative w-full items-center justify-center p-0">
@@ -45,7 +60,7 @@ export default function CardPlace({ subjectId, placeId, image, title, descriptio
             PicCards
           </Button>
           {userRole === "ADMIN26" && (
-            <Button as={Link} href={`/pics/cards/searchFormat2?placeId=${placeId}&subjectId=${subjectId}`} variant="solid" className="bg-pplaces-400">
+            <Button as={Link} href={`/pics/cards/search3spaltig?placeId=${placeId}&subjectId=${subjectId}`} variant="solid" className="bg-pplaces-400">
               3spaltig
             </Button>
           )}
@@ -58,9 +73,9 @@ export default function CardPlace({ subjectId, placeId, image, title, descriptio
         <div className="flex flex-row items-center gap-4">
           {userRole === "ADMIN26" && (
             <Tooltip content="Edit ✏️">
-              <Link href={`/places/editplace/${placeId}`}>
+              <Button onPress={handleEdit}>
                 <FiEdit size={25} className="text-pplaces-900" />
-              </Link>
+              </Button>
             </Tooltip>
           )}
           {userRole === "ADMIN26" && <div className="mr-6">{ord}</div>}

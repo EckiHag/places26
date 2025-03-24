@@ -34,6 +34,8 @@ export default function PlaceForm() {
   const userId = session?.user?.id;
   const searchParams = useSearchParams();
   const subjectId = searchParams.get("subjectId");
+  const cardform = searchParams.get("cardform");
+  // const cardform = searchParams.get("cardform");
   const { id } = useParams();
   const placeId = Array.isArray(id) ? id[0] : id ?? "";
 
@@ -149,7 +151,7 @@ export default function PlaceForm() {
 
       if (result?.status === "success") {
         toast.success(isUpdateMode ? "Place updated successfully." : "Place added successfully.");
-        router.push(`/places/${subjectId}`);
+        router.push(`/places/${subjectId}/${cardform}`);
       } else {
         if (Array.isArray(result?.error)) {
           result.error.forEach((err) => {

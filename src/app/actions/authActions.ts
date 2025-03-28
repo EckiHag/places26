@@ -89,3 +89,46 @@ export async function getUserByEmail(email: string) {
 export async function getUserById(id: string) {
   return prisma.user.findUnique({ where: { id } });
 }
+
+export async function resetPassword(token: string, newPassword: string): Promise<{ success: boolean; error?: string }> {
+  const record = await prisma.passwordResetToken.findUnique({
+    where: { token },
+    include: { user: true },
+  });
+
+  if (!record || record.expiresAt < new Date() || record.used) {
+    return { success: false, error: "Token ist ungültig oder abgelaufen." };
+  }
+
+  // 🔐 Neues Passwort hashen (z. B. mit bcrypt)
+  const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+  // 💾 Passwort speichern
+  await prisma.user.update({
+    where: { id: record.userId },
+    data: { passwordHash: hashedPassword },
+  });
+
+  // 🚫 Token ungültig machen
+  await prisma.passwordResetToken.update({
+    where: { token },
+    data: { used: true },
+  });
+
+  return { success: true };
+}
+// export async function resetPassword(token: string, newPassword: string): Promise<{ success: boolean; error?: string }> {
+//   // TODO: Token in DB validieren
+//   // z.B. const resetRequest = await db.passwordResetToken.findUnique({ where: { token } });
+
+//   const isValid = token && token.length > 10; // Nur Beispiel!
+//   if (!isValid) {
+//     return { success: false, error: "Token ist ungültig oder abgelaufen." };
+//   }
+
+//   // TODO: Benutzer anhand des Tokens finden und Passwort updaten
+//   // z.B. await db.user.update({ where: { id: userId }, data: { password: hash(newPassword) } });
+
+//   console.log("🔐 Neues Passwort:", newPassword, "für Token:", token);
+//   return { success: true };
+// }

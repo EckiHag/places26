@@ -119,7 +119,7 @@ export default function RegisterForm() {
         console.log("resultMailToNewUser:", resultMailToNewUser);
 
         toast.success("Erfolgreich registriert. Du bekommst jetzt eine Mail an die angegebenene Adresse. 😊 Mail send!");
-        router.push("/");
+        router.push("/registered");
         router.refresh();
       } else {
         if (Array.isArray(result.error)) {

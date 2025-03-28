@@ -1,17 +1,17 @@
 "use client";
 
-import { Button, Card, CardBody, CardHeader, Input } from "@heroui/react";
+import { Button, Card, CardBody, CardHeader, Input, Link } from "@heroui/react";
 import React from "react";
 import { GiPadlock } from "react-icons/gi";
 import { useForm } from "react-hook-form";
 import { LoginSchema, loginSchema } from "@/lib/schemas/loginSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signInUser } from "@/app/actions/authActions";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import { ToastContainer, toast } from "react-toastify";
 
 export default function LoginForm() {
-  const router = useRouter();
+  // const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -22,12 +22,13 @@ export default function LoginForm() {
   });
 
   const onSubmit = async (data: LoginSchema) => {
-    // toast("Wow so easy!");
+    toast("Wow so easy!");
     const result = await signInUser(data);
     if (result.status === "success") {
       console.log("success beim login!");
-      router.push("/subjects");
-      router.refresh();
+      // router.push("/subjects");
+      // router.refresh();
+      window.location.href = "/subjects";
     } else {
       toast.error(result.error as string);
     }
@@ -60,9 +61,12 @@ export default function LoginForm() {
             <Button isLoading={isSubmitting} isDisabled={!isValid} fullWidth className="bg-pprimary-600" type="submit">
               Login
             </Button>
-            <ToastContainer />
           </div>
         </form>
+        <Link href={`/forgottenpassword`} className="mt-6 mb-6">
+          Ich habe mein Passwort vergessen.
+        </Link>
+        <ToastContainer />
       </CardBody>
     </Card>
   );

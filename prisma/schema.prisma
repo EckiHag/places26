@@ -41,6 +41,7 @@ model User {
   imgheight       Int?
   // isTwoFactorEnabled Boolean @default(false)
   // twoFactorConfirmation TwoFactorConfirmation?
+  passwordResetTokens PasswordResetToken[] // ← wichtig für Relation (optional)
 }
 
 model Account {
@@ -58,6 +59,17 @@ model Account {
   session_state      String?
 
   @@unique([provider, providerAccountId])
+}
+
+model PasswordResetToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+  used      Boolean  @default(false)
 }
 
 

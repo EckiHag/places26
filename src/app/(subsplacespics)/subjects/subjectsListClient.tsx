@@ -42,7 +42,7 @@ export default function SubjectsListClient({ subjects }: SubjectsListClientProps
 
   return (
     <div className="flex flex-col justify-center items-center mx-auto mt-3 mb-3">
-      <div className="sticky top-16 bg-white z-40 flex flex-col mt-1 mb-1 p-4">
+      <div className="sticky top-16 bg-tranparent z-40 flex flex-col mt-1 mb-1 p-4">
         <div className="mx-auto flex justify-center flex-col mt-1">
           {userRole === "ADMIN26" && (
             <Link href={`/subjects/editsubject/new`} className="mt-1 mr-2 px-2 py-1 bg-pprimary-400 text-sm text-white rounded-lg shadow-md hover:bg-pprimary-300 transition">

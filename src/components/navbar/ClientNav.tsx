@@ -7,6 +7,7 @@ import { GiJourney } from "react-icons/gi";
 import { FiMenu, FiX } from "react-icons/fi";
 import NavLink from "./NavLink";
 import UserMenu from "./UserMenu";
+import GadgetsMenu from "./GadgetsMenu";
 import { useRouter } from "next/navigation"; // wichtig für App Router
 import { Session } from "next-auth";
 
@@ -43,6 +44,7 @@ export default function ClientNav({ session }: ClientNavProps) {
         <div className="hidden md:flex gap-4">
           <NavLink href="/subjects" label="Subjects" />
           <NavLink href="/quiz" label="Quiz" />
+          <GadgetsMenu></GadgetsMenu>
           {session?.user?.role === "ADMIN26" && <NavLink href="/conv" label="conv" />}
           {session?.user?.role === "ADMIN26" && <NavLink href="/lb" label="LB" />}
           {session?.user?.role === "ADMIN26" && <NavLink href="/farben" label="Farben" />}
@@ -79,6 +81,7 @@ export default function ClientNav({ session }: ClientNavProps) {
         <div className="absolute right-0 top-full w-32 bg-gradient-to-r from-pprimary-600 to-pprimary-700 p-4 flex flex-col items-center space-y-2 shadow-lg">
           <NavLink href="/subjects" label="Subjects" isMobile onClick={closeMenu} />
           <NavLink href="/quiz" label="Quiz" isMobile onClick={closeMenu} />
+          <GadgetsMenu></GadgetsMenu>
           {session?.user?.role === "ADMIN26" && <NavLink href="/conv" label="conv" isMobile onClick={closeMenu} />}
           {session?.user?.role === "ADMIN26" && <NavLink href="/lb" label="LB" isMobile onClick={closeMenu} />}
           {session?.user?.role === "ADMIN26" && <NavLink href="/farben" label="Farben" />}

@@ -6,7 +6,7 @@ import React from "react";
 
 export default function GadgetsMenu() {
   return (
-    <div className="text-white">
+    <div className="text-white cursor-pointer">
       <Dropdown placement="bottom-end">
         <DropdownTrigger>Gadgets</DropdownTrigger>
         <DropdownMenu variant="flat" aria-label="User actions menu">
@@ -22,6 +22,11 @@ export default function GadgetsMenu() {
             </DropdownItem>
             <DropdownItem key="gadgetsKreise" color="success" as={Link} href="/kreise">
               Kreise
+            </DropdownItem>
+          </DropdownSection>
+          <DropdownSection showDivider>
+            <DropdownItem key="gadgetsMemory" color="success" as={Link} href="/memory">
+              Memory
             </DropdownItem>
           </DropdownSection>
         </DropdownMenu>

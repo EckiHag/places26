@@ -2,7 +2,7 @@
 "use client";
 
 import CardPlace from "@/components/cardsplaces/CardPlace";
-import CardPlaceFormat2 from "@/components/cardsplaces/CardPlaceFormat2";
+import CardPlaceFür3spaltig from "@/components/cardsplaces/CardPlaceFür3spaltig";
 // import Link from "next/link";
 // import { auth } from "@/auth";
 import { Places } from "@prisma/client";
@@ -45,10 +45,10 @@ export default function PageClient({ sortedPlaces, subjectId, cardform }: Props)
           sortedPlaces.map((place) => (
             <div key={place.id}>
               {cardform === "default" && (
-                <CardPlaceFormat2 subjectId={subjectId} placeId={place.id} image={place.image} title={place.title} description={place.description} ord={place.ord} />
+                <CardPlace subjectId={subjectId} placeId={place.id} image={place.image} title={place.title} description={place.description} ord={place.ord} />
               )}
               {cardform === "format2" && (
-                <CardPlace subjectId={subjectId} placeId={place.id} image={place.image} title={place.title} description={place.description} ord={place.ord} />
+                <CardPlaceFür3spaltig subjectId={subjectId} placeId={place.id} image={place.image} title={place.title} description={place.description} ord={place.ord} />
               )}
             </div>
           ))}

@@ -89,7 +89,7 @@ export default function CardPic({ subjectId, place, pic }: CardPicProps) {
 
   return (
     <>
-      <Card className="mt-3 min-w-[400px] lg:min-w-[600px] mx-auto">
+      <Card className="mt-3 min-w-[350px] lg:min-w-[600px] mx-auto">
         <CardHeader className="flex justify-between items-center bg-pprimary-400 p-4"></CardHeader>
         <Divider />
         <CardBody className="bg-white flex-grow flex justify-center items-center">
@@ -130,7 +130,10 @@ export default function CardPic({ subjectId, place, pic }: CardPicProps) {
                 </Button>
               </Tooltip>
               <Tooltip content="Edit ✏️">
-                <Button onPress={handleEdit}>
+                <Button
+                  className="bg-transparent p-0 mr-3 hover:bg-transparent focus:ring-0 shadow-none w-[30px] h-[30px] min-w-0 min-h-0 flex items-center justify-center rounded-full"
+                  onPress={handleEdit}
+                >
                   <FiEdit size={25} className="text-pplaces-900" />
                 </Button>
               </Tooltip>

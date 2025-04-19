@@ -5,6 +5,7 @@ import { Button, Navbar, NavbarBrand } from "@heroui/react";
 import Link from "next/link";
 import { GiJourney } from "react-icons/gi";
 import { FiMenu, FiX } from "react-icons/fi";
+import { AiOutlineInfoCircle } from "react-icons/ai";
 import NavLink from "./NavLink";
 import UserMenu from "./UserMenu";
 import GadgetsMenu from "./GadgetsMenu";
@@ -22,6 +23,7 @@ export default function ClientNav({ session }: ClientNavProps) {
   const closeMenu = () => setIsOpen(false);
   const userInfo = session?.user;
   const router = useRouter();
+
   const handleClick = (href: string) => {
     console.log("handleClick");
     closeMenu();
@@ -53,7 +55,11 @@ export default function ClientNav({ session }: ClientNavProps) {
           {session?.user?.role === "ADMIN26" && <NavLink href="/tabs" label="tabs" />}
           {session?.user?.role === "ADMIN26" && <NavLink href="/cardtesting" label="card" />}
         </div>
-
+        <Link href="/disclaimer">
+          <Button variant="light" size="sm" className="text-white ml-5">
+            <AiOutlineInfoCircle size={20} />
+          </Button>
+        </Link>
         {/* Benutzerbereich */}
         <div className="hidden md:flex gap-2 ml-4">
           {userInfo ? (
@@ -89,7 +95,9 @@ export default function ClientNav({ session }: ClientNavProps) {
           {session?.user?.role === "ADMIN26" && <NavLink href="/quadrate" label="qua" isMobile onClick={closeMenu} />}
           {session?.user?.role === "ADMIN26" && <NavLink href="/tabs" label="tabs" isMobile onClick={closeMenu} />}
           {session?.user?.role === "ADMIN26" && <NavLink href="/cardtesting" label="card" isMobile onClick={closeMenu} />}
-
+          <Button variant="light" size="sm" className="text-white ml-5" onPress={() => handleClick("/disclaimer")}>
+            <AiOutlineInfoCircle size={20} />
+          </Button>
           {/* Mobile Benutzerbereich */}
           {userInfo ? (
             <UserMenu userInfo={userInfo} />

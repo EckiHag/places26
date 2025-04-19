@@ -35,23 +35,24 @@ export async function getPicsTwenty() {
 }
 
 export async function getPicsForMemory() {
+  const anzahl = 12;
   try {
     // Anzahl aller Bilder ermitteln
     const totalCount = await prisma.pics.count();
 
     // Sicherstellen, dass mindestens 6 Bilder da sind
-    if (totalCount < 6) {
+    if (totalCount < anzahl) {
       throw new Error("Nicht genügend Bilder in der Datenbank.");
     }
 
     // Zufälliger Offset, damit wir 6 Bilder ab dieser Position nehmen können
-    const maxSkip = totalCount - 6;
+    const maxSkip = totalCount - anzahl;
     const skip = Math.floor(Math.random() * maxSkip);
 
     // 6 zufällige Bilder laden
     const data = await prisma.pics.findMany({
       skip,
-      take: 6,
+      take: anzahl,
     });
 
     return data;

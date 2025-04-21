@@ -56,7 +56,7 @@ export default function ClientNav({ session }: ClientNavProps) {
           {session?.user?.role === "ADMIN26" && <NavLink href="/cardtesting" label="card" />}
         </div>
         <Link href="/disclaimer">
-          <Button variant="light" size="sm" className="text-white ml-5">
+          <Button isIconOnly variant="light" size="sm" className="text-white ml-5">
             <AiOutlineInfoCircle size={20} />
           </Button>
         </Link>
@@ -95,7 +95,7 @@ export default function ClientNav({ session }: ClientNavProps) {
           {session?.user?.role === "ADMIN26" && <NavLink href="/quadrate" label="qua" isMobile onClick={closeMenu} />}
           {session?.user?.role === "ADMIN26" && <NavLink href="/tabs" label="tabs" isMobile onClick={closeMenu} />}
           {session?.user?.role === "ADMIN26" && <NavLink href="/cardtesting" label="card" isMobile onClick={closeMenu} />}
-          <Button variant="light" size="sm" className="text-white ml-5" onPress={() => handleClick("/disclaimer")}>
+          <Button isIconOnly variant="light" size="sm" className="text-white ml-5" onPress={() => handleClick("/disclaimer")}>
             <AiOutlineInfoCircle size={20} />
           </Button>
           {/* Mobile Benutzerbereich */}

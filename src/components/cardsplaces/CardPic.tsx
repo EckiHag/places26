@@ -108,7 +108,9 @@ export default function CardPic({ subjectId, place, pic }: CardPicProps) {
           )}
         </CardBody>
         <CardFooter className="flex flex-col w-full">
-          <div className="text-1xl font-semibold">{pic.title === "pic" || pic.title === "Pic" ? place?.title || "Picture" : pic.title}</div>
+          <div className="text-1xl font-semibold">
+            {pic.title === "pic" || pic.title === "Pic" ? place?.title || "Picture" : <span dangerouslySetInnerHTML={{ __html: pic.title }} />}
+          </div>
           {pic.title !== "Pic" && pic.description !== "nothing to say" && pic.description !== "No description" && (
             <div>
               <Accordion className="mt-5 max-w-[600px] w-full">
@@ -152,8 +154,8 @@ export default function CardPic({ subjectId, place, pic }: CardPicProps) {
               <Image
                 alt="Full Size Image"
                 src={`https://beihaggis.de/${pic.image?.replace(/^.\//, "")}`}
-                width={900}
-                height={900}
+                width={1200}
+                height={1200}
                 className="max-w-[100%] max-h-[95dvh] object-contain cursor-pointer"
                 onClick={() => setIsOpen(false)}
               />

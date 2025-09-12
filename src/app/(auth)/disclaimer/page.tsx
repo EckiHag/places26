@@ -19,6 +19,7 @@ export default function DisclaimerPage() {
               Nach der Registrierung bekomme ich eine Mail und kann dann die Bildgalerien oder Teile davon freigeben. Anders ist ein Zugang nicht möglich. Ein kleiner Teil ist für
               Registrierte ohne weitere Freigaben zugänglich.
             </p>
+            <p className="text-gray-700">Sollte jemand gegen die Veröffentlichung innerhalb dieser website sein, so kann ich schwärzen, bitte melden!.</p>
           </section>
 
           <section className="space-y-4">

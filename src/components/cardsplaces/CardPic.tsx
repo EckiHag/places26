@@ -39,9 +39,9 @@ export default function CardPic({ subjectId, place, pic }: CardPicProps) {
     console.error("CardPic: pic is undefined!");
     return <div>Fehler: Kein Bild gefunden</div>;
   }
-  const getFirstWords = (text: string, wordCount: number) => {
-    return text.split(" ").slice(0, wordCount).join(" ") + " ...";
-  };
+  // const getFirstWords = (text: string, wordCount: number) => {
+  //   return text.split(" ").slice(0, wordCount).join(" ") + " ...";
+  // };
 
   const handleDelete = async () => {
     try {
@@ -87,6 +87,21 @@ export default function CardPic({ subjectId, place, pic }: CardPicProps) {
     router.push(`/pics/editpic/${pic.id}?placeId=${place?.id}&subjectId=${subjectId}`);
   };
 
+  function inlineOnlyHtml(html: string) {
+    if (!html) return "";
+    return (
+      html
+        // Block-Elemente entfernen/ersetzen
+        .replace(/<\s*\/?\s*p[^>]*>/gi, "")
+        .replace(/<\s*\/?\s*h[1-6][^>]*>/gi, "")
+        .replace(/<\s*\/?\s*div[^>]*>/gi, "")
+        .replace(/<br\s*\/?>/gi, " ")
+        // Mehrfache Whitespaces glätten
+        .replace(/\s{2,}/g, " ")
+        .trim()
+    );
+  }
+
   return (
     <>
       <Card className="mt-3 min-w-[350px] lg:min-w-[600px] mx-auto">
@@ -114,8 +129,16 @@ export default function CardPic({ subjectId, place, pic }: CardPicProps) {
           {pic.title !== "Pic" && pic.description !== "nothing to say" && pic.description !== "No description" && (
             <div>
               <Accordion className="mt-5 max-w-[600px] w-full">
-                <AccordionItem title={<div className="max-w-[560px] overflow-hidden text-ellipsis whitespace-nowrap" dangerouslySetInnerHTML={{ __html: pic.description }} />}>
-                  <p dangerouslySetInnerHTML={{ __html: pic.description }} />
+                <AccordionItem
+                  key={`desc-${pic.id}`}
+                  title={<span dangerouslySetInnerHTML={{ __html: inlineOnlyHtml(pic.description) }} />}
+                  classNames={{
+                    // Breite/Overflow auf die Slots, sonst greift Ellipsis nicht
+                    titleWrapper: "max-w-[560px]",
+                    title: "max-w-[560px] overflow-hidden text-ellipsis whitespace-nowrap",
+                  }}
+                >
+                  <div dangerouslySetInnerHTML={{ __html: pic.description }} />
                 </AccordionItem>
               </Accordion>
             </div>

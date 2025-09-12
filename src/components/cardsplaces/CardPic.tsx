@@ -114,7 +114,7 @@ export default function CardPic({ subjectId, place, pic }: CardPicProps) {
           {pic.title !== "Pic" && pic.description !== "nothing to say" && pic.description !== "No description" && (
             <div>
               <Accordion className="mt-5 max-w-[600px] w-full">
-                <AccordionItem title={getFirstWords(pic.description, 5)}>
+                <AccordionItem title={<div className="max-w-[560px] overflow-hidden text-ellipsis whitespace-nowrap" dangerouslySetInnerHTML={{ __html: pic.description }} />}>
                   <p dangerouslySetInnerHTML={{ __html: pic.description }} />
                 </AccordionItem>
               </Accordion>

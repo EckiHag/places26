@@ -1,12 +1,10 @@
 "use client";
-// import { Card, CardHeader, CardBody, Tooltip, Divider, Button, Modal, ModalContent, ModalHeader, ModalBody, Accordion, AccordionItem, CardFooter } from "@heroui/react";
-import { Card, CardHeader, CardBody, Tooltip, Divider, Button, Modal, ModalContent, ModalHeader, ModalBody, CardFooter } from "@heroui/react";
+import { Card, CardHeader, CardBody, Tooltip, Divider, Button, Modal, ModalContent, ModalHeader, ModalBody, Accordion, AccordionItem, CardFooter } from "@heroui/react";
 import { MdDelete } from "react-icons/md";
 import { deletePicWithId } from "@/app/actions/picActions";
 import { useRouter } from "next/navigation";
 import { ToastContainer, toast } from "react-toastify";
-import { useEffect, useRef, useState } from "react";
-import { FiMoreHorizontal } from "react-icons/fi";
+import { useState } from "react";
 // import Link from "next/link";
 import { FiEdit } from "react-icons/fi";
 import Image from "next/image";
@@ -37,26 +35,13 @@ export default function CardPic({ subjectId, place, pic }: CardPicProps) {
   const [isOpen, setIsOpen] = useState(false);
   // console.log("Id von pic für die Card: ", id);
 
-  const [descExpanded, setDescExpanded] = useState(false);
-  const [canClamp, setCanClamp] = useState(false);
-  const descRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const el = descRef.current;
-    if (!el) return;
-    const check = () => setCanClamp(el.scrollHeight > el.clientHeight + 1);
-    check();
-    window.addEventListener("resize", check);
-    return () => window.removeEventListener("resize", check);
-  }, [pic.description, descExpanded]);
-
   if (!pic) {
     console.error("CardPic: pic is undefined!");
     return <div>Fehler: Kein Bild gefunden</div>;
   }
-  // const getFirstWords = (text: string, wordCount: number) => {
-  //   return text.split(" ").slice(0, wordCount).join(" ") + " ...";
-  // };
+  const getFirstWords = (text: string, wordCount: number) => {
+    return text.split(" ").slice(0, wordCount).join(" ") + " ...";
+  };
 
   const handleDelete = async () => {
     try {
@@ -127,20 +112,12 @@ export default function CardPic({ subjectId, place, pic }: CardPicProps) {
             {pic.title === "pic" || pic.title === "Pic" ? place?.title || "Picture" : <span dangerouslySetInnerHTML={{ __html: pic.title }} />}
           </div>
           {pic.title !== "Pic" && pic.description !== "nothing to say" && pic.description !== "No description" && (
-            <div className="mt-5 w-full max-w-[600px]">
-              <div ref={descRef} className={`whitespace-pre-wrap break-words ${descExpanded ? "" : "line-clamp-2"}`} dangerouslySetInnerHTML={{ __html: pic.description }} />
-              {canClamp && (
-                <button type="button" onClick={() => setDescExpanded((v) => !v)} className="mt-1 inline-flex items-center gap-1 text-pplaces-900 hover:underline">
-                  {descExpanded ? (
-                    <span>weniger</span>
-                  ) : (
-                    <>
-                      <FiMoreHorizontal aria-hidden />
-                      <span>mehr</span>
-                    </>
-                  )}
-                </button>
-              )}
+            <div>
+              <Accordion className="mt-5 max-w-[600px] w-full">
+                <AccordionItem title={getFirstWords(pic.description, 5)}>
+                  <p dangerouslySetInnerHTML={{ __html: pic.description }} />
+                </AccordionItem>
+              </Accordion>
             </div>
           )}
 

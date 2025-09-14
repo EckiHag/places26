@@ -6,7 +6,7 @@ import { deletePicWithId } from "@/app/actions/picActions";
 import { useRouter } from "next/navigation";
 import { ToastContainer, toast } from "react-toastify";
 import { useEffect, useRef, useState } from "react";
-import { FiMoreHorizontal } from "react-icons/fi";
+// import { FiMoreHorizontal } from "react-icons/fi";
 // import Link from "next/link";
 import { FiEdit } from "react-icons/fi";
 import Image from "next/image";
@@ -36,15 +36,22 @@ export default function CardPic({ subjectId, place, pic }: CardPicProps) {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   // console.log("Id von pic für die Card: ", id);
-
   const [descExpanded, setDescExpanded] = useState(false);
-  const [canClamp, setCanClamp] = useState(false);
+  const [hasOverflow, setHasOverflow] = useState(false);
   const descRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const el = descRef.current;
     if (!el) return;
-    const check = () => setCanClamp(el.scrollHeight > el.clientHeight + 1);
+
+    // Nur messen, solange geklappt (clamped). Im expandierten Zustand NICHT neu setzen.
+    if (descExpanded) return;
+
+    const check = () => {
+      const overflow = el.scrollHeight > el.clientHeight + 1;
+      setHasOverflow(overflow);
+    };
+
     check();
     window.addEventListener("resize", check);
     return () => window.removeEventListener("resize", check);
@@ -126,24 +133,17 @@ export default function CardPic({ subjectId, place, pic }: CardPicProps) {
           <div className="text-1xl font-semibold">
             {pic.title === "pic" || pic.title === "Pic" ? place?.title || "Picture" : <span dangerouslySetInnerHTML={{ __html: pic.title }} />}
           </div>
+
           {pic.title !== "Pic" && pic.description !== "nothing to say" && pic.description !== "No description" && (
             <div className="mt-5 w-full max-w-[600px]">
               <div ref={descRef} className={`whitespace-pre-wrap break-words ${descExpanded ? "" : "line-clamp-2"}`} dangerouslySetInnerHTML={{ __html: pic.description }} />
-              {canClamp && (
+              {hasOverflow && (
                 <button type="button" onClick={() => setDescExpanded((v) => !v)} className="mt-1 inline-flex items-center gap-1 text-pplaces-900 hover:underline">
-                  {descExpanded ? (
-                    <span>weniger</span>
-                  ) : (
-                    <>
-                      <FiMoreHorizontal aria-hidden />
-                      <span>mehr</span>
-                    </>
-                  )}
+                  {descExpanded ? <span>weniger</span> : <span>mehr</span>}
                 </button>
               )}
             </div>
           )}
-
           {userRole === "ADMIN26" && (
             <div className="flex items-center gap-[1px]">
               <Tooltip content="Delete 🚮">

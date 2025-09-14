@@ -1,6 +1,7 @@
 // tailwind.config.ts
 import { heroui } from "@heroui/react";
 import type { Config } from "tailwindcss";
+import lineClamp from "@tailwindcss/line-clamp";
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -78,5 +79,5 @@ module.exports = {
     },
   },
 
-  plugins: [heroui({})],
+  plugins: [heroui({}), lineClamp],
 } satisfies Config;

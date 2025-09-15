@@ -3,6 +3,7 @@ import { getPlaceById } from "@/app/actions/placeActions";
 import Link from "next/link";
 import PageClient from "./pageClient";
 import { Places } from "@prisma/client";
+import { auth } from "@/auth";
 
 interface Props {
   searchParams: Promise<{ placeId: string; subjectId: string }>;
@@ -10,6 +11,8 @@ interface Props {
 
 export default async function PicsCardSearchWithPlaceId({ searchParams }: Props) {
   const { placeId, subjectId } = await searchParams;
+  const session = await auth(); // Server-seitige Authentifizierung
+  const userRole = session?.user?.role;
 
   if (!placeId) {
     return <div>Error: Missing place ID</div>;
@@ -22,12 +25,14 @@ export default async function PicsCardSearchWithPlaceId({ searchParams }: Props)
   return (
     <div className="flex flex-col items-center">
       <div className="flex flex-row items-center mt-24">
-        <Link
-          href={`/pics/editpic/new?placeId=${placeId}&subjectId=${subjectId}`}
-          className="mt-3 mr-3 px-4 py-2 bg-pprimary-400 text-white rounded-lg shadow-md hover:bg-pprimary-300 transition"
-        >
-          New Pic
-        </Link>
+        {userRole === "ADMIN26" && (
+          <Link
+            href={`/pics/editpic/new?placeId=${placeId}&subjectId=${subjectId}`}
+            className="mt-3 mr-3 px-4 py-2 bg-pprimary-400 text-white rounded-lg shadow-md hover:bg-pprimary-300 transition"
+          >
+            New Pic
+          </Link>
+        )}
         {subjectId && (
           <Link href={`/places/${subjectId}/default`} className="mt-3 px-4 py-2 bg-pprimary-400 text-white rounded-lg shadow-md hover:bg-pprimary-300 transition">
             Back to Places

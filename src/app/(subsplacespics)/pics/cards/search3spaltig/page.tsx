@@ -2,6 +2,7 @@ import { getPicsByBelongstoid } from "@/app/actions/picActions";
 import { getPlaceById } from "@/app/actions/placeActions";
 import Link from "next/link";
 import CardPic from "@/components/cardsplaces/CardPicFür3spaltig";
+import { auth } from "@/auth";
 
 interface Props {
   searchParams: Promise<{ placeId: string; subjectId: string }>;
@@ -15,6 +16,9 @@ export default async function PicsCardWithPlaceId({ searchParams }: Props) {
 
   // console.log("PicsCardWithPlaceId subjectId:", subjectId);
   // console.log("PicsCardWithPlaceId id:", id);
+  const session = await auth(); // Server-seitige Authentifizierung
+  const userRole = session?.user?.role;
+
   if (!placeId) {
     return <div>Error: Missing place ID</div>;
   }
@@ -28,12 +32,14 @@ export default async function PicsCardWithPlaceId({ searchParams }: Props) {
     <>
       <div className="mb-6 text-center">
         <div className="flex justify-center space-x-4  mt-24">
-          <Link
-            href={`/pics/editpic/new?placeId=${placeId}&subjectId=${subjectId}`}
-            className="mt-2 px-4 py-2 bg-pprimary-400 text-white rounded-lg shadow-md hover:bg-pprimary-300 transition"
-          >
-            New Pic
-          </Link>
+          {userRole === "ADMIN26" && (
+            <Link
+              href={`/pics/editpic/new?placeId=${placeId}&subjectId=${subjectId}`}
+              className="mt-2 px-4 py-2 bg-pprimary-400 text-white rounded-lg shadow-md hover:bg-pprimary-300 transition"
+            >
+              New Pic
+            </Link>
+          )}
           {subjectId && (
             <Link href={`/places/${subjectId}`} className="mt-2 px-4 py-2 bg-pprimary-400 text-white rounded-lg shadow-md hover:bg-pprimary-300 transition">
               Back to Places

@@ -57,15 +57,15 @@ export default function CardPlace({ subjectId, placeId, image, title, descriptio
         {/* Linke Seite: Buttons */}
         <div className="flex flex-row gap-2">
           <Button as={Link} size="sm" href={`/pics/cards/search?placeId=${placeId}&subjectId=${subjectId}`} variant="solid" className="bg-pplaces-400">
-            PicCards
+            Cards
           </Button>
           {userRole === "ADMIN26" && (
             <Button as={Link} size="sm" href={`/pics/cards/search3spaltig?placeId=${placeId}&subjectId=${subjectId}`} variant="solid" className="bg-pplaces-400">
-              3spaltig
+              Triple
             </Button>
           )}
           <Button as={Link} size="sm" href={`/pics/gallery/${placeId}`} variant="solid" className="bg-pplaces-400">
-            PicGallery
+            Gallery
           </Button>
         </div>
 

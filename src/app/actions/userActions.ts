@@ -4,6 +4,8 @@ import { UserSchema, userSchema } from "@/lib/schemas/userSchema";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { User } from "@prisma/client";
+import { revalidatePath } from "next/cache";
+import { UserRole } from "@prisma/client";
 
 /**
  * Alle User laden (neueste zuerst).
@@ -62,4 +64,18 @@ export async function updateUser(id: string, data: UserSchema): Promise<ActionRe
  */
 export async function getUserById(id: string) {
   return prisma.user.findUnique({ where: { id } });
+}
+
+export async function updateUserRoleAction(formData: FormData) {
+  const id = String(formData.get("id") ?? "");
+  const role = String(formData.get("role") ?? "NEWBIE") as UserRole;
+
+  if (!id) throw new Error("Missing user id");
+
+  const result = await updateUser(id, { role });
+  if (result.status === "error") {
+    throw new Error(typeof result.error === "string" ? result.error : result.error.map((e) => e.message).join(", "));
+  }
+
+  revalidatePath("/user"); // anpassen je nach Route
 }

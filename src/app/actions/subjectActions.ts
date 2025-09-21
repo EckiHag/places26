@@ -3,24 +3,7 @@
 import { SubjectSchema, subjectSchema } from "@/lib/schemas/subjectSchema";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
-// type Subjects = Awaited<ReturnType<typeof prisma.subjects.create>>; // User-Typ ableiten
 import { Subjects } from "@prisma/client";
-
-// export const getSubjectsAll = async () => {
-//   try {
-//     console.log("Fetching subjects from database..."); // Debug-Log
-
-//     const data = await prisma.subjects.findMany({
-//       orderBy: { created: "desc" },
-//     });
-
-//     console.log("Subjects fetched:", data); // Prüfen, ob Daten ankommen
-//     return data;
-//   } catch (error) {
-//     console.error("Error fetching subjects:", error);
-//     return null;
-//   }
-// };
 
 export const getSubjectsAll = async (): Promise<Subjects[] | null> => {
   try {

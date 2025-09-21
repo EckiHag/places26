@@ -59,14 +59,14 @@ export default function CardPlace({ subjectId, placeId, image, title, descriptio
           <Button as={Link} size="sm" href={`/pics/cards/search?placeId=${placeId}&subjectId=${subjectId}`} variant="solid" className="bg-pplaces-400">
             Cards
           </Button>
+          <Button as={Link} size="sm" href={`/pics/gallery/${placeId}`} variant="solid" className="bg-pplaces-400">
+            Gallery
+          </Button>
           {userRole === "ADMIN26" && (
             <Button as={Link} size="sm" href={`/pics/cards/search3spaltig?placeId=${placeId}&subjectId=${subjectId}`} variant="solid" className="bg-pplaces-400">
               Triple
             </Button>
           )}
-          <Button as={Link} size="sm" href={`/pics/gallery/${placeId}`} variant="solid" className="bg-pplaces-400">
-            Gallery
-          </Button>
         </div>
 
         {/* Rechte Seite: Edit & Ord */}

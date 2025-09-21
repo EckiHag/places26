@@ -101,34 +101,24 @@ export default function RegisterForm() {
       const result = await registerUser(userData);
 
       if (result.status === "success") {
-        const adminSubject = "Neuer User bei Places26!";
-        const adminBody = `Achtung, es gibt einen neuen User 😊:\n\n${userData.name}\n\n${userData.email}`;
+        const resultMailToAdmin = await sendeMail(
+          "eu@hagemeier-web.de",
+          "Neuer User bei Places26!",
+          `Achtung, es gibt einen neuen User 😊:\n\n${userData.name}\n\n${userData.email}`
+        );
 
-        // 1) Admin-Mail an eu@...
-        const resultMailToAdminPrimary = await sendeMail("eu@hagemeier-web.de", adminSubject, adminBody);
-
-        // 2) Zusätzliche Admin-Mail an eckihag@gmail.com
-        const resultMailToAdminSecondary = await sendeMail("eckihag@gmail.com", adminSubject, adminBody);
-
-        // Mail an den neuen User
         const resultMailToNewUser = await sendeMailToNewUser(userData.email, userData.name);
 
-        // Fehlerbehandlung pro Mail
-        if (!resultMailToAdminPrimary.success) {
-          toast.error(`Fehler beim Versenden der Admin-Mail (eu@hagemeier-web.de) für ${userData.name} <${userData.email}>: ${resultMailToAdminPrimary.message}`);
-        }
-        if (!resultMailToAdminSecondary.success) {
-          toast.error(`Fehler beim Versenden der Admin-Mail (eckihag@gmail.com) für ${userData.name} <${userData.email}>: ${resultMailToAdminSecondary.message}`);
+        if (!resultMailToAdmin.success) {
+          toast.error(`Fehler beim Versenden der Admin-Mail: ${resultMailToAdmin.message}`);
         }
         if (!resultMailToNewUser.success) {
-          toast.error(`Fehler beim Versenden der Willkommensmail an ${userData.name} <${userData.email}>: ${resultMailToNewUser.message}`);
+          toast.error(`Fehler beim Versenden der Willkommensmail: ${resultMailToNewUser.message}`);
         }
-
-        console.log("resultMailToAdminPrimary:", resultMailToAdminPrimary);
-        console.log("resultMailToAdminSecondary:", resultMailToAdminSecondary);
+        console.log("resultMailToAdmin:", resultMailToAdmin);
         console.log("resultMailToNewUser:", resultMailToNewUser);
 
-        toast.success("Erfolgreich registriert. Du bekommst jetzt eine Mail an die angegebene Adresse. 😊");
+        toast.success("Erfolgreich registriert. Du bekommst jetzt eine Mail an die angegebenene Adresse. 😊 Mail send!");
         router.push("/registered");
         router.refresh();
       } else {
@@ -141,7 +131,7 @@ export default function RegisterForm() {
           });
         } else {
           setError("root.serverError", {
-            message: (typeof result.error === "string" ? result.error : "Unbekannter Fehler vom Server") + ` (User: ${userData.name} <${userData.email}>)`,
+            message: typeof result.error === "string" ? result.error : "Unbekannter Fehler vom Server",
           });
         }
       }

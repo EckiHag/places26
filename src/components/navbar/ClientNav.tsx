@@ -54,6 +54,7 @@ export default function ClientNav({ session }: ClientNavProps) {
           {session?.user?.role === "ADMIN26" && <NavLink href="/quadrate" label="qua" />}
           {session?.user?.role === "ADMIN26" && <NavLink href="/tabs" label="tabs" />}
           {session?.user?.role === "ADMIN26" && <NavLink href="/cardtesting" label="card" />}
+          {session?.user?.role === "ADMIN26" && <NavLink href="/user" label="user" />}
         </div>
         <Link href="/disclaimer">
           <Button isIconOnly variant="light" size="sm" className="text-white ml-5">

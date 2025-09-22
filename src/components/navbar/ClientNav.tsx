@@ -96,6 +96,7 @@ export default function ClientNav({ session }: ClientNavProps) {
           {session?.user?.role === "ADMIN26" && <NavLink href="/quadrate" label="qua" isMobile onClick={closeMenu} />}
           {session?.user?.role === "ADMIN26" && <NavLink href="/tabs" label="tabs" isMobile onClick={closeMenu} />}
           {session?.user?.role === "ADMIN26" && <NavLink href="/cardtesting" label="card" isMobile onClick={closeMenu} />}
+          {session?.user?.role === "ADMIN26" && <NavLink href="/user" label="user" isMobile onClick={closeMenu} />}
           <Button isIconOnly variant="light" size="sm" className="text-white ml-5" onPress={() => handleClick("/disclaimer")}>
             <AiOutlineInfoCircle size={20} />
           </Button>

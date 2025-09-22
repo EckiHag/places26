@@ -12,8 +12,8 @@ export default function DisclaimerPage() {
           <section className="space-y-4">
             <h2 className="text-xl font-semibold">Hinweis:</h2>
             <p className="text-gray-700">
-              Diese Inhalte sind ausschließlich für den privaten Gebrauch innerhalb meines Familienkreises bestimmt. Eine Weitergabe oder öffentliche Verbreitung der Bilder ist
-              nicht gestattet.
+              Diese Inhalte sind ausschließlich für den privaten Gebrauch innerhalb meines Familien- und Freundeskreises bestimmt. Eine Weitergabe oder öffentliche Verbreitung der
+              Bilder ist nicht gestattet.
             </p>
             <p className="text-gray-700">
               Nach der Registrierung bekomme ich eine Mail und kann dann die Bildgalerien oder Teile davon freigeben. Anders ist ein Zugang nicht möglich. Ein kleiner Teil ist für

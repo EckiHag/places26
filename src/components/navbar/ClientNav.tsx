@@ -11,6 +11,7 @@ import UserMenu from "./UserMenu";
 import GadgetsMenu from "./GadgetsMenu";
 import { useRouter } from "next/navigation"; // wichtig für App Router
 import { Session } from "next-auth";
+import NextLink from "next/link";
 
 interface ClientNavProps {
   session: Session | null;
@@ -97,11 +98,18 @@ export default function ClientNav({ session }: ClientNavProps) {
           {session?.user?.role === "ADMIN26" && <NavLink href="/tabs" label="tabs" isMobile onClick={closeMenu} />}
           {session?.user?.role === "ADMIN26" && <NavLink href="/cardtesting" label="card" isMobile onClick={closeMenu} />}
           {session?.user?.role === "ADMIN26" && <NavLink href="/user" label="user" isMobile onClick={closeMenu} />}
-          <Link href="/disclaimer">
-            <Button isIconOnly variant="light" size="sm" className="text-white ml-5">
-              <AiOutlineInfoCircle size={20} />
-            </Button>
-          </Link>
+          <Button
+            as={NextLink}
+            href="/disclaimer"
+            isIconOnly
+            variant="light"
+            size="sm"
+            className="text-white ml-5"
+            aria-label="Disclaimer"
+            onPress={closeMenu} // optional: Menü direkt schließen
+          >
+            <AiOutlineInfoCircle size={20} />
+          </Button>
           {/* Mobile Benutzerbereich */}
           {userInfo ? (
             <UserMenu userInfo={userInfo} />

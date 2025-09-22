@@ -4,7 +4,7 @@ import React, { useState, useTransition } from "react";
 import { User, UserRole } from "@prisma/client";
 import { updateUserRoleAction } from "@/app/actions/userActions";
 
-export default function UsersTableClient({ initialUsers }: { initialUsers: User[] }) {
+export default function UserTableClient({ initialUsers }: { initialUsers: User[] }) {
   const [users, setUsers] = useState<User[]>(initialUsers);
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [pending, startTransition] = useTransition();

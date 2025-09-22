@@ -3,8 +3,10 @@
 import React, { useState, useTransition } from "react";
 import { User, UserRole } from "@prisma/client";
 import { updateUserRoleAction } from "@/app/actions/userActions";
+import { useRouter } from "next/navigation";
 
 export default function UserTableClient({ initialUsers }: { initialUsers: User[] }) {
+  const router = useRouter();
   const [users, setUsers] = useState<User[]>(initialUsers);
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [pending, startTransition] = useTransition();
@@ -26,9 +28,13 @@ export default function UserTableClient({ initialUsers }: { initialUsers: User[]
 
   const onSubmitClient = (id: string, role: UserRole) => {
     startTransition(() => {
+      // optional: Optimistic UI
       setUsers((prev) => prev.map((u) => (u.id === id ? { ...u, role } : u)));
       setMessage(`Rolle aktualisiert für User ${id} → ${role}`);
       setTimeout(() => setMessage(null), 3000);
+
+      // ⬇️ Server neu rendern lassen → initialUsers werden frisch geholt
+      router.refresh();
     });
   };
 

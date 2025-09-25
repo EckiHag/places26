@@ -1,38 +1,49 @@
 "use client";
 
-import { NavbarItem } from "@heroui/react";
+import { NavbarItem, NavbarMenuItem } from "@heroui/react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 
 type Props = {
   href: string;
-  label: string;
+  label?: string;
+  children?: React.ReactNode;
   className?: string;
-  isMobile?: boolean;
-  onClick?: () => void; // ✅ Neu: onClick als optionales Prop
+  isMobile?: boolean; // true, wenn innerhalb <NavbarMenu> gerendert
+  onClick?: () => void; // Menü schließen
 };
 
-export default function NavLink({ href, label, className, isMobile = false, onClick }: Props) {
+export default function NavLink({ href, label, children, className, isMobile = false, onClick }: Props) {
   const pathname = usePathname();
+  const router = useRouter();
 
-  // Falls im mobilen Menü -> Verwende normales Link-Element mit onClick
+  const isActive = pathname === href || (href !== "/" && pathname?.startsWith(href.replace(/\/$/, "")));
+
+  // --- Mobile: innerhalb von <NavbarMenu> ---
   if (isMobile) {
+    const handleClick = () => {
+      if (pathname === href) {
+        onClick?.();
+        return;
+      }
+      onClick?.();
+      setTimeout(() => router.push(href), 0);
+    };
+
     return (
-      <Link
-        href={href}
-        onClick={onClick} // ✅ Menü wird geschlossen, wenn Link angeklickt wird
-        className={`w-full block text-white text-center py-2 ${className || ""}`}
-      >
-        {label}
-      </Link>
+      <NavbarMenuItem className={`list-none ${className || ""}`}>
+        <Link href={href} onClick={handleClick} className="w-full block text-white text-center py-2" aria-current={isActive ? "page" : undefined}>
+          {children ?? label}
+        </Link>
+      </NavbarMenuItem>
     );
   }
 
-  // Standard für Desktop-Navigation
+  // --- Desktop ---
   return (
-    <NavbarItem isActive={pathname === href} as={Link} href={href} className={`text-white ${className || ""}`}>
-      {label}
+    <NavbarItem isActive={isActive} as={Link} href={href} className={`text-white ${className || ""}`} aria-current={isActive ? "page" : undefined}>
+      {children ?? label}
     </NavbarItem>
   );
 }

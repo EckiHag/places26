@@ -11,13 +11,14 @@ import UserMenu from "./UserMenu";
 import GadgetsMenu from "./GadgetsMenu";
 import { useRouter } from "next/navigation"; // wichtig für App Router
 import { Session } from "next-auth";
-import NextLink from "next/link";
+// import NextLink from "next/link";
 
-interface ClientNavProps {
+interface NavbarClientProps {
   session: Session | null;
 }
 
-export default function ClientNav({ session }: ClientNavProps) {
+export default function NavbarClient({ session }: NavbarClientProps) {
+  const [, setMenuOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => setIsOpen((prev) => !prev);
@@ -45,6 +46,12 @@ export default function ClientNav({ session }: ClientNavProps) {
 
         {/* Desktop-Navigation */}
         <div className="hidden md:flex gap-4">
+          <NavLink href="/disclaimer" className="ml-5">
+            <Button isIconOnly variant="light" size="sm" className="text-white">
+              <AiOutlineInfoCircle size={20} />
+            </Button>
+          </NavLink>
+
           <NavLink href="/subjects" label="Subjects" />
           <NavLink href="/quiz" label="Quiz" />
           <GadgetsMenu></GadgetsMenu>
@@ -57,11 +64,6 @@ export default function ClientNav({ session }: ClientNavProps) {
           {session?.user?.role === "ADMIN26" && <NavLink href="/cardtesting" label="card" />}
           {session?.user?.role === "ADMIN26" && <NavLink href="/user" label="user" />}
         </div>
-        <Link href="/disclaimer">
-          <Button isIconOnly variant="light" size="sm" className="text-white ml-5">
-            <AiOutlineInfoCircle size={20} />
-          </Button>
-        </Link>
         {/* Benutzerbereich */}
         <div className="hidden md:flex gap-2 ml-4">
           {userInfo ? (
@@ -87,8 +89,14 @@ export default function ClientNav({ session }: ClientNavProps) {
       {/* Mobile Navigation */}
       {isOpen && (
         <div className="absolute right-0 top-full w-32 bg-gradient-to-r from-pprimary-600 to-pprimary-700 p-4 flex flex-col items-center space-y-2 shadow-lg">
-          <NavLink href="/subjects" label="Subjects" isMobile onClick={closeMenu} />
-          <NavLink href="/quiz" label="Quiz" isMobile onClick={closeMenu} />
+          <NavLink href="/disclaimer" isMobile onClick={() => setMenuOpen(false)}>
+            {/* Icon-Variante */}
+            <span className="inline-flex items-center justify-center w-full">
+              <AiOutlineInfoCircle size={20} />
+            </span>
+          </NavLink>
+          <NavLink href="/subjects" label="Subjects" isMobile onClick={() => setMenuOpen(false)} />
+          <NavLink href="/quiz" label="Quiz" isMobile onClick={() => setMenuOpen(false)} />
           <GadgetsMenu></GadgetsMenu>
           {session?.user?.role === "ADMIN26" && <NavLink href="/conv" label="conv" isMobile onClick={closeMenu} />}
           {session?.user?.role === "ADMIN26" && <NavLink href="/lb" label="LB" isMobile onClick={closeMenu} />}
@@ -98,18 +106,6 @@ export default function ClientNav({ session }: ClientNavProps) {
           {session?.user?.role === "ADMIN26" && <NavLink href="/tabs" label="tabs" isMobile onClick={closeMenu} />}
           {session?.user?.role === "ADMIN26" && <NavLink href="/cardtesting" label="card" isMobile onClick={closeMenu} />}
           {session?.user?.role === "ADMIN26" && <NavLink href="/user" label="user" isMobile onClick={closeMenu} />}
-          <Button
-            as={NextLink}
-            href="/disclaimer"
-            isIconOnly
-            variant="light"
-            size="sm"
-            className="text-white ml-5"
-            aria-label="Disclaimer"
-            onPress={closeMenu} // optional: Menü direkt schließen
-          >
-            <AiOutlineInfoCircle size={20} />
-          </Button>
           {/* Mobile Benutzerbereich */}
           {userInfo ? (
             <UserMenu userInfo={userInfo} />

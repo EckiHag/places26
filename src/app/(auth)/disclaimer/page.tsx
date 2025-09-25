@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Button, CardBody } from "@heroui/react";
+import { Card, CardBody } from "@heroui/react";
 import Link from "next/link";
 
 export default function DisclaimerPage() {
@@ -46,12 +46,16 @@ export default function DisclaimerPage() {
           </section>
 
           <div className="flex flex-col items-center space-y-2">
-            <Link href="/">
-              <Button variant="ghost">Zurück zur Startseite</Button>
+            <Link href="/" className="shadow px-4 py-2 rounded bg-blue-500 text-white inline-flex items-center justify-center">
+              Zurück zur Startseite
             </Link>
-            <Link href="/impressum">
+            <Link href="/impressum" className="shadow px-4 py-2 rounded bg-blue-500 text-white inline-flex items-center justify-center">
+              Zum Impressum
+            </Link>
+
+            {/* <Link href="/impressum">
               <Button variant="ghost">Zum Impressum</Button>
-            </Link>
+            </Link> */}
           </div>
         </CardBody>
       </Card>

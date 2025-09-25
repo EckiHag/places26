@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Button, CardBody } from "@heroui/react";
+import { Card, CardBody } from "@heroui/react";
 import Link from "next/link";
 
 export default function ImpressumPage() {
@@ -41,14 +41,14 @@ export default function ImpressumPage() {
           <section className="space-y-2">
             <h2 className="text-xl font-semibold">Haftungsausschluss</h2>
             <p className="text-gray-700">
-              Trotz sorgfältiger inhaltlicher Kontrolle übernehmen wir keine Haftung für die Inhalte externer Links. Für den Inhalt der verlinkten Seiten sind ausschließlich deren
+              Trotz sorgfältiger inhaltlicher Kontrolle übernehme ich keine Haftung für die Inhalte externer Links. Für den Inhalt der verlinkten Seiten sind ausschließlich deren
               Betreiber verantwortlich.
             </p>
           </section>
 
           <div className="flex justify-center">
-            <Link href="/">
-              <Button variant="shadow">Zurück zur Startseite</Button>
+            <Link href="/" className="shadow px-4 py-2 rounded bg-blue-500 text-white inline-flex items-center justify-center">
+              Zurück zur Startseite
             </Link>
           </div>
         </CardBody>

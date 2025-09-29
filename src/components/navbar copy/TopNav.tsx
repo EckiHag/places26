@@ -1,4 +1,3 @@
-// navbar/TopNav.tsx
 "use server";
 
 import { auth } from "../../auth";

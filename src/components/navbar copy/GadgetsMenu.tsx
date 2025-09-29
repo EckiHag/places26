@@ -1,4 +1,3 @@
-// navbar/GadgetsMenu.tsx
 "use client";
 
 import { Dropdown, DropdownItem, DropdownMenu, DropdownSection, DropdownTrigger } from "@heroui/react";

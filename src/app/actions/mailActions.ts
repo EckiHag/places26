@@ -28,11 +28,23 @@ export async function sendeMail(mailTo: string, mailSubject: string, mailMessage
 }
 
 export async function sendeMailToNewUser(mailTo: string, userName: string) {
-  const personalizedHtml = mailRegistrationToNewUser.replace("{{userName}}", userName);
+  // Sicherheit: HTML-escaping, falls userName Sonderzeichen enthält
+  const escapeHtml = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+
+  // Ersetze {{userName}} oder {{ userName }} an allen Stellen
+  const personalizedHtml = mailRegistrationToNewUser
+    .replace(/{{\s*userName\s*}}/g, escapeHtml(userName))
+    // optional: falls deine Vorlage aktuell nur "userName" ohne Klammern nutzt
+    .replace(/\buserName\b/g, escapeHtml(userName));
+
   const emailSubject = `Places26: Erfolgreiche Anmeldung!`;
-  // const htmlPath = path.join(process.cwd(), "src", "lib", "mailing", "mailRegistrationToNewUser.html");
-  // const html = fs.readFileSync(htmlPath, "utf8").replace(/userName/g, userName);
-  const text = `Willkommen ${userName}!\n\nDanke, dass du dich registriert hast. Ich freue mich, dich an Bord zu haben! Du kannst dich jetzt mit deiner Email-Adresse anmelden! Du hast zunächst als NEWBIE nur Zugang zu den Galerien, wirst aber von mir weitere Zugänge erhalten. Sobald ich dich frei geschaltet habe, melde ich mich. LG \n\nStarte jetzt: https://places26.vercel.app/\n\n© 2026 EckiHag - Alle Rechte vorbehalten.`;
+
+  const text = `Willkommen ${userName}!\n
+Danke, dass du dich registriert hast. Ich freue mich, dich an Bord zu haben! Du kannst dich jetzt mit deiner Email-Adresse anmelden! Du hast zunächst als NEWBIE nur Zugang zu den Galerien, wirst aber von mir weitere Zugänge erhalten. Sobald ich dich frei geschaltet habe, melde ich mich. LG
+
+Starte jetzt: https://places26.vercel.app/
+
+© 2026 EckiHag - Alle Rechte vorbehalten.`;
 
   const result = await nodeMailer(mailTo, emailSubject, text, personalizedHtml);
 

@@ -2,7 +2,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Button, Navbar, NavbarBrand } from "@heroui/react";
+import { Button, Navbar, NavbarBrand, Tooltip } from "@heroui/react";
 import Link from "next/link";
 import { GiJourney } from "react-icons/gi";
 import { FiMenu, FiX } from "react-icons/fi";
@@ -12,6 +12,7 @@ import UserMenu from "./UserMenu";
 import GadgetsMenu from "./GadgetsMenu";
 import { useRouter, usePathname } from "next/navigation";
 import { Session } from "next-auth";
+import Image from "next/image";
 
 interface NavbarClientProps {
   session: Session | null;
@@ -50,9 +51,18 @@ export default function NavbarClient({ session }: NavbarClientProps) {
         {/* Desktop */}
         <div className="hidden md:flex gap-4">
           <NavLink href="/disclaimer" className="ml-5">
-            <Button isIconOnly variant="light" size="sm" className="text-white">
-              <AiOutlineInfoCircle size={20} />
-            </Button>
+            <Tooltip content="Disclaimer" placement="bottom">
+              <Button isIconOnly variant="light" size="sm" className="text-white">
+                <AiOutlineInfoCircle size={20} />
+              </Button>
+            </Tooltip>
+          </NavLink>
+          <NavLink href="http://localhost:3000/places/cmf6hqc1k0000jp040y7adw9x/default" isMobile onClick={closeMenu}>
+            <Tooltip content="Tansania" placement="bottom">
+              <span className="inline-flex items-center justify-center w-full">
+                <Image src="/Flagge50px.png" title="Tansania" alt="Flagge" width={24} height={24} className="w-[24px] h-auto" priority />
+              </span>
+            </Tooltip>
           </NavLink>
           <NavLink href="/subjects" label="Subjects" />
           <NavLink href="/quiz" label="Quiz" />
@@ -93,9 +103,18 @@ export default function NavbarClient({ session }: NavbarClientProps) {
       {isOpen && (
         <div className="absolute right-0 top-full w-40 bg-gradient-to-r from-pprimary-600 to-pprimary-700 p-4 flex flex-col items-center space-y-2 shadow-lg">
           <NavLink href="/disclaimer" isMobile onClick={closeMenu}>
-            <span className="inline-flex items-center justify-center w-full">
-              <AiOutlineInfoCircle size={20} />
-            </span>
+            <Tooltip content="Disclaimer" placement="bottom">
+              <span className="inline-flex items-center justify-center w-full" title="Disclaimer">
+                <AiOutlineInfoCircle size={20} />
+              </span>
+            </Tooltip>
+          </NavLink>
+          <NavLink href="http://localhost:3000/places/cmf6hqc1k0000jp040y7adw9x/default" isMobile onClick={closeMenu}>
+            <Tooltip content="Tansania" placement="bottom">
+              <span className="inline-flex items-center justify-center w-full">
+                <Image src="/Flagge50px.png" title="Tansania" alt="Flagge" width={24} height={24} className="w-[24px] h-auto" priority />
+              </span>
+            </Tooltip>
           </NavLink>
           <NavLink href="/subjects" label="Subjects" isMobile onClick={closeMenu} />
           <NavLink href="/quiz" label="Quiz" isMobile onClick={closeMenu} />

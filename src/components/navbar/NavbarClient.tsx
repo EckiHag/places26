@@ -57,7 +57,7 @@ export default function NavbarClient({ session }: NavbarClientProps) {
               </Button>
             </Tooltip>
           </NavLink>
-          <NavLink href="http://localhost:3000/places/cmf6hqc1k0000jp040y7adw9x/default" isMobile onClick={closeMenu}>
+          <NavLink href="https://places26.vercel.app/places/cmf6hqc1k0000jp040y7adw9x/default" isMobile onClick={closeMenu}>
             <Tooltip content="Tansania" placement="bottom">
               <span className="inline-flex items-center justify-center w-full">
                 <Image src="/Flagge50px.png" title="Tansania" alt="Flagge" width={24} height={24} className="w-[24px] h-auto" priority />
@@ -109,7 +109,7 @@ export default function NavbarClient({ session }: NavbarClientProps) {
               </span>
             </Tooltip>
           </NavLink>
-          <NavLink href="http://localhost:3000/places/cmf6hqc1k0000jp040y7adw9x/default" isMobile onClick={closeMenu}>
+          <NavLink href="https://places26.vercel.app/places/cmf6hqc1k0000jp040y7adw9x/default" isMobile onClick={closeMenu}>
             <Tooltip content="Tansania" placement="bottom">
               <span className="inline-flex items-center justify-center w-full">
                 <Image src="/Flagge50px.png" title="Tansania" alt="Flagge" width={24} height={24} className="w-[24px] h-auto" priority />

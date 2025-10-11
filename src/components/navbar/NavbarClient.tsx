@@ -10,6 +10,7 @@ import { AiOutlineInfoCircle } from "react-icons/ai";
 import NavLink from "./NavLink";
 import UserMenu from "./UserMenu";
 import GadgetsMenu from "./GadgetsMenu";
+import AdminMenu from "./AdminMenu";
 import { useRouter, usePathname } from "next/navigation";
 import { Session } from "next-auth";
 import Image from "next/image";
@@ -67,14 +68,15 @@ export default function NavbarClient({ session }: NavbarClientProps) {
           <NavLink href="/subjects" label="Subjects" />
           <NavLink href="/quiz" label="Quiz" />
           <GadgetsMenu />
-          {session?.user?.role === "ADMIN26" && <NavLink href="/conv" label="conv" />}
+          {session?.user?.role === "ADMIN26" && <AdminMenu />}
+          {/* {session?.user?.role === "ADMIN26" && <NavLink href="/conv" label="conv" />}
           {session?.user?.role === "ADMIN26" && <NavLink href="/lb" label="LB" />}
           {session?.user?.role === "ADMIN26" && <NavLink href="/farben" label="Farben" />}
-          {session?.user?.role === "ADMIN26" && <NavLink href="/settings" label="set" />}
-          {session?.user?.role === "ADMIN26" && <NavLink href="/quadrate" label="qua" />}
+          {session?.user?.role === "ADMIN26" && <NavLink href="/settings" label="set" />} */}
+          {/* {session?.user?.role === "ADMIN26" && <NavLink href="/quadrate" label="qua" />}
           {session?.user?.role === "ADMIN26" && <NavLink href="/tabs" label="tabs" />}
           {session?.user?.role === "ADMIN26" && <NavLink href="/cardtesting" label="card" />}
-          {session?.user?.role === "ADMIN26" && <NavLink href="/user" label="user" />}
+          {session?.user?.role === "ADMIN26" && <NavLink href="/user" label="user" />} */}
         </div>
 
         {/* Userbereich Desktop */}
@@ -120,15 +122,7 @@ export default function NavbarClient({ session }: NavbarClientProps) {
           <NavLink href="/quiz" label="Quiz" isMobile onClick={closeMenu} />
           {/* WICHTIG: closeMenu an Gadgets weiterreichen */}
           <GadgetsMenu onSelectItem={closeMenu} />
-          {session?.user?.role === "ADMIN26" && <NavLink href="/conv" label="conv" isMobile onClick={closeMenu} />}
-          {session?.user?.role === "ADMIN26" && <NavLink href="/lb" label="LB" isMobile onClick={closeMenu} />}
-          {session?.user?.role === "ADMIN26" && <NavLink href="/farben" label="Farben" isMobile onClick={closeMenu} />}
-          {session?.user?.role === "ADMIN26" && <NavLink href="/settings" label="set" isMobile onClick={closeMenu} />}
-          {session?.user?.role === "ADMIN26" && <NavLink href="/quadrate" label="qua" isMobile onClick={closeMenu} />}
-          {session?.user?.role === "ADMIN26" && <NavLink href="/tabs" label="tabs" isMobile onClick={closeMenu} />}
-          {session?.user?.role === "ADMIN26" && <NavLink href="/cardtesting" label="card" isMobile onClick={closeMenu} />}
-          {session?.user?.role === "ADMIN26" && <NavLink href="/user" label="user" isMobile onClick={closeMenu} />}
-
+          {session?.user?.role === "ADMIN26" && <AdminMenu />}
           {userInfo ? (
             <UserMenu userInfo={userInfo} />
           ) : (

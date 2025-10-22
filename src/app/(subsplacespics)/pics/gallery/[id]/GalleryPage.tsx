@@ -50,7 +50,7 @@ export default function GalleryPage({ slides }: GalleryPageProps) {
 
   return (
     <div>
-      <h1>RowsPhotoAlbum in gallery</h1>
+      <h1 className="mt-[90px]"></h1>
       <RowsPhotoAlbum
         photos={photos}
         targetRowHeight={300}
